@@ -5,7 +5,7 @@ const requestTime = require("./middleware/request-time");
 const rootRoutes = require("./routes/root");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-
+require("dotenv").config();
 const app = express();
 
 app.use(morgan("dev"));
