@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../db/connection.js");
+
 router.get("/", (_request, response) => {
   db.any(`INSERT INTO test_table ("test_string") VALUES ($1)`, [
     `Hello on ${new Date().toLocaleDateString("en-us", {
@@ -19,4 +20,5 @@ router.get("/", (_request, response) => {
       response.json({ error });
     });
 });
+
 module.exports = router;

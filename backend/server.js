@@ -7,8 +7,8 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 require("dotenv").config();
 const app = express();
-
 const testRoutes = require("./routes/test/index.js");
+
 app.use("/test", testRoutes);
 
 app.use(morgan("dev"));
