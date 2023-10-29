@@ -4,7 +4,7 @@
   "description": "[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=12596720)",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server.js",
+    "start": "node backend/server.js",
     "start:dev": "concurrently \"npm:server:dev\" \"npm:build:dev\"",
     "server:dev": "NODE_ENV=development nodemon ./backend/server.js",
     "build": "webpack",
@@ -30,6 +30,7 @@
     "morgan": "^1.10.0",
     "node-pg-migrate": "^6.2.2",
     "pg": "^8.11.3",
+    "pg-promise": "^11.5.4",
     "prettier": "^3.0.3"
   },
   "devDependencies": {
