@@ -4,30 +4,7 @@
 | User logs in | <ul><li>Username (string) (player_id)</li><li>Password (string)</li><li>isAuthenticated</li></ul> | User must have an established account that will be stored in the database | Returns true if username and password matches in database | POST /login |
 | User in waiting lobby | <ul><li>Chat message (string) </li><li>Player_id</li><li>left_game (bool)</li><li>Player_count</li><li>Game_id</li><li>Avatar_id </li></ul> |<li>If player_count of game_id is not full, user can join, incrementing player_count</li><li>If game_id is still active, and left_game is True, then a user can join a previously left game (with the same cards)</li><li>Maybe a timeout that starts the game automatically for players? A waiting time </li> | <li>Chat log is updated when a user writes a message</li><li>Each player_id should have ability to send and receive messages</li><li>Each player_id will be assigned to a game room where they start their first round</li><li>Player_id and avatar_id can be viewable on the screen</li> | POST /lobby |
 | User creates a game |  <li>Player_id<li>Game_title<li>Player_count<li>Avatar_id |  |<li>New game is created with a game_id<li>Each player_id is redirected to the game room <li>Each player_id is added to a game_id<li>Player_id and avatar_id is visible to other player_id<li> | POST/game/create (game_id, player_count) |
-| User starts the game |
-<li>Player_id </li>
-<li>Game_id</li>
-<li>Card object</li>
-<li>Card_id</li>
-<li>Deck object</li>
-<li>Hand object</li>
-<li>Turn_order</li>
-<li>Score</li>
-<li>Chat message (string)</li>
-<li>Avatar_id</li> | 
-<li>Player_id is successfully added to a game_id | 
-<li>Deck is shuffled randomly
-<li>Each user score is set to 0
-<li>Each player_id receives 7 cards into their hand from the deck
-<li>Top card of deck is placed as first card of game
-<li>Count of deck is decreased by 7*player_count + 1
-<li>Each player_id is assigned with a turn_order
-<li>Deck object and hand object should not be seen by other player_id
-<li>Hand object should only be seen by player_id who plays?
-<li>Chat log is updated when a user writes a message
-<li>Each player_id should have ability to send and receive messages
-<li>Player_id and avatar_id is visible to other player_id | 
-POST/game/start (game_id, player_count) |
+| User starts the game | <li>Player_id </li><li>Game_id</li><li>Card object</li><li>Card_id</li><li>Deck object</li><li>Hand object</li><li>Turn_order</li><li>Score</li><li>Chat message (string)</li><li>Avatar_id</li> | <li>Player_id is successfully added to a game_id</li> | <li>Deck is shuffled randomly</li><li>Each user score is set to 0</li><li>Each player_id receives 7 cards into their hand from the deck</li><li>Top card of deck is placed as first card of game</li><li>Count of deck is decreased by 7*player_count + 1</li><li>Each player_id is assigned with a turn_order</li><li>Deck object and hand object should not be seen by other player_id</li><li>Hand object should only be seen by player_id who plays?</li><li>Chat log is updated when a user writes a message</li><li>Each player_id should have ability to send and receive messages</li><li>Player_id and avatar_id is visible to other player_id</li> | POST/game/start (game_id, player_count) |
 
 
 
