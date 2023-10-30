@@ -1,3 +1,3 @@
 const pgp = require("pg-promise")();
-const connection = pgp("postgres://victor:9988@localhost:5432/teamq");
+const connection = pgp(process.env.DATABASE_URL);
 module.exports = connection;
