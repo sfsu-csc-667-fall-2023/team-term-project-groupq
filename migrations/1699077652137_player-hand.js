@@ -10,12 +10,15 @@ exports.up = (pgm) => {
       type: "int",
       primaryKey: true,
     },
-    hand_id: {
+    player_id: {
       type: "int",
       references: {
-        model: "bets",
+        model: "game_users",
         key: "id",
       },
+    },
+    bet_id: {
+      type: "int",
     },
     flop: {
       type: "varchar(10)",
@@ -38,11 +41,19 @@ exports.up = (pgm) => {
         key: "id",
       },
     },
-    winner: {
+    card1: {
       type: "int",
+      references: {
+        model: "cards",
+        key: "id",
+      },
     },
-    loser: {
+    card2: {
       type: "int",
+      references: {
+        model: "cards",
+        key: "id",
+      },
     },
   });
 };

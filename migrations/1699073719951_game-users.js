@@ -6,13 +6,17 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable("game_users", {
-    player_id: {
+    id: {
+      type: "int",
+      primaryKey: true,
+    },
+    user_id: {
       type: "int",
       references: [ {
-        model: "player_hand",
+        model: "rounds",
         key: "winner",
         }, {
-        model: "player_hand",
+        model: "rounds",
         key: "loser",
         }, {
         model: "users",
@@ -35,20 +39,6 @@ exports.up = (pgm) => {
     },
     left_game: {
       type: "boolean",
-    },
-    card1: {
-      type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
-    },
-    card2: {
-      type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
     },
     created_at: {
       type: "timestamp",
