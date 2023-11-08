@@ -6,3 +6,6 @@ Justin Su
 Arpaiana Tursunalieva
 Victor Uong
 Kayla Young
+
+Database Design: https://dbdiagram.io/d/CSC867-TermProject-654346637d8bbd646553bea3
+
