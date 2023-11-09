@@ -14,10 +14,10 @@ exports.up = (pgm) => {
       type: "int",
     },
     winner: {
-      type: "winner",
+      type: "int",
     },
     loser: {
-      type: "timestamp",
+      type: "int",
     },
   });
 };

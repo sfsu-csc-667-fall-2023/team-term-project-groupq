@@ -5,6 +5,7 @@ exports.shorthands = undefined;
  */
 
 exports.up = (pgm) => {
+  pgm.createType("stages", ["preflop", "flop", "turn", "river"]);
   pgm.createTable("games", {
     id: {
       type: "int",
@@ -21,7 +22,6 @@ exports.up = (pgm) => {
     },
     game_phase: {
       type: "stages",
-      //type: Sequelize.ENUM('preflop', 'flop', 'turn', 'river'),
     },
 
     flop1: {
@@ -85,10 +85,9 @@ exports.up = (pgm) => {
       default: pgm.func("current_timestamp"),
     },
   });
-  pgm.createType("stages", ["preflop", "flop", "turn", "river"]);
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("games");
   pgm.dropType("stages");
+  pgm.dropTable("games");
 };

@@ -5,6 +5,7 @@ exports.shorthands = undefined;
  */
 
 exports.up = (pgm) => {
+  pgm.createType("suits", ["hearts", "diamonds", "spades", "clubs"]);
   pgm.createTable("cards", {
     id: {
       type: "int",
@@ -17,7 +18,6 @@ exports.up = (pgm) => {
       type: "suits",
     },
   });
-  pgm.createType("suits", ["hearts", "diamonds", "spades", "clubs"]);
 };
 
 exports.down = (pgm) => {
