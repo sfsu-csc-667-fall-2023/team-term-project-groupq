@@ -7,5 +7,5 @@ Arpaiana Tursunalieva
 Victor Uong
 Kayla Young
 
-Database Design: https://dbdiagram.io/d/CSC867-TermProject-654346637d8bbd646553bea3
+Database Design: [https://dbdiagram.io/d/CSC867-TermProject-654346637d8bbd646553bea3](https://dbdiagram.io/d/TeamQ-uno-65407354ffbf5169f0c6d112)https://dbdiagram.io/d/TeamQ-uno-65407354ffbf5169f0c6d112
 
