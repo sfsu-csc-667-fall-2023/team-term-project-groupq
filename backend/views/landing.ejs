@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login Page</title>
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/test.css">
 </head>
 <body>
-    LANDING PAGE
-
-    <ul>
-        <li><a href="/">Landing</a></li>
-        <li><a href="/auth/sign_up">sign-up</a></li>
-        <li><a href="/lobby">lobby</a></li>
-        <li><a href="/game/42">game</a></li>
-    </ul>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form>
+            <input type="text" placeholder="Username" required>
+            <br>
+            <input type="password" placeholder="Password" required>
+            <br>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+        <div class="line"></div>
+        <p class="create-account">Don't have an account? <a href="/auth/sign_up">Create Account</a></p>
+    </div>
 </body>
 </html>

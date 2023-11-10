@@ -3,15 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login Page</title>
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/test.css">
 </head>
 <body>
-    sign up page
-
-    <form action="/auth/sign_up" method="post">
-        <input type="text" name="" id="">
-        <input type="password" name="" id="">
-        <input type="submit" value="">
-    </form>
+    <div class="account-container">
+        <h2>Create Account</h2>
+        <form>
+            <input type="text" placeholder="First Name" required>
+            <br>
+            <input type="text" placeholder="Last Name" required>
+            <br>
+            <input type="email" placeholder="Email Address" required>
+            <br>
+            <input type="text" placeholder="Username" required>
+            <br>
+            <input type="password" placeholder="Password" required>
+            <br>
+            <div class="dropdown">
+                <label for="role">Select Avatar:</label>
+                <select id="role" name="role">
+                    <option value="avatar1">-- avatar1 --</option>
+                    <option value="avatar2">-- avatar2 --</option>
+                    <option value="avatar3">-- avatar3 --</option>
+                    <option value="avatar4">-- avatar4 --</option>
+                </select>
+            </div>
+            <br>
+            <button type="submit">Create Account</button>
+        </form>
+    </div>
 </body>
 </html>

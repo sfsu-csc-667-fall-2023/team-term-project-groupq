@@ -1,0 +1,79 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  /*background-color: #f4f4f4;*/
+
+  background-image: url("/backgroud.png"); /* Replace 'background-image.jpg' with the actual file path */
+  background-size: cover;
+  background-position: center;
+
+  font-family: "Inter";
+}
+
+.login-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: 300px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: rgb(23, 70, 121);
+  color: white;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(23, 70, 121);
+}
+
+.line {
+  border-top: 1px solid #000000;
+  margin: 15px 0;
+}
+
+.account-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: 470px;
+}
+
+.create-account {
+  margin-top: 10px;
+}
+
+.dropdown {
+  margin: 10px 0;
+}
+
+select {
+  width: 65%; /* Change the width as needed */
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}

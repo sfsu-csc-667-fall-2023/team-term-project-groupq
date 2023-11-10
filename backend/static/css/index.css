@@ -1,0 +1,181 @@
+.frame-child {
+  left: 12px;
+  background-color: #d9d9d9;
+  width: 1300px;
+  height: 724px;
+}
+.frame-child,
+.frame-item,
+.frame1 {
+  position: absolute;
+  top: 0;
+}
+.frame1 {
+  left: 0;
+  width: 1312px;
+  height: 724px;
+  overflow: hidden;
+}
+.frame-item {
+  left: 11px;
+  border-radius: 86px;
+  background-color: #fafaf5;
+  width: 589px;
+  height: 605px;
+}
+.frame,
+.frame-icon,
+.frame2 {
+  position: absolute;
+  top: 69px;
+  left: 356px;
+  width: 600px;
+  height: 605px;
+  overflow: hidden;
+}
+.frame,
+.frame-icon {
+  top: 140px;
+  left: 64px;
+  width: 1312px;
+  height: 724px;
+}
+.frame-icon {
+  top: 432px;
+  left: 0;
+  width: 501px;
+  height: 2px;
+}
+.login1 {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  display: inline-block;
+  width: 410px;
+}
+.frame4,
+.frame5 {
+  position: absolute;
+  top: 0;
+  left: 39px;
+  width: 422px;
+  height: 29px;
+  overflow: hidden;
+}
+.frame5 {
+  border: 0;
+  background-color: transparent;
+  top: 213px;
+  left: 40px;
+  width: 420px;
+  height: 56px;
+}
+.email-address {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  display: inline-block;
+  width: 410px;
+}
+.frame6,
+.frame7 {
+  position: absolute;
+  top: 64px;
+  left: 40px;
+  width: 420px;
+  height: 29px;
+  overflow: hidden;
+  text-align: left;
+}
+.frame7 {
+  top: 177px;
+}
+.frame-inner,
+.frame8 {
+  position: absolute;
+  height: 56px;
+}
+.frame8 {
+  border: 0;
+  background-color: transparent;
+  top: 102px;
+  left: 43px;
+  width: 414px;
+  overflow: hidden;
+}
+.frame-inner {
+  top: 0;
+  left: 5px;
+  border-radius: var(--br-3xs);
+  background-color: var(--color-white);
+  border: 3px solid var(--color-black);
+  box-sizing: border-box;
+  width: 409px;
+}
+.frame10,
+.frame9 {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 324px;
+  left: 43px;
+  width: 414px;
+  height: 56px;
+  overflow: hidden;
+}
+.frame10 {
+  top: 473px;
+}
+.login2 {
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 187px;
+}
+.create-account,
+.frame11,
+.login2 {
+  position: absolute;
+  height: 30px;
+}
+.frame11 {
+  top: 341px;
+  left: 154px;
+  width: 192px;
+  overflow: hidden;
+}
+.create-account {
+  top: 0;
+  left: 11px;
+  display: inline-block;
+  width: 187px;
+}
+.frame12,
+.frame3 {
+  position: absolute;
+  top: 486px;
+  left: 151px;
+  width: 198px;
+  height: 30px;
+  overflow: hidden;
+}
+.frame3 {
+  top: 244px;
+  left: 470px;
+  width: 501px;
+  height: 529px;
+}
+.login {
+  position: relative;
+  border-radius: 8px;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  text-align: center;
+  font-size: var(--font-size-5xl);
+  color: var(--color-black);
+  font-family: var(--font-inter);
+}
