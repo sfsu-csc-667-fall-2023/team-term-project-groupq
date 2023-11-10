@@ -6,10 +6,7 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable("users", {
-    id: {
-      type: "int",
-      primaryKey: true,
-    },
+    id: "id",
     username: {
       type: "varchar(50)",
     },

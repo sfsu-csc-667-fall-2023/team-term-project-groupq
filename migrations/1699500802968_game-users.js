@@ -6,30 +6,14 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable("game_users", {
-    id: {
-      type: "int",
-      primaryKey: true,
-    },
+    id: "id",
     user_id: {
       type: "int",
-      references: [ {
-        model: "rounds",
-        key: "winner",
-        }, {
-        model: "rounds",
-        key: "loser",
-        }, {
-        model: "users",
-        key: "id",
-        },
-      ],
+      references: "users",
     },
     game_id: {
       type: "int",
-      references: {
-        model: "games",
-        key: "id",
-      },
+      references: "games",
     },
     turn_order: {
       type: "int",

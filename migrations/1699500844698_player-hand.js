@@ -6,54 +6,21 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable("player_hand", {
-    id: {
-      type: "int",
-      primaryKey: true,
-    },
+    id: "id",
     player_id: {
       type: "int",
-      references: {
-        model: "game_users",
-        key: "id",
-      },
-    },
-    bet_id: {
-      type: "int",
-    },
-    flop: {
-      type: "varchar(10)",
-      references: {
-        model: "cards",
-        key: "id",
-      },
-    },
-    turn: {
-      type: "varchar(10)",
-      references: {
-        model: "cards",
-        key: "id",
-      },
-    },
-    river: {
-      type: "varchar(10)",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "game_users",
     },
     card1: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
     },
     card2: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
+    },
+    player_order: {
+      type: "int",
     },
   });
 };

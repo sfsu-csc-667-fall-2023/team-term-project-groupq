@@ -7,10 +7,7 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.createType("stages", ["preflop", "flop", "turn", "river"]);
   pgm.createTable("games", {
-    id: {
-      type: "int",
-      primaryKey: true,
-    },
+    id: "id",
     players_allowed: {
       type: "int",
     },
@@ -26,38 +23,23 @@ exports.up = (pgm) => {
 
     flop1: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
     },
     flop2: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
     },
     flop3: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
     },
     turn: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
     },
     river: {
       type: "int",
-      references: {
-        model: "cards",
-        key: "id",
-      },
+      references: "cards",
     },
     small_blind: {
       type: "int",
