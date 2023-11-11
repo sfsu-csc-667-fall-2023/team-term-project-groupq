@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  padding: 0;
+  color: #333;
+
+  background-image: url("/backgroud.png"); /* Replace 'background-image.jpg' with the actual file path */
+  background-size: cover;
+  background-position: center;
+
+  font-family: "Inter";
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+button {
+  background-color: rgb(23, 70, 121);
+  color: white;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.account-container {
+  text-align: left;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  height: 270px;
+  padding: 10px;
+  margin: auto; 
+  margin-top: 20px;
+}
+
+.account-container1 {
+  text-align: left;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  height: 370px;
+  padding: 10px;
+  margin: auto; 
+  margin-top: 20px;
+}
+.account-container2 {
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  height: 390px;
+  padding: 10px;
+  margin: auto; 
+  margin-top: 20px;
+}
+
+h2 {
+  color: rgb(23, 70, 121);
+  text-align: center;
+}
