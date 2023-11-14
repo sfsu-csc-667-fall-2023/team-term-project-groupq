@@ -40,11 +40,15 @@ const landingRoutes = require("./routes/landing");
 const authRoutes = require("./routes/authentication");
 const gameRoutes = require("./routes/game");
 const globalLobbyRoutes = require("./routes/global_lobby");
+const ruleRoutes = require("./routes/rules");
+const endingRoutes = require("./routes/match_end");
 
 app.use("/", landingRoutes);
 app.use("/auth", authRoutes);
 app.use("/lobby", globalLobbyRoutes);
+app.use("/rules", ruleRoutes);
 app.use("/game", gameRoutes);
+app.use("/game", endingRoutes);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {

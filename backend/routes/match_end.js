@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-router.get("/match_end", (_request, response) => {
-  response.render("match_end");
+
+router.get("/:id/match_end", (request, response) => {
+  const { id } = request.params;
+  response.render("match_end", { id });
 });
 
 module.exports = router;

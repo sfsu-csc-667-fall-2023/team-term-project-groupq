@@ -9,7 +9,7 @@ body {
   background-image: url("/backgroud.png"); /* Replace 'background-image.jpg' with the actual file path */
   background-size: cover;
   background-position: center;
-
+  color: white;
   font-family: "Inter";
 }
 

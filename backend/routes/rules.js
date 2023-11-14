@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-router.get("/rules", (_request, response) => {
+
+router.get("/", (_request, response) => {
   response.render("rules");
 });
 
