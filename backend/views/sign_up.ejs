@@ -8,28 +8,13 @@
     <link rel="stylesheet" href="/css/test.css">
 </head>
 <body>
-    <div class="account-container">
+    <div class="login-container">
         <h2>Create Account</h2>
-        <form>
-            <input type="text" placeholder="First Name" required>
+        <form method="post" action="/auth/sign_up">
+            <input type="text" name = "username" placeholder="Username" required>
             <br>
-            <input type="text" placeholder="Last Name" required>
+            <input type="password" name = "password" placeholder="Password" required>
             <br>
-            <input type="email" placeholder="Email Address" required>
-            <br>
-            <input type="text" placeholder="Username" required>
-            <br>
-            <input type="password" placeholder="Password" required>
-            <br>
-            <div class="dropdown">
-                <label for="role">Select Avatar:</label>
-                <select id="role" name="role">
-                    <option value="avatar1">-- avatar1 --</option>
-                    <option value="avatar2">-- avatar2 --</option>
-                    <option value="avatar3">-- avatar3 --</option>
-                    <option value="avatar4">-- avatar4 --</option>
-                </select>
-            </div>
             <br>
             <button type="submit">Create Account</button>
         </form>

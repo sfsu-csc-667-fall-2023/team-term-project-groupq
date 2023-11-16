@@ -8,13 +8,10 @@ exports.up = (pgm) => {
   pgm.createTable("users", {
     id: "id",
     username: {
-      type: "varchar(50)",
+      type: "varchar(60)",
     },
     password: {
-      type: "varchar(50)",
-    },
-    avatar_id: {
-      type: "varchar(255)",
+      type: "varchar(60)",
     },
     created_at: {
       type: "timestamp",

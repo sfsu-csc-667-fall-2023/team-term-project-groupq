@@ -70,6 +70,7 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
+  pgm.dropColumn("games", "game_phase");
   pgm.dropType("stages");
   pgm.dropTable("games");
 };
