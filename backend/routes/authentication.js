@@ -26,9 +26,6 @@ router.post("/sign_up", async (request, response) => {
 
   const { id } = Users.create(username, hash);
 
-  request.session.id = user.id;
-  request.session.username = user.username;
-
   response.redirect("/lobby");
 });
 
