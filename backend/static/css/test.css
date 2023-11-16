@@ -77,3 +77,18 @@ select {
   font-family: "Arial", sans-serif;
   text-align: center;
 }
+
+.logout-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
+
+.logout-button {
+  background-color: #5c33ff; /* Red background color */
+  color: white; /* White text color */
+  padding: 10px 15px; /* Padding inside the button */
+  border: none; /* Remove borders */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Add a pointer cursor on hover */
+}

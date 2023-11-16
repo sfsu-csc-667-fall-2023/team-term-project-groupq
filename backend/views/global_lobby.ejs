@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="/css/test.css">
 </head>
 <body>
-    lobby
+    <div class="logout-container">
+        <a href = "/rules">
+            <button class="rules-button">Rules</button>
+        </a>
+        <a href = "/auth/logout">
+            <button class="logout-button">Logout</button>
+        </a>
+        
+    </div>
+    <div> 
+        <h1>Lobby</h1>
+        <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %></h2>
+    </div>
 </body>
 </html>

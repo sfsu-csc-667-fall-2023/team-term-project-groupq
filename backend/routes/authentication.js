@@ -26,6 +26,9 @@ router.post("/sign_up", async (request, response) => {
 
   const { id } = Users.create(username, hash);
 
+  request.session.id = user.id;
+  request.session.username = user.username;
+
   response.redirect("/lobby");
 });
 
@@ -37,6 +40,11 @@ router.post("/sign_in", async (request, response) => {
     const isValidUser = await bcrypt.compare(password, user.password);
 
     if (isValidUser) {
+      request.session.user = {
+        id: user.id,
+        username,
+      };
+
       response.redirect("/lobby");
       return;
     } else {
@@ -50,6 +58,12 @@ router.post("/sign_in", async (request, response) => {
       error: "The credentials provided are incorrect",
     });
   }
+});
+
+router.get("/logout", (request, response) => {
+  request.session.destroy();
+
+  response.redirect("/");
 });
 
 module.exports = router;

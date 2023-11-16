@@ -1,12 +1,15 @@
 const path = require("path");
 const express = require("express");
 const createError = require("http-errors");
-
+const session = require("express-session");
 //const requestTime = require("./middleware/request-time");
+
+const { viewSessionData } = require("./middleware/view-session");
+const { sessionLocals } = require("./middleware/session-locals");
+const { isAuthenticated } = require("./middleware/is-authenticated");
 
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-require("dotenv").config();
 const app = express();
 
 app.use(morgan("dev"));
@@ -16,10 +19,15 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "static")));
 
 const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === "development") {
+  require("dotenv").config();
+
   const livereload = require("livereload");
   const connectLiveReload = require("connect-livereload");
   const liveReloadServer = livereload.createServer();
@@ -32,23 +40,39 @@ if (process.env.NODE_ENV === "development") {
   app.use(connectLiveReload());
 }
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "static")));
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    cookie: { secure: process.env.NODE_ENV !== "development" },
+  }),
+);
+if (process.env.NODE_ENV === "development") {
+  app.use(viewSessionData);
+}
+app.use(sessionLocals);
 
+const Routes = require("./routes");
+
+const ruleRoutes = require("./routes/rules");
+
+/*
 const landingRoutes = require("./routes/landing");
 const authRoutes = require("./routes/authentication");
 const gameRoutes = require("./routes/game");
 const globalLobbyRoutes = require("./routes/global_lobby");
-const ruleRoutes = require("./routes/rules");
 const endingRoutes = require("./routes/match_end");
+*/
 
-app.use("/", landingRoutes);
-app.use("/auth", authRoutes);
-app.use("/lobby", globalLobbyRoutes);
+app.use("/", Routes.landing);
+app.use("/auth", Routes.authentication);
+app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/rules", ruleRoutes);
-app.use("/game", gameRoutes);
-app.use("/game", endingRoutes);
+app.use("/games", isAuthenticated, Routes.game);
+app.use("/games", isAuthenticated, Routes.game);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {
