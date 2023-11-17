@@ -22,5 +22,25 @@
         <h1>Lobby</h1>
         <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %></h2>
     </div>
+    <div>
+        <ul>
+            <li><a href="/">Landing</a></li>
+            <li><a href="/auth/sign_up">sign-up</a></li>
+            <li><a href="/lobby">lobby</a></li>
+            <li><a href="/game/42">game</a></li>
+        </ul>
+    </div>
+    <article>
+        <div style="background-color: black; padding: 50px;">
+            <p>this is a message from chat</p>
+            <p>this is a message from chat</p>
+            <p>this is a message from chat</p>
+            <p>this is a message from chat</p>
+            <div id="chat-container">
+                <input type="text" name = "message" id="message" placeholder="Type your message...">
+            </div>
+        </div>
+    </article>
+  
 </body>
 </html>

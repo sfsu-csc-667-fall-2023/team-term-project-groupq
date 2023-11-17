@@ -4,9 +4,12 @@ const createError = require("http-errors");
 const session = require("express-session");
 //const requestTime = require("./middleware/request-time");
 
+const { createServer } = require("http");
+
 const { viewSessionData } = require("./middleware/view-session");
 const { sessionLocals } = require("./middleware/session-locals");
 const { isAuthenticated } = require("./middleware/is-authenticated");
+const { Server } = require("socket.io");
 
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
@@ -54,6 +57,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(viewSessionData);
 }
 app.use(sessionLocals);
+const httpServer = createServer(app);
+const io = new Server(httpServer);
 
 const Routes = require("./routes");
 
@@ -71,8 +76,8 @@ app.use("/", Routes.landing);
 app.use("/auth", Routes.authentication);
 app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/rules", ruleRoutes);
-app.use("/games", isAuthenticated, Routes.game);
-app.use("/games", isAuthenticated, Routes.game);
+app.use("/game", isAuthenticated, Routes.game);
+//app.use("/games", isAuthenticated, Routes.game);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {
