@@ -36,7 +36,8 @@
     "pg": "^8.11.3",
     "pg-promise": "^11.5.4",
     "prettier": "^3.0.3",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "babel-loader": "^9.1.3",

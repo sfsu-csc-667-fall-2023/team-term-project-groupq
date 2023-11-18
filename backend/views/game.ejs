@@ -1,32 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Board</title>
-    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-    <link rel="stylesheet" href="/css/test.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Game Board</title>
+        <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+        <link rel="stylesheet" href="/css/game.css">
+        <script src="/scripts/chat.js" defer></script>
+        <script src="/scripts/games.js" defer></script>
+    </head>
 <body>
-    Game Board!
 
-    <ul>
-        <li><a href="/">Landing</a></li>
-        <li><a href="/auth/sign_up">sign-up</a></li>
-        <li><a href="/lobby">lobby</a></li>
-        <li><a href="/game/42">game</a></li>
-    </ul>
+    <nav>
+        <a href = "/menu">                          <!--possibly implement a pop-up/another page with menu?-->
+            <button class="menu-button">Menu</button>
+        </a>
+        <a href = "/rules">                         <!--get href to work maybe use action?-->
+            <button class="rules-button">Rules</button>
+        </a>
+        <a href = "/auth/logout">                   <!--get href to work maybe use action?-->
+            <button class="logout-button">Logout</button>
+        </a>
+    </nav>
+
+    <div id="game-board">
+        <div id="deck">
+          <!--deck content goes here-->
+        </div>
+    
+        <div id="community-cards">
+            <div class="community-card1"></div>
+            <div class="community-card2"></div>
+            <div class="community-card3"></div>
+            <div class="community-card4"></div>
+            <div class="community-card5"></div>
+        </div>
+    
+        <div id="players">                          <!--still need to include chips-->
+          <div class="player" id="player1">Player 1: $100
+            <div class="player-card" id="player1-card1"></div>
+            <div class="player-card" id="player1-card2"></div>
+          </div>
+          <div class="player" id="player2">Player 2: $100
+            <div class="player-card" id="player2-card1"></div>
+            <div class="player-card" id="player2-card2"></div>
+          </div>
+          <div class="player" id="player3">Player 3: $100
+            <div class="player-card" id="player3-card1"></div>
+            <div class="player-card" id="player3-card2"></div>
+          </div>
+          <div class="player" id="player4">Player 4: $100
+            <div class="player-card" id="player4-card1"></div>
+            <div class="player-card" id="player4-card2"></div>
+          </div>
+          <div class="player" id="player5">Player 5: $100
+            <div class="player-card" id="player5-card1"></div>
+            <div class="player-card" id="player5-card2"></div>
+          </div>
+          <div class="dealer" id="dealer">Dealer</div>
+        </div>
+    </div>
 
     <article>
-        <div style="background-color: black; padding: 50px;">
-            <p>this is a message from chat</p>
-            <p>this is a message from chat</p>
-            <p>this is a message from chat</p>
-            <p>this is a message from chat</p>
-            <div id="chat-container">
-                <input type="text" name = "message" id="message" placeholder="Type your message...">
-            </div>
+        <div id="chat-container"> <!--chat-window-->
+            <input 
+            type="text" 
+            name = "message" 
+            id="message" 
+            placeholder="Type your message...">
         </div>
     </article>
-</body>
+
+      <script>
+        //either create a separate game.js that
+        //will contain whole logic or do it here
+        //do logic for handeling player's actions,
+        //card dealing, betting, scoring, 
+        //tracking used cards, etc
+      </script>
+    
+    </body>
 </html>
