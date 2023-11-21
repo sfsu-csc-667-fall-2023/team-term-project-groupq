@@ -35,6 +35,7 @@ router.get("/:id", async (request, response) => {
   const { id } = request.params;
   const { game_socket_id: gameSocketId } = await Games.getGame(id); // game_socket_id is a row obtained from the postgresql table
 
+  console.log(request.session.id)
   //const result = await Users.getUserSocket(request.session.id);
   //console.log(result)
 
