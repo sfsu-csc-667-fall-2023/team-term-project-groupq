@@ -6,9 +6,6 @@ const session = require("express-session");
 
 const { createServer } = require("http");
 
-const { viewSessionData } = require("./middleware/view-session");
-const { sessionLocals } = require("./middleware/session-locals");
-const { isAuthenticated } = require("./middleware/is-authenticated");
 const { Server } = require("socket.io");
 
 const cookieParser = require("cookie-parser");
@@ -25,7 +22,6 @@ const app = express();
 app.use(morgan("dev"));
 
 //app.use(requestTime);
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
