@@ -6,21 +6,23 @@ const session = require("express-session");
 
 const { createServer } = require("http");
 
+const { Server } = require("socket.io");
+
+const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
+
 const {
   viewSessionData,
   sessionLocals,
   isAuthenticated,
 } = require("./middleware/");
 
-const { Server } = require("socket.io");
-
-const cookieParser = require("cookie-parser");
-const morgan = require("morgan");
 const app = express();
 
 app.use(morgan("dev"));
 
 //app.use(requestTime);
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -46,22 +48,30 @@ if (process.env.NODE_ENV === "development") {
   app.use(connectLiveReload());
 }
 
-app.use(
-  session({
-    store: new (require("connect-pg-simple")(session))({
-      createTableIfMissing: true,
-    }),
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    cookie: { secure: process.env.NODE_ENV !== "development" },
+const sessionMiddleware = session({
+  store: new (require("connect-pg-simple")(session))({
+    createTableIfMissing: true,
   }),
-);
+  secret: process.env.SESSION_SECRET, //'5HbpsviK7M4JGcNBvrZIjdAJMLFrSzaq' - makes it work for windows
+  resave: false,
+  cookie: { secure: process.env.NODE_ENV !== "development" },
+});
+
+app.use(sessionMiddleware);
+
 if (process.env.NODE_ENV === "development") {
   app.use(viewSessionData);
 }
 app.use(sessionLocals);
 const httpServer = createServer(app);
 const io = new Server(httpServer);
+io.engine.use(sessionMiddleware);
+
+app.set("io", io);
+
+io.on("connection", (socket) => {
+  socket.join(socket.request.session.id);
+});
 
 const Routes = require("./routes");
 
@@ -77,16 +87,16 @@ const endingRoutes = require("./routes/match_end");
 
 app.use("/", Routes.landing);
 app.use("/auth", Routes.authentication);
-app.use("/lobby", isAuthenticated, Routes.lobby);
+app.use("/lobby", isAuthenticated, Routes.lobby, Routes.chat);
 app.use("/rules", ruleRoutes);
-app.use("/game", isAuthenticated, Routes.game);
-//app.use("/games", isAuthenticated, Routes.game);
+app.use("/games", isAuthenticated, Routes.game, Routes.chat);
+// app.use("/chat", isAuthenticated, Routes.chat);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {
   next(createError(404));
 });
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
