@@ -6,9 +6,12 @@ const session = require("express-session");
 
 const { createServer } = require("http");
 
-const { viewSessionData } = require("./middleware/view-session");
-const { sessionLocals } = require("./middleware/session-locals");
-const { isAuthenticated } = require("./middleware/is-authenticated");
+const {
+  viewSessionData,
+  sessionLocals,
+  isAuthenticated,
+} = require("./middleware/");
+
 const { Server } = require("socket.io");
 
 const cookieParser = require("cookie-parser");
