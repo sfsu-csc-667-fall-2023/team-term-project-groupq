@@ -8,6 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <link rel="stylesheet" href="/css/test.css">
     <script src="/scripts/chat.js" defer></script>
+    <script src="/scripts/lobby.js" defer></script>
 </head>
 
 <body>
@@ -36,9 +37,32 @@
                 <li><a href="/games/42">game</a></li>
             </ul>
         </div>
+        <div class="grid">
+            <h2>Available Games</h2>
+            <section id="game-list">
+                <ul>
+                    <% availableGames.forEach(game=> { %>
+                        <li>
+                            <a href="/games/<%= game.id %>/join">Join <%= game.id %></a>
+                        </li>
+                        <% }) %>
+                </ul>
+            </section>
+
+            <template id="join-game-entry">
+                <li>
+                    <a href=""></a>
+                </li>
+            </template>
+
+            <form action="/games/create" method="get">
+                <button type="submit">Create Game</button>
+            </form>
+        </div>
+
         <%- include('partials/chat', { roomId:0 }) %>
 
-</main>
+    </main>
 </body>
 
 </html>

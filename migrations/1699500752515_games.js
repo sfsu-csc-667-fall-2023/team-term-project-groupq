@@ -8,6 +8,10 @@ exports.up = (pgm) => {
   pgm.createType("stages", ["preflop", "flop", "turn", "river"]);
   pgm.createTable("games", {
     id: "id",
+    game_socket_id: {
+      type: "varchar",
+      notNull: true,
+    },
     players_allowed: {
       type: "int",
     },
