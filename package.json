@@ -16,8 +16,7 @@
     "postinstall": "npm run db:migrate"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown",
-    "frontend/**/*.js": "webpack"
+    "**/*": "prettier --write --ignore-unknown"
   },
   "keywords": [],
   "author": "",
