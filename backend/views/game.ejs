@@ -63,15 +63,9 @@
     </div>
   </div>
 
-  <article>
-    <div id="chat-container"> <!--chat-window-->
-      <input type="text" name="message" id="message" placeholder="Type your message...">
-      
-    </div>
-    <input type="hidden" name="game-socket-id" id="game-socket-id" value="<%= gameSocketId %>" />
+  <input type="hidden" name="game-socket-id" id="game-socket-id" value="<%= gameSocketId %>" />
 
     <%- include('partials/chat', { roomId: id }) %>
-  </article>
 
   <script>
     //either create a separate game.js that
