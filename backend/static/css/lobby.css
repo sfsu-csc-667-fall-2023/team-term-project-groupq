@@ -1,5 +1,5 @@
 body {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -21,16 +21,7 @@ nav {
   background-color: #fff;
 }
 
-.login-container {
-  text-align: center;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  height: 300px;
-}
-
+/* This is for the submit message part */
 input {
   width: 100%;
   padding: 10px;
@@ -53,47 +44,22 @@ button:hover {
   background-color: rgb(23, 70, 121);
 }
 
-.line {
-  border-top: 1px solid #000000;
-  margin: 15px 0;
-}
-
-.account-container {
-  text-align: center;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  height: 470px;
-}
-
-.create-account {
-  margin-top: 10px;
-}
-
-select {
-  width: 65%; /* Change the width as needed */
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: "Arial", sans-serif;
-  text-align: center;
-}
-
-.logout-container {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background-color: white;
-}
+/* .logout-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: white;
+  } */
 
 .logout-button {
-  background-color: #5c33ff; /* Red background color */
+  background-color: rgb(23, 70, 121);
   color: white; /* White text color */
   padding: 10px 15px; /* Padding inside the button */
   border: none; /* Remove borders */
   border-radius: 5px; /* Rounded corners */
   cursor: pointer; /* Add a pointer cursor on hover */
+}
+
+a {
+  color: white;
 }
