@@ -6,9 +6,6 @@ const session = require("express-session");
 
 const { createServer } = require("http");
 
-const { viewSessionData } = require("./middleware/view-session");
-const { sessionLocals } = require("./middleware/session-locals");
-const { isAuthenticated } = require("./middleware/is-authenticated");
 const { Server } = require("socket.io");
 
 const cookieParser = require("cookie-parser");
@@ -74,6 +71,10 @@ app.set("io", io);
 
 io.on("connection", (socket) => {
   socket.join(socket.request.session.id);
+
+  if (socket.handshake.query !== undefined) {
+    socket.join(socket.handshake.query.gameSocketId);
+  }
 });
 
 const Routes = require("./routes");
@@ -90,10 +91,10 @@ const endingRoutes = require("./routes/match_end");
 
 app.use("/", Routes.landing);
 app.use("/auth", Routes.authentication);
-app.use("/lobby", isAuthenticated, Routes.lobby);
+app.use("/lobby", isAuthenticated, Routes.lobby, Routes.chat);
 app.use("/rules", ruleRoutes);
-app.use("/games", isAuthenticated, Routes.game);
-app.use("/chat", isAuthenticated, Routes.chat);
+app.use("/games", isAuthenticated, Routes.game, Routes.chat);
+// app.use("/chat", isAuthenticated, Routes.chat);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {

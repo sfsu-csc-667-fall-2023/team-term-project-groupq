@@ -1,0 +1,18 @@
+<input type="hidden" name="room-id" id="room-id" value="<%= roomId %>" />
+
+<div id="lobby-chat" style="display: flex; flex-direction: column; width: 400px; position: fixed; bottom: 0; left: 0;
+height: 25vh; padding: 25px; background-color: rgb(0, 0, 0);">
+    <h2 style="margin: 0; text-align: center;">Chat</h2>
+    
+    <article id="chat-window" style="margin: 0; padding: 0;"></article>
+
+    <input type="text" name="message" id="message" placeholder="Type your message..." style="margin-top: auto;"/>
+</div>
+
+
+<template id="chat-message">
+    <div class="message">
+        <p style="margin: 0; color: white;"></p>
+    </div>
+</template>
+

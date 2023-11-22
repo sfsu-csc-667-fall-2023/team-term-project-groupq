@@ -1,49 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waiting Lobby</title>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-    <link rel="stylesheet" href="/css/test.css">
+    <link rel="stylesheet" href="/css/lobby.css">
     <script src="/scripts/chat.js" defer></script>
+    <script src="/scripts/lobby.js" defer></script>
 </head>
-<body>
-    <div class="logout-container">
-        <a href = "/rules">
-            <button class="rules-button">Rules</button>
-        </a>
-        <a href = "/auth/logout">
-            <button class="logout-button">Logout</button>
-        </a>
-        
-    </div>
 
-    <div> 
-        <h1>Lobby</h1>
-        <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %></h2>
-    </div>
-    <div>
-        <ul>
-            <li><a href="/">Landing</a></li>
-            <li><a href="/auth/sign_up">sign-up</a></li>
-            <li><a href="/lobby">lobby</a></li>
-            <li><a href="/game/42">game</a></li>
-        </ul>
-    </div>
-    <article>
-        <div style="background-color: black; padding: 50px;">
-            <p>this is a message from chat</p>
-            <p>this is a message from chat</p>
-            <p>this is a message from chat</p>
-            <p>this is a message from chat</p>
-            <article id="chat-window"> </article>
-                <input 
-                type="text" 
-                name = "message" 
-                id="message" 
-                placeholder="Type your message...">
+<body>
+    <nav>
+            <a href="/rules">
+                <button class="rules-button">Rules</button>
+            </a>
+            <h1 style="color: #333">Lobby</h1>
+            <a href="/auth/logout">
+                <button class="logout-button">Logout</button>
+            </a>
+    </nav>
+
+    <main>
+        <div>
+            <h1>Lobby</h1>
+            <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %>
+            </h2>
         </div>
-    </article>
+        <div>
+            <ul>
+                <li><a href="/">Landing</a></li>
+                <li><a href="/auth/sign_up">sign-up</a></li>
+                <li><a href="/lobby">lobby</a></li>
+                <li><a href="/games/1">game</a></li>
+            </ul>
+        </div>
+        <div class="grid">
+            <h2>Available Games</h2>
+            <section id="game-list">
+                <ul>
+                    <% availableGames.forEach(game=> { %>
+                        <li>
+                            <a href="/games/<%= game.id %>/join">Join <%= game.id %></a>
+                        </li>
+                        <% }) %>
+                </ul>
+            </section>
+
+            <template id="join-game-entry">
+                <li>
+                    <a href=""></a>
+                </li>
+            </template>
+
+            <form action="/games/create" method="get">
+                <button type="submit">Create Game</button>
+            </form>
+        </div>
+
+        <%- include('partials/chat', { roomId:0 }) %>
+
+    </main>
 </body>
+
 </html>
