@@ -7,3 +7,9 @@ module.exports = {
   sessionLocals,
   viewSessionData,
 };
+
+module.exports = {
+  isAuthenticated,
+  sessionLocals,
+  viewSessionData,
+};
