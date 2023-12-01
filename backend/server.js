@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
 
 const Routes = require("./routes");
 
-const ruleRoutes = require("./routes/rules");
+//const ruleRoutes = require("./routes/rules");
 
 /*
 const landingRoutes = require("./routes/landing");
@@ -91,7 +91,7 @@ const endingRoutes = require("./routes/match_end");
 app.use("/", Routes.landing);
 app.use("/auth", Routes.authentication);
 app.use("/lobby", isAuthenticated, Routes.lobby, Routes.chat);
-app.use("/rules", ruleRoutes);
+app.use("/rules", Routes.rules);
 app.use("/games", isAuthenticated, Routes.game, Routes.chat);
 // app.use("/chat", isAuthenticated, Routes.chat);
 

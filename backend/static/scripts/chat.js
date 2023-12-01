@@ -226,7 +226,7 @@
       : ((t.setTimeoutFn = _.setTimeout.bind(_)),
         (t.clearTimeoutFn = _.clearTimeout.bind(_)));
   }
-  class C extends Error {
+  class R extends Error {
     constructor(t, e, s) {
       super(t),
         (this.description = e),
@@ -234,7 +234,7 @@
         (this.type = "TransportError");
     }
   }
-  class R extends k {
+  class C extends k {
     constructor(t) {
       super(),
         (this.writable = !1),
@@ -244,7 +244,7 @@
         (this.socket = t.socket);
     }
     onError(t, e, s) {
-      return super.emitReserved("error", new C(t, e, s)), this;
+      return super.emitReserved("error", new R(t, e, s)), this;
     }
     open() {
       return (this.readyState = "opening"), this.doOpen(), this;
@@ -314,8 +314,8 @@
       ),
     S = 64,
     N = {};
-  let L,
-    x = 0,
+  let x,
+    L = 0,
     q = 0;
   function P(t) {
     let e = "";
@@ -326,7 +326,7 @@
   }
   function j() {
     const t = P(+new Date());
-    return t !== L ? ((x = 0), (L = t)) : t + "." + P(x++);
+    return t !== x ? ((L = 0), (x = t)) : t + "." + P(L++);
   }
   for (; q < S; q++) N[B[q]] = q;
   let U = !1;
@@ -465,7 +465,7 @@
       "string" == typeof navigator.product &&
       "reactnative" === navigator.product.toLowerCase(),
     J = {
-      websocket: class extends R {
+      websocket: class extends C {
         constructor(t) {
           super(t), (this.supportsBinary = !t.forceBase64);
         }
@@ -549,7 +549,7 @@
           return !!Y;
         }
       },
-      webtransport: class extends R {
+      webtransport: class extends C {
         get name() {
           return "webtransport";
         }
@@ -685,7 +685,7 @@
           null === (t = this.transport) || void 0 === t || t.close();
         }
       },
-      polling: class extends R {
+      polling: class extends C {
         constructor(t) {
           if ((super(t), (this.polling = !1), "undefined" != typeof location)) {
             const e = "https:" === location.protocol;
@@ -2144,24 +2144,24 @@
     );
   }
   Object.assign(_t, { Manager: wt, Socket: bt, io: _t, connect: _t });
-  const Et = document.querySelector("#chat-window");
-  _t().on("chat:message:0", ({ from: t, timestamp: e, message: s }) => {
-    const n = document.createElement("div");
-    n.classList.add("message");
-    const i = document.createElement("img");
-    (i.src = `https://gravatar.com/avatar/${hash}?s=30`),
-      (i.alt = `Avatar of ${t}`);
-    const r = document.createElement("p");
-    (r.innerText = s), n.appendChild(i), n.appendChild(r), Et.appendChild(n);
+  const Et = document.querySelector("#chat-window"),
+    At = _t(),
+    Ot = document.querySelector("#room-id").value;
+  At.on(`chat:message:${Ot}`, ({ from: t, timestamp: e, message: s }) => {
+    const n = document.querySelector("#chat-message").content.cloneNode(!0);
+    console.log(n),
+      (n.querySelector("p").innerText = t + ": " + s),
+      Et.appendChild(n);
   }),
     document.querySelector("#message").addEventListener("keydown", (t) => {
       if (13 == t.keyCode) {
         const e = t.target.value;
-        fetch("/chat/0", {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: e }),
-        }),
+        t.target.dataset.url,
+          fetch(`${document.location.pathname}/chat`, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: e }),
+          }),
           (t.target.value = "");
       }
     });
