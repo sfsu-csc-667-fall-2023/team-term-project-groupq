@@ -1,11 +1,12 @@
-const db = require("./connection");
+const database = require("./connection");
+const { connection: db, pgp } = database;
 
 const USER_EXISTENCE = "SELECT username FROM users WHERE username=$1;";
 const ADD_USER =
   "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username;";
 const SIGN_USER_IN = "SELECT * FROM users WHERE username=$1;";
 const SELECT_ONE = "SELECT * FROM users LIMIT 1;";
-const GET_USER_SOCKET = "SELECT sid FROM session WHERE sess->'user'->>'id'='$1';";
+const GET_USER_SOCKET = "SELECT sid FROM session WHERE sess->'user'->>'id'='$1' ORDER BY expire DESC LIMIT 1";
 
 const username_exists = (username) =>
   db

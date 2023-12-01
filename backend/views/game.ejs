@@ -26,6 +26,10 @@
   </nav>
 
   <div id="game-board">
+    <!--update css for the button-->
+    <form action="/games/<%= id %>/test" method="post" id="test-form">
+    <button type="submit">Test</button>
+    </form>
     <div id="deck">
       <!--deck content goes here-->
     </div>
@@ -63,7 +67,18 @@
     </div>
   </div>
 
-  <input type="hidden" name="game-socket-id" id="game-socket-id" value="<%= gameSocketId %>" />
+  <input 
+    type="hidden" 
+    name="game-socket-id" 
+    id="game-socket-id" 
+    value="<%= gameSocketId %>" 
+  />
+  <input 
+    type="hidden" 
+    name="user-socket-id" 
+    id="user-socket-id" 
+    value="<%= userSocketId %>" 
+  />
 
     <%- include('partials/chat', { roomId: id }) %>
 

@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
   socket.join(socket.request.session.id);
 
   if (socket.handshake.query !== undefined) {
-    socket.join(socket.handshake.query.gameSocketId);
+    socket.join(socket.handshake.query.id);
   }
 });
 
