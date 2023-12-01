@@ -24,7 +24,6 @@ exports.up = (pgm) => {
     game_phase: {
       type: "stages",
     },
-
     flop1: {
       type: "int",
       references: "cards",

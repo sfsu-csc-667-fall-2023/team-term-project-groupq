@@ -4,7 +4,7 @@ const createError = require("http-errors");
 const session = require("express-session");
 //const requestTime = require("./middleware/request-time");
 
-const { createServer } = require("http");
+const { createServer, validateHeaderName } = require("http");
 
 const { Server } = require("socket.io");
 
@@ -76,24 +76,14 @@ io.on("connection", (socket) => {
   }
 });
 
+// I tried to move this to the top and it crashed the app?
 const Routes = require("./routes");
-
-//const ruleRoutes = require("./routes/rules");
-
-/*
-const landingRoutes = require("./routes/landing");
-const authRoutes = require("./routes/authentication");
-const gameRoutes = require("./routes/game");
-const globalLobbyRoutes = require("./routes/global_lobby");
-const endingRoutes = require("./routes/match_end");
-*/
 
 app.use("/", Routes.landing);
 app.use("/auth", Routes.authentication);
 app.use("/lobby", isAuthenticated, Routes.lobby, Routes.chat);
 app.use("/rules", Routes.rules);
 app.use("/games", isAuthenticated, Routes.game, Routes.chat);
-// app.use("/chat", isAuthenticated, Routes.chat);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {
@@ -103,3 +93,14 @@ app.use((request, response, next) => {
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
+
+// General logic is:
+/*
+API endpoint (which takes some information user X in game Y -> plays this card)
+create an endpoint for that validates if its validate
+updates state of the game and broadcasts for everyone
+
+when client makes a request to the server (playing a card), the client will issue a post request to the API
+and ignore the response (200)
+the actual update will happen asynchronously 
+*/

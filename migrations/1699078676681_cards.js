@@ -1,4 +1,4 @@
-const pg = require("pg-promise/typescript/pg-subset");
+//const pg = require("pg-promise/typescript/pg-subset");
 
 exports.shorthands = undefined;
 
@@ -7,32 +7,34 @@ exports.shorthands = undefined;
  */
 
 exports.up = (pgm) => {
-  //pgm.createType("suits", ["hearts", "diamonds", "spades", "clubs"]);
+  pgm.createType("card_suits", ["hearts", "diamonds", "spades", "clubs"]);
   pgm.createTable("cards", {
     id: "id",
-    number: { //prof uses value on lec
-      type: "int",
-    },
     suit: {
+      type: "suits",
+    },
+    number: {
+      //prof uses value on lec
       type: "int",
-      //type: "suits",
     },
   });
 
-  const sql = "INSERT INTO cards (suits, number) VALUES";
-  const number = [];
+  const sql = "INSERT INTO cards (suit, number) VALUES";
+  const cardValues = [];
 
-  for(let suit = 0; suit < 4; suit++) {
-    for(let number = 1; number <= 13; number++) {
-      number.push(`(${suit}, ${number})`);
+  const suits_type = ["hearts", "diamonds", "spades", "clubs"];
+
+  for (const suit_card of suits_type) {
+    for (let number_type = 1; number_type <= 13; number_type++) {
+      cardValues.push(`('${suit_card}', ${number_type})`);
     }
   }
 
-  const query = `${sql} ${number.join(",")}`
+  const query = `${sql} ${cardValues.join(",")}`;
   pgm.sql(query);
 };
 
 exports.down = (pgm) => {
   pgm.dropTable("cards");
-  //pgm.dropType("suits");
+  pgm.dropType("suits");
 };
