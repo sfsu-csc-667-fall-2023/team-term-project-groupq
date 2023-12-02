@@ -70,12 +70,12 @@ router.get("/:id/join", async (request, response) => {
     io.to(gameSocketId).emit(GAME_CONSTANTS.START, {
       currentPlayer: gameState.current_player,
     });
+
     Object.keys(gameState.hands).forEach((playerId) => {
       const playerIdAsInt = parseInt(playerId, 10);
       const playerSocket = Users.getUserSocket(playerIdAsInt);
-      console.log("sidjfpsoidhf RIGHT EHRHE");
-      console.log(playerId);
-      console.log(playerIdAsInt);
+      console.log("PLAYER SOCKET HERE");
+      console.log(playerSocket);
       io.to(playerSocket).emit(GAME_CONSTANTS.STATE_UPDATED, {
         hand: gameState.hands[playerId],
       });
