@@ -11,7 +11,7 @@ exports.up = (pgm) => {
   pgm.createTable("cards", {
     id: "id",
     suit: {
-      type: "suits",
+      type: "card_suits",
     },
     number: {
       //prof uses value on lec
@@ -36,5 +36,5 @@ exports.up = (pgm) => {
 
 exports.down = (pgm) => {
   pgm.dropTable("cards");
-  pgm.dropType("suits");
+  pgm.dropType("card_suits");
 };

@@ -15,9 +15,6 @@ exports.up = (pgm) => {
       type: "int",
       references: "games",
     },
-    turn_order: {
-      type: "int",
-    },
     chip_count: {
       type: "int",
     },

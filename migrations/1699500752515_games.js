@@ -36,10 +36,13 @@ exports.up = (pgm) => {
       type: "int",
       references: "cards",
     },
+
+    // Replaces the current_seat in the prof code?
     turn: {
       type: "int",
       references: "cards",
     },
+
     river: {
       type: "int",
       references: "cards",
@@ -53,7 +56,6 @@ exports.up = (pgm) => {
     pot_count: {
       type: "int",
     },
-
     created_at: {
       type: "timestamp",
       notNull: true,

@@ -7,17 +7,7 @@ exports.shorthands = undefined;
  */
 
 exports.up = (pgm) => {
-  pgm.createTable("game_cards", {
-    user_id: {
-      type: "int",
-    },
-    game_id: {
-      type: "int",
-    },
-    card_id: {
-      type: "int",
-    },
-  });
+  pgm.addColumn("game_cards", { card_order: { type: "int" } });
 };
 
 /**
@@ -25,5 +15,5 @@ exports.up = (pgm) => {
  */
 
 exports.down = (pgm) => {
-  pgm.dropTable("game_cards");
+  pgm.dropColumn("game_cards", "card_order");
 };

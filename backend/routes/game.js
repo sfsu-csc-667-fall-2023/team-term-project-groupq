@@ -9,6 +9,7 @@ router.get("/create", async (request, response) => {
   const { id: userId } = request.session.user;
   const io = request.app.get("io");
 
+  // generates an encrypted_game_id and outputs that as gameId
   const { id: gameId } = await Games.create(
     crypto.randomBytes(20).toString("hex"),
   );
@@ -61,6 +62,7 @@ router.get("/:id/join", async (request, response) => {
   const userCount = await Games.userCount(gameId);
   console.log({ userCount });
 
+  // If the userCount reaches 2, then initialize the game (shuffle the deck)
   if (userCount == 2) {
     const gameState = await Games.initialize(gameId);
 
