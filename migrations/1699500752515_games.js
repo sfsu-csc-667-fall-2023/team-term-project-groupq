@@ -40,7 +40,6 @@ exports.up = (pgm) => {
     // Replaces the current_seat in the prof code?
     turn: {
       type: "int",
-      references: "cards",
     },
 
     river: {

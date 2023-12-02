@@ -15,6 +15,9 @@ exports.up = (pgm) => {
       type: "int",
       references: "games",
     },
+    seat: {
+      type: "int",
+    },
     chip_count: {
       type: "int",
     },

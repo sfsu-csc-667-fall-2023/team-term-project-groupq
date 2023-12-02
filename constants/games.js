@@ -1,5 +1,6 @@
 module.exports = {
-    CREATED: "games:creates",
-    START: "games:start", 
-    ADDED: "games:user_added"
-}
+  CREATED: "games:created",
+  START: "games:start",
+  USER_ADDED: "games:user_added",
+  STATE_UPDATED: "games:state_update",
+};

@@ -2,9 +2,10 @@
   var t = {
       653: (t) => {
         t.exports = {
-          CREATED: "games:creates",
+          CREATED: "games:created",
           START: "games:start",
-          ADDED: "games:user_added",
+          USER_ADDED: "games:user_added",
+          STATE_UPDATED: "games:state_update",
         };
       },
     },
@@ -329,11 +330,11 @@
           return e.length ? "?" + e : "";
         }
       }
-      const B =
+      const S =
           "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_".split(
             "",
           ),
-        S = 64,
+        B = 64,
         x = {};
       let N,
         L = 0,
@@ -341,7 +342,7 @@
       function P(t) {
         let e = "";
         do {
-          (e = B[t % S] + e), (t = Math.floor(t / S));
+          (e = S[t % B] + e), (t = Math.floor(t / B));
         } while (t > 0);
         return e;
       }
@@ -349,7 +350,7 @@
         const t = P(+new Date());
         return t !== N ? ((L = 0), (N = t)) : t + "." + P(L++);
       }
-      for (; q < S; q++) x[B[q]] = q;
+      for (; q < B; q++) x[S[q]] = q;
       let j = !1;
       try {
         j =
@@ -2206,15 +2207,19 @@
       }
       Object.assign(_t, { Manager: wt, Socket: bt, io: _t, connect: _t });
       var Et = s(653);
-      let At;
-      const Tt = document.querySelector("#game-socket-id").value;
-      document.querySelector("#user-socket-id").value,
-        (At = _t({ query: { id: Tt } })),
+      let At, Tt;
+      const Ot = document.querySelector("#game-socket-id").value,
+        Rt = document.querySelector("#user-socket-id").value;
+      (At = _t({ query: { id: Ot } })),
         At.on(Et.START, (t) => {
           console.log({ event: Et.START, data: t });
         }),
         At.on(Et.USER_ADDED, (t) => {
           console.log({ event: Et.USER_ADDED, data: t });
+        }),
+        (Tt = _t({ query: { id: Rt } })),
+        Tt.on(Et.STATE_UPDATED, (t) => {
+          console.log({ event: Et.START, data: t });
         });
     })();
 })();

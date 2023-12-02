@@ -1,9 +1,14 @@
 import { io } from "socket.io-client";
 import * as GAME_CONSTANTS from "../../constants/games";
 
-const userSocket = io({ query: { id: userSocketId } });
+let userSocket;
 
-const configure = () => {
-}
+const configure = (socketId) => {
+  userSocket = io({ query: { id: socketId } });
 
-export { configure }
+  userSocket.on(GAME_CONSTANTS.STATE_UPDATED, (data) => {
+    console.log({ event: GAME_CONSTANTS.START, data });
+  });
+};
+
+export { configure };

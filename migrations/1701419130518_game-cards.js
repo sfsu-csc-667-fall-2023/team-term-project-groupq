@@ -17,6 +17,9 @@ exports.up = (pgm) => {
     card_id: {
       type: "int",
     },
+    card_order: {
+      type: "int",
+    },
   });
 };
 

@@ -44,10 +44,9 @@ const initialize = async (gameId) => {
   const shuffledDeck = await db.many(SHUFFLED_DECK);
   const columns = new pgp.helpers.ColumnSet(
     ["user_id", "game_id", "card_id", "card_order"],
-    {
-      table: "game_cards",
-    },
+    { table: "game_cards" },
   );
+
   const values = shuffledDeck.map(({ id }, index) => ({
     user_id: 0,
     game_id: gameId,
@@ -89,19 +88,25 @@ const initialize = async (gameId) => {
     );
 
   const cards = await db.many(GET_CARDS, [gameId, users.length * 2 + 2]); // users -> number of players x 2
+
   await Promise.all(
     cards
       .slice(0, cards.length - 2)
       .map(({ card_id }, index) =>
-        db.none(DEAL_CARD, [users[index % users.length], gameId, card_id]),
+        db.none(DEAL_CARD, [
+          users[index % users.length].user_id,
+          gameId,
+          card_id,
+        ]),
       ),
   );
 
-  await Promise.all(
-    cards
-      .slice(cards.length - 2)
-      .map(({ card_id }) => db.none(DEAL_CARD, [-1, gameId, card_id])),
-  );
+  // await Promise.all(
+  //   cards
+  //     .slice(cards.length - 2)
+  //     .map(({ card_id }) => db.none(DEAL_CARD, [-1, gameId, card_id])),
+  // );
+
   //send each player their cards
   // current state of game: firstPlayer and money?
 

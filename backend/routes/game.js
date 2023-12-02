@@ -65,8 +65,21 @@ router.get("/:id/join", async (request, response) => {
   // If the userCount reaches 2, then initialize the game (shuffle the deck)
   if (userCount == 2) {
     const gameState = await Games.initialize(gameId);
+    const { game_socket_id: gameSocketId } = await Games.getGame(gameId);
 
-    io.emit(GAME_CONSTANTS.START, gameState);
+    io.to(gameSocketId).emit(GAME_CONSTANTS.START, {
+      currentPlayer: gameState.current_player,
+    });
+    Object.keys(gameState.hands).forEach((playerId) => {
+      const playerIdAsInt = parseInt(playerId, 10);
+      const playerSocket = Users.getUserSocket(playerIdAsInt);
+      console.log("sidjfpsoidhf RIGHT EHRHE");
+      console.log(playerId);
+      console.log(playerIdAsInt);
+      io.to(playerSocket).emit(GAME_CONSTANTS.STATE_UPDATED, {
+        hand: gameState.hands[playerId],
+      });
+    });
   }
 
   response.redirect(`/games/${gameId}`);
