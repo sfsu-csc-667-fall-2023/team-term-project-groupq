@@ -24,39 +24,16 @@ const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
   await createShuffledDeck(gameId);
 
-  //set the turn
-
+  //set the turn - Set the first player (which is the person creating the room)
   const { user_id: firstPlayer } = await getPlayerByTurnOrder(0, gameId);
   await setCurrentPlayer(firstPlayer, gameId);
 
-  /*
-  // //deal cards to each player
-  // const users = await getUsers(gameId) // Get the number of players in the gameId  getUsers(gameId)
-  //   .then((userResult) => {
-  //     // In the first then, returns the number of users in JSON format
-  //     console.log({ userResult });
-
-  //     return userResult;
-  //   })
-  //   .then((userResult) =>
-  //     Promise.all([
-  //       userResult,
-  //       ...userResult.map(({ user_id }) =>
-  //         Users.getUserSocket(parseInt(user_id)),
-  //       ),
-  //     ]),
-  //   )
-  //   .then(([userResult, ...userSids]) =>
-  //     userResult.map(({ user_id }, index) => ({
-  //       user_id,
-  //       sid: userSids[index].sid,
-  //     })),
-  //   );
-*/
-
   const users = await getUsers(gameId);
 
+  // Get the total cards that need to be sent to players
   const cards = await getCardsperPlayers(gameId, users.length * 2); // users -> number of players x 2
+
+  // Using the users, cards and gameId, deals the first cards to the players (Poker = 2)
   const dealtCards = await dealCards(users, cards, gameId);
 
   console.log("DEALT CARDS HERE:");
@@ -65,54 +42,18 @@ const initialize = async (gameId) => {
   users.forEach((user) => {
     console.log({ user });
 
+    // Create a new field under user, and only sending the cards that match the user_id
     user.hand = dealtCards.filter((card) => card.user_id === user.user_id);
     user.current_player = firstPlayer === user.user_id;
   });
 
+  // When the game is ready to be initialized - playerCount is reached, set the is_initialize field to True
   await setInitialized(gameId);
 
   const hands = await db.many(
     "SELECT game_cards.*, cards.* FROM game_cards, cards WHERE game_id=$1 AND game_cards.card_id=cards.id",
     [gameId],
   );
-
-  /*
-  // await Promise.all(
-  //   cards
-  //     .slice(0, cards.length - 2)
-  //     .map(({ card_id }, index) =>
-  //       db.none(DEAL_CARD, [
-  //         users[index % users.length].user_id,
-  //         gameId,
-  //         card_id,
-  //       ]),
-  //     ),
-  // );
-
-  // await Promise.all(
-  //   cards
-  //     .slice(cards.length - 2)
-  //     .map(({ card_id }) => db.none(DEAL_CARD, [-1, gameId, card_id])),
-  // );
-
-  //send each player their cards
-  // current state of game: firstPlayer and money?
-
-  //console.log({ hands });
-
-  // return {
-  //   current_player: firstPlayer,
-  //   hands: hands.reduce((memo, entry) => {
-  //     if (entry.user_id !== 0) {
-  //       memo[entry.user_id] = memo[entry.user_id] || [];
-  //       memo[entry.user_id].push(entry);
-  //     }
-
-  //     return memo;
-  //   }, {}),
-  // };
-
-  */
 
   return {
     game_id: gameId,

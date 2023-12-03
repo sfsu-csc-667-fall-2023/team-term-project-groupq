@@ -107,6 +107,7 @@ router.post("/:id/ready", async (request, response) => {
 
   console.log("THIS IS THE READY COUNT");
   console.log(ready_count, is_initialized);
+
   if (ready_count !== 2 || is_initialized) {
     method = "getState";
     gameState = await Games.getState(parseInt(gameId));
@@ -115,7 +116,9 @@ router.post("/:id/ready", async (request, response) => {
     gameState = await Games.initialize(parseInt(gameId));
   }
 
-  console.log({ gameState, method });
+  console.log("THIS IS THE READY VIEW GAMESTATE:");
+  console.log(method, gameState);
+  console.log(gameState.players[0].hand);
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
 

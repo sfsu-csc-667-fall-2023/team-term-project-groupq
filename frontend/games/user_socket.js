@@ -6,8 +6,10 @@ let userSocket;
 const configure = (socketId) => {
   userSocket = io({ query: { id: socketId } });
 
-  userSocket.on(GAME_CONSTANTS.STATE_UPDATED, (data) => {
-    console.log({ event: GAME_CONSTANTS.STATE_UPDATED, data });
+  Object.keys(GAME_CONSTANTS).forEach((key) => {
+    userSocket.on(GAME_CONSTANTS[key], (data) => {
+      console.log({ event: GAME_CONSTANTS[key], data });
+    });
   });
 
   console.log("User socket configured");

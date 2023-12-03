@@ -42,24 +42,39 @@
       <div class="community-card5"></div>
     </div>
 
-  <section id="players_cards">
-
     <div id="players"> <!--still need to include chips-->
-      <div class="player-one-hand" id="player1">
+      <div class="player" id="player1">
+        <p id="player1_chip">Player 1: $100</p>
+        <div class="player-card" id="player1-card1" style="background-image: url('/css/cards/2_of_clubs.png'); background-size: cover;"></div>
+        <div class="player-card" id="player1-card2" style="background-image: url('/css/cards/ace_of_hearts.png'); background-size: cover;"></div>
       </div>
       
-      <div class="player-two-hand" id="player2">
+      <div class="player" id="player2">
+        <p id="player2_chip">Player 2: $100</p>
+        <div class="player-card" id="player2-card1"></div>
+        <div class="player-card" id="player2-card2"></div>
       </div>
       
-
+      <div class="player" id="player3">
+        <p id="player3_chip">Player 3: $100</p>
+        <div class="player-card" id="player3-card1"></div>
+        <div class="player-card" id="player3-card2"></div>
+      </div>
+      
+      <div class="player" id="player4">
+        <p id="player4_chip">Player 4: $100</p>
+        <div class="player-card" id="player4-card1"></div>
+        <div class="player-card" id="player4-card2"></div>
+      </div>
+      
+      <div class="player" id="player5">
+        <p id="player5_chip">Player 5: $100</p>
+        <div class="player-card" id="player5-card1"></div>
+        <div class="player-card" id="player5-card2"></div>
+      </div>
       <div class="dealer" id="dealer">Dealer</div>
+    
     </div>
-
-
-
-
-  </section>
-
   </div>
 
   <input 
@@ -76,15 +91,6 @@
   />
 
     <%- include('partials/chat', { roomId: gameId }) %> <!-- this room ID is linked to the gameID -->
-
-
-    <template id="card">
-      <div class="card">
-        <img id="idToTarget" src="" />
-        <p></p>
-      </div>
-  </template>
-
 
   <script>
     //either create a separate game.js that

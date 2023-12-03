@@ -1,10 +1,10 @@
 const database = require("../connection");
 const { connection: db } = database;
 
-const { getCardsperPlayers } = require("./get-cards-per-players");
 const { getCurrentPlayer } = require("./get-current-player");
 const { getGame } = require("./get-game");
 const { getUsers } = require("./get-users");
+const { getCardsAlreadyDealt } = require("./get-cards-alreadyDealt");
 
 const getState = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
@@ -13,7 +13,7 @@ const getState = async (gameId) => {
   const users = await getUsers(gameId);
   //users.push({ user_id: -1 }); for the community cards?
 
-  const dealtCards = await getCardsperPlayers(gameId);
+  const dealtCards = await getCardsAlreadyDealt(gameId);
 
   users.forEach((user) => {
     user.hand = dealtCards.filter((card) => card.user_id === user.user_id);
