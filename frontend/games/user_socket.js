@@ -7,7 +7,7 @@ const configure = (socketId) => {
   userSocket = io({ query: { id: socketId } });
 
   userSocket.on(GAME_CONSTANTS.STATE_UPDATED, (data) => {
-    console.log({ event: GAME_CONSTANTS.START, data });
+    console.log({ event: GAME_CONSTANTS.STATE_UPDATED, data });
   });
 };
 

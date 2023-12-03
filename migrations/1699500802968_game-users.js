@@ -15,7 +15,10 @@ exports.up = (pgm) => {
       type: "int",
       references: "games",
     },
-    seat: {
+    is_ready: {
+      type: "boolean",
+    },
+    current_player: {
       type: "int",
     },
     chip_count: {
@@ -24,11 +27,11 @@ exports.up = (pgm) => {
     left_game: {
       type: "boolean",
     },
-    created_at: {
-      type: "timestamp",
-      notNull: true,
-      default: pgm.func("current_timestamp"),
-    },
+    // created_at: {
+    //   type: "timestamp",
+    //   notNull: true,
+    //   default: pgm.func("current_timestamp"),
+    // },
   });
 };
 

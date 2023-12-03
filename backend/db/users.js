@@ -8,7 +8,7 @@ const SIGN_USER_IN = "SELECT * FROM users WHERE username=$1;";
 const SELECT_ONE = "SELECT * FROM users LIMIT 1;";
 
 const GET_USER_SOCKET =
-  "SELECT sid FROM session WHERE sess->'user'->>'id'='$1' ORDER BY expire DESC LIMIT 1";
+  "SELECT sid FROM session WHERE sess->'user'->>'id'=($1::varchar) ORDER BY expire DESC LIMIT 1";
 
 const username_exists = (username) =>
   db

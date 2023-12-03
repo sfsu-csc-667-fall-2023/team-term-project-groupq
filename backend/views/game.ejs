@@ -27,7 +27,7 @@
 
   <div id="game-board">
     <!--update css for the button-->
-    <form action="/games/<%= id %>/test" method="post" id="test-form">
+    <form action="/games/<%= gameId %>/test" method="post" id="test-form">
     <button type="submit">Test</button>
     </form>
     <div id="deck">
@@ -44,8 +44,8 @@
 
     <div id="players"> <!--still need to include chips-->
       <div class="player" id="player1">Player 1: $100
-        <div class="player-card" id="player1-card1"></div>
-        <div class="player-card" id="player1-card2"></div>
+        <div class="player-card" id="player1-card1" style="background-image: url('/css/cards/2_of_clubs.png'); background-size: cover;"></div>
+        <div class="player-card" id="player1-card2" style="background-image: url('/css/cards/ace_of_hearts.png'); background-size: cover;"></div>
       </div>
       <div class="player" id="player2">Player 2: $100
         <div class="player-card" id="player2-card1"></div>
@@ -80,7 +80,7 @@
     value="<%= userSocketId %>" 
   />
 
-    <%- include('partials/chat', { roomId: id }) %>
+    <%- include('partials/chat', { roomId: gameId }) %>
 
   <script>
     //either create a separate game.js that

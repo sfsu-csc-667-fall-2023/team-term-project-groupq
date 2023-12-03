@@ -5,7 +5,7 @@ const gameList = document.querySelector("#game-list ul");
 
 const socket = io();
 
-socket.on("game:created", ({ id }) => {
+socket.on("games:created", ({ id }) => {
   const entry = gameEntryTemplate.content.cloneNode(true);
   const a = entry.querySelector("a");
 

@@ -351,17 +351,17 @@
         return t !== N ? ((L = 0), (N = t)) : t + "." + P(L++);
       }
       for (; q < B; q++) x[S[q]] = q;
-      let j = !1;
+      let U = !1;
       try {
-        j =
+        U =
           "undefined" != typeof XMLHttpRequest &&
           "withCredentials" in new XMLHttpRequest();
       } catch (t) {}
-      const U = j;
+      const j = U;
       function I(t) {
         const e = t.xdomain;
         try {
-          if ("undefined" != typeof XMLHttpRequest && (!e || U))
+          if ("undefined" != typeof XMLHttpRequest && (!e || j))
             return new XMLHttpRequest();
         } catch (t) {}
         if (!e)
@@ -2217,9 +2217,12 @@
         At.on(Et.USER_ADDED, (t) => {
           console.log({ event: Et.USER_ADDED, data: t });
         }),
+        At.on(Et.STATE_UPDATED, (t) => {
+          console.log({ event: Et.STATE_UPDATED, data: t });
+        }),
         (Tt = _t({ query: { id: Rt } })),
         Tt.on(Et.STATE_UPDATED, (t) => {
-          console.log({ event: Et.START, data: t });
+          console.log({ event: Et.STATE_UPDATED, data: t });
         });
     })();
 })();

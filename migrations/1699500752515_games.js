@@ -12,14 +12,17 @@ exports.up = (pgm) => {
       type: "varchar",
       notNull: true,
     },
+    is_initialized: {
+      type: "boolean",
+    },
     players_allowed: {
+      type: "int",
+    },
+    current_player: {
       type: "int",
     },
     starting_chip: {
       type: "int",
-    },
-    active: {
-      type: "boolean",
     },
     game_phase: {
       type: "stages",
@@ -36,12 +39,9 @@ exports.up = (pgm) => {
       type: "int",
       references: "cards",
     },
-
-    // Replaces the current_seat in the prof code?
     turn: {
       type: "int",
     },
-
     river: {
       type: "int",
       references: "cards",
@@ -55,21 +55,21 @@ exports.up = (pgm) => {
     pot_count: {
       type: "int",
     },
-    created_at: {
-      type: "timestamp",
-      notNull: true,
-      default: pgm.func("current_timestamp"),
-    },
-    updated_at: {
-      type: "timestamp",
-      notNull: true,
-      default: pgm.func("current_timestamp"),
-    },
-    started_at: {
-      type: "timestamp",
-      notNull: true,
-      default: pgm.func("current_timestamp"),
-    },
+    // created_at: {
+    //   type: "timestamp",
+    //   notNull: true,
+    //   default: pgm.func("current_timestamp"),
+    // },
+    // updated_at: {
+    //   type: "timestamp",
+    //   notNull: true,
+    //   default: pgm.func("current_timestamp"),
+    // },
+    // started_at: {
+    //   type: "timestamp",
+    //   notNull: true,
+    //   default: pgm.func("current_timestamp"),
+    // },
   });
 };
 
