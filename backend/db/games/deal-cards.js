@@ -5,8 +5,6 @@ const UPDATE_DECK =
   "UPDATE game_cards SET user_id=$1 WHERE game_id=$2 AND card_id=$3";
 
 const dealCards = (users, cards, gameId) => {
-  console.log({ users, cards, gameId });
-
   // Array of { card_id, user_id, game_id }
   // Map function iterates through the array, performs some operation and outputs a new array
   // iterate through the cards array, and extract the card_id
@@ -27,8 +25,6 @@ const dealCards = (users, cards, gameId) => {
     pgp.helpers.update(dealtCards, columns, "game_cards") +
     "WHERE v.card_id::integer=t.card_id AND v.game_id::integer=t.game_id";
 
-  console.log("THIS IS THE PROBLEM QUERY");
-  console.log(query);
   return db.none(query).then((_) => dealtCards);
 };
 

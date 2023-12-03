@@ -14,11 +14,8 @@ const getState = async (gameId) => {
   users.push({ user_id: -1 }); // TODO: add game sid here
 
   const dealtCards = await getCardsperPlayers(gameId);
-  console.log({ dealtCards });
 
   users.forEach((user) => {
-    console.log({ user });
-
     user.hand = dealtCards.filter((card) => card.user_id === user.user_id);
     user.current_player = current_player === user.user_id;
   });

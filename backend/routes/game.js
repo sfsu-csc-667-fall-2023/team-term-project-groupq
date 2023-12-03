@@ -68,9 +68,6 @@ router.get("/:id/join", async (request, response) => {
   if (userCount == 2) {
     const gameState = await Games.initialize(gameId);
 
-    console.log("GAME STATE HERE:");
-    console.log(gameState);
-
     const { game_socket_id: gameSocketId } = await Games.getGame(gameId);
 
     io.to(gameSocketId).emit(GAME_CONSTANTS.START, {
@@ -111,6 +108,12 @@ router.post("/:id/ready", async (request, response) => {
   } else {
     method = "initialize";
   }
+
+  const gameState = await Games[method](parseInt(gameId));
+
+  console.log({ gameState, method });
+
+  io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
 
   response.status(200).send();
 });
