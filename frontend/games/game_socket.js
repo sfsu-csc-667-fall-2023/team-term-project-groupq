@@ -17,6 +17,9 @@ const configure = (socketId) => {
   gameSocket.on(GAME_CONSTANTS.STATE_UPDATED, (data) => {
     console.log({ event: GAME_CONSTANTS.STATE_UPDATED, data });
   });
+
+  console.log("Game socket configured");
+  return Promise.resolve();
 };
 
 export { configure };

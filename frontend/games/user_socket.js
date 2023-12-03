@@ -9,6 +9,9 @@ const configure = (socketId) => {
   userSocket.on(GAME_CONSTANTS.STATE_UPDATED, (data) => {
     console.log({ event: GAME_CONSTANTS.STATE_UPDATED, data });
   });
+
+  console.log("User socket configured");
+  return Promise.resolve();
 };
 
 export { configure };

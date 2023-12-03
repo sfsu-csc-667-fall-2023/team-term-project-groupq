@@ -15,6 +15,7 @@ const { isInitialized } = require("./games/is-initialized");
 const { readyPlayer } = require("./games/players-ready");
 const { dealCards } = require("./games/deal-cards");
 const { setInitialized } = require("./games/set-initialized");
+const { getState } = require("./games/get-state");
 
 // const DEAL_CARD =
 //   "UPDATE game_cards SET user_id=$1 WHERE game_id=$2 AND card_id=$3";
@@ -135,4 +136,5 @@ module.exports = {
   initialize,
   isInitialized,
   readyPlayer,
+  getState,
 };

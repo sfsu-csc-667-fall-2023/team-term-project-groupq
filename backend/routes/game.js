@@ -65,24 +65,24 @@ router.get("/:id/join", async (request, response) => {
   const userCount = await Games.userCount(gameId);
 
   // If the userCount reaches 2, then initialize the game (shuffle the deck)
-  if (userCount == 2) {
-    const gameState = await Games.initialize(gameId);
+  // if (userCount == 2) {
+  //   const gameState = await Games.initialize(gameId);
 
-    const { game_socket_id: gameSocketId } = await Games.getGame(gameId);
+  //   const { game_socket_id: gameSocketId } = await Games.getGame(gameId);
 
-    io.to(gameSocketId).emit(GAME_CONSTANTS.START, {
-      currentPlayer: gameState.current_player,
-      userCount,
-    });
+  //   io.to(gameSocketId).emit(GAME_CONSTANTS.START, {
+  //     currentPlayer: gameState.current_player,
+  //     userCount,
+  //   });
 
-    // Object.keys(gameState.hands).forEach(async (playerId) => {
-    //   const playerSocket = await Users.getUserSocket(parseInt(playerId));
+  //   // Object.keys(gameState.hands).forEach(async (playerId) => {
+  //   //   const playerSocket = await Users.getUserSocket(parseInt(playerId));
 
-    //   io.to(playerSocket.sid).emit(GAME_CONSTANTS.STATE_UPDATED, {
-    //     hand: gameState.hands[playerId],
-    //   });
-    // });
-  }
+  //   //   io.to(playerSocket.sid).emit(GAME_CONSTANTS.STATE_UPDATED, {
+  //   //     hand: gameState.hands[playerId],
+  //   //   });
+  //   // });
+  // }
 
   response.redirect(`/games/${gameId}`);
 });
@@ -96,20 +96,24 @@ router.post("/:id/ready", async (request, response) => {
 
   const io = request.app.get("io");
 
-  const { initialized } = await Games.isInitialized(gameId);
+  const { is_initialized } = await Games.isInitialized(gameId);
   const { ready_count, player_count } = await Games.readyPlayer(userId, gameId);
 
-  console.log({ ready_count, player_count, initialized });
+  console.log("WE ARE IN THE :id/READY PAGE");
+  console.log({ ready_count, player_count, is_initialized });
 
   let method;
+  let gameState;
 
-  if (ready_count !== 2 || initialized) {
+  console.log("THIS IS THE READY COUNT");
+  console.log(ready_count, is_initialized);
+  if (ready_count !== 2 || is_initialized) {
     method = "getState";
+    gameState = await Games.getState(parseInt(gameId));
   } else {
     method = "initialize";
+    gameState = await Games.initialize(parseInt(gameId));
   }
-
-  const gameState = await Games[method](parseInt(gameId));
 
   console.log({ gameState, method });
 

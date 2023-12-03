@@ -240,11 +240,11 @@
           {},
         );
       }
-      const A = _.setTimeout,
-        T = _.clearTimeout;
+      const T = _.setTimeout,
+        A = _.clearTimeout;
       function O(t, e) {
         e.useNativeTimers
-          ? ((t.setTimeoutFn = A.bind(_)), (t.clearTimeoutFn = T.bind(_)))
+          ? ((t.setTimeoutFn = T.bind(_)), (t.clearTimeoutFn = A.bind(_)))
           : ((t.setTimeoutFn = _.setTimeout.bind(_)),
             (t.clearTimeoutFn = _.clearTimeout.bind(_)));
       }
@@ -2207,22 +2207,39 @@
       }
       Object.assign(_t, { Manager: wt, Socket: bt, io: _t, connect: _t });
       var Et = s(653);
-      let At, Tt;
+      let Tt, At;
       const Ot = document.querySelector("#game-socket-id").value,
-        Rt = document.querySelector("#user-socket-id").value;
-      (At = _t({ query: { id: Ot } })),
-        At.on(Et.START, (t) => {
+        Rt = document.querySelector("#user-socket-id").value,
+        Ct = document.querySelector("#room-id").value;
+      var St;
+      console.log("HELLO THIS IS THE ROOM ID:"),
+        console.log(Ct),
+        ((St = Ot),
+        (Tt = _t({ query: { id: St } })),
+        Tt.on(Et.START, (t) => {
           console.log({ event: Et.START, data: t });
         }),
-        At.on(Et.USER_ADDED, (t) => {
+        Tt.on(Et.USER_ADDED, (t) => {
           console.log({ event: Et.USER_ADDED, data: t });
         }),
-        At.on(Et.STATE_UPDATED, (t) => {
-          console.log({ event: Et.STATE_UPDATED, data: t });
-        }),
-        (Tt = _t({ query: { id: Rt } })),
         Tt.on(Et.STATE_UPDATED, (t) => {
           console.log({ event: Et.STATE_UPDATED, data: t });
-        });
+        }),
+        console.log("Game socket configured"),
+        Promise.resolve())
+          .then((t) =>
+            ((t) => (
+              (At = _t({ query: { id: t } })),
+              At.on(Et.STATE_UPDATED, (t) => {
+                console.log({ event: Et.STATE_UPDATED, data: t });
+              }),
+              console.log("User socket configured"),
+              Promise.resolve()
+            ))(Rt),
+          )
+          .then((t) => {
+            console.log("Fetching"),
+              fetch(`/games/${Ct}/ready`, { method: "post" });
+          });
     })();
 })();
