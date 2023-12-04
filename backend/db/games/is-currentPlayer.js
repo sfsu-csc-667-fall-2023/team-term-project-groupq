@@ -6,6 +6,7 @@ const IS_CURRENT_PLAYER = `
   WHERE id=$1
 `;
 
+// Returns a boolean
 const isCurrentPlayer = (gameId, userId) =>
   db
     .one(IS_CURRENT_PLAYER, [gameId])

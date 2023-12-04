@@ -20,6 +20,8 @@ const { getState } = require("./games/get-state");
 const { isCurrentPlayer } = require("./games/is-currentPlayer");
 const { getCurrentPlayer } = require("./games/get-current-player");
 const { initialize } = require("./games/initialize");
+const { isPlayerInGame } = require("./games/is-player-inGame");
+const { getAllPlayersinGame } = require("./games/get-all-playersinGame");
 
 module.exports = {
   create,
@@ -39,5 +41,7 @@ module.exports = {
   setInitialized,
   getState,
   isCurrentPlayer,
-  getCurrentPlayer
+  getCurrentPlayer,
+  isPlayerInGame,
+  getAllPlayersinGame,
 };
