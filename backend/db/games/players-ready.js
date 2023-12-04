@@ -22,3 +22,4 @@ const readyPlayer = (userId, gameId) =>
     }));
 
 module.exports = { readyPlayer };
+

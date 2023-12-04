@@ -41,6 +41,7 @@ exports.up = (pgm) => {
     },
     turn: {
       type: "int",
+      references: "cards",
     },
     river: {
       type: "int",

@@ -11,3 +11,4 @@ const setCurrentPlayer = (playerId, gameId) =>
   db.one(SET_CURRENT_PLAYER, [playerId, gameId]);
 
 module.exports = { setCurrentPlayer };
+

@@ -12,8 +12,7 @@ const configure = (socketId) => {
     });
   });
 
-  console.log("Game socket configured");
-
+  console.log("User socket configured");
   return Promise.resolve();
 };
 
