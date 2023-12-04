@@ -29,10 +29,10 @@ const updateHand = (handContainer, cardList) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
 
-    // This adds the input suit-{} number-{} as a class NAME
+    // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
     div.classList.add(`suit-${suit}`);
     div.classList.add(`number-${number}`);
-    div.innerText = `|| index:${index} + ${suit} + ${number}`;
+    //div.innerText = `|| index:${index} + ${suit} + ${number}`;
 
     handContainer.appendChild(div);
   });

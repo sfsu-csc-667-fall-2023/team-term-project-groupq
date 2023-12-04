@@ -91,6 +91,15 @@ button {
   color: white;
 }
 
+#player2 {
+  position: absolute;
+  display: flex;
+  margin-left: 75%;
+  margin-top: 80%;
+  bottom: 35%;
+  color: white;
+}
+
 #player1-card1,
 #player1-card2 {
   width: 90px;
@@ -104,10 +113,28 @@ button {
   margin: 0 5px;
 }
 
-#player2 {
+#player3 {
   position: absolute;
   display: flex;
-  margin-left: 75%;
+  margin-left: 60%;
+  margin-top: 80%;
+  bottom: 70%;
+  color: white;
+}
+
+#player4 {
+  position: absolute;
+  display: flex;
+  margin-right: 30%;
+  margin-top: 80%;
+  bottom: 70%;
+  color: white;
+}
+
+#player5 {
+  position: absolute;
+  display: flex;
+  margin-right: 70%;
   margin-top: 80%;
   bottom: 35%;
   color: white;
@@ -123,15 +150,6 @@ button {
   margin: 0 5px;
 }
 
-#player3 {
-  position: absolute;
-  display: flex;
-  margin-left: 60%;
-  margin-top: 80%;
-  bottom: 70%;
-  color: white;
-}
-
 #player3-card1,
 #player3-card2 {
   width: 90px;
@@ -142,15 +160,6 @@ button {
   margin: 0 5px;
 }
 
-#player4 {
-  position: absolute;
-  display: flex;
-  margin-right: 30%;
-  margin-top: 80%;
-  bottom: 70%;
-  color: white;
-}
-
 #player4-card1,
 #player4-card2 {
   width: 90px;
@@ -159,15 +168,6 @@ button {
   background-color: #e74c3c;
   border: 1px solid #c0392b;
   margin: 0 5px;
-}
-
-#player5 {
-  position: absolute;
-  display: flex;
-  margin-right: 70%;
-  margin-top: 80%;
-  bottom: 35%;
-  color: white;
 }
 
 #player5-card1,

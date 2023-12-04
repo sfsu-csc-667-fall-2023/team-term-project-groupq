@@ -64,26 +64,6 @@ router.get("/:id/join", async (request, response) => {
 
   const userCount = await Games.userCount(gameId);
 
-  // If the userCount reaches 2, then initialize the game (shuffle the deck)
-  // if (userCount == 2) {
-  //   const gameState = await Games.initialize(gameId);
-
-  //   const { game_socket_id: gameSocketId } = await Games.getGame(gameId);
-
-  //   io.to(gameSocketId).emit(GAME_CONSTANTS.START, {
-  //     currentPlayer: gameState.current_player,
-  //     userCount,
-  //   });
-
-  //   // Object.keys(gameState.hands).forEach(async (playerId) => {
-  //   //   const playerSocket = await Users.getUserSocket(parseInt(playerId));
-
-  //   //   io.to(playerSocket.sid).emit(GAME_CONSTANTS.STATE_UPDATED, {
-  //   //     hand: gameState.hands[playerId],
-  //   //   });
-  //   // });
-  // }
-
   response.redirect(`/games/${gameId}`);
 });
 
@@ -121,9 +101,38 @@ router.post("/:id/ready", async (request, response) => {
   console.log(gameState.players[0].hand);
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
+  //io.emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
 
   response.status(200).send();
 });
+
+router.post("/:id/check", async (request, response) => {
+  const { id: gameId } = request.params;
+  const { id: userId, username: user } = request.session.user;
+  // check if player is in game
+  // check if this is current player
+  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
+  const currentPlayer = await Games.getCurrentPlayer(gameId);
+
+  console.log(currentPlayer);
+  if (!isCurrentPlayer) {
+    // return gameState?
+    // Add error message: Not your turn
+    // Emit directly to player (userSocket)
+
+    return;
+  }
+  // nothing happens and the current player is now +1
+});
+
+router.post("/:id/raise", async (request, response) => {
+  // check if player is in game
+  // check if this is current player
+  // Add money into the pot
+  // Decrement money from own chip stack
+});
+
+router.post("/:id/fold", async (request, response) => {});
 
 router.get("/:id", async (request, response) => {
   const { id: gameId } = request.params; // Get the game Id from the URL link

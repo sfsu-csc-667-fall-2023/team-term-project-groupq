@@ -7,6 +7,7 @@
   <title>Game Board</title>
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   <link rel="stylesheet" href="/css/game.css">
+  <link rel="stylesheet" href="/css/card.css">
   <script src="/scripts/chat.js" defer></script>
   <script src="/scripts/games.js" defer></script>
 </head>
@@ -14,7 +15,7 @@
 <body>
 
   <nav>
-     <a href="/lobby">
+    <a href="/lobby">
       <button class="menu-button">lobby</button>
     </a>
     <a href="/rules"> <!--get href to work maybe use action?-->
@@ -28,8 +29,21 @@
   <div id="game-board">
     <!--update css for the button-->
     <form action="/games/<%= gameId %>/test" method="post" id="test-form">
-    <button type="submit">Test</button>
+      <button type="submit">Test</button>
     </form>
+
+    <form action="/games/<%= gameId %>/check" method="post" id="check-form">
+      <button type="submit">check</button>
+    </form>
+
+    <form action="/games/<%= gameId %>/raise" method="post" id="raise-form">
+      <button type="submit">raise</button>
+    </form>
+
+    <form action="/games/<%= gameId %>/fold" method="post" id="fold-form">
+      <button type="submit">Fold</button>
+    </form>
+
     <div id="deck">
       <!--deck content goes here-->
     </div>
@@ -42,40 +56,30 @@
       <div class="community-card5"></div>
     </div>
 
-  <section id="players_cards">
+    <section id="players_cards">
 
-    <div id="players"> <!--still need to include chips-->
-      <div class="player-one-hand" id="player1">
+      <div id="players"> <!--still need to include chips-->
+        <div class="player-one-hand" id="player1">
+        </div>
+
+        <div class="player-two-hand" id="player2">
+        </div>
+
+
+        <div class="dealer" id="dealer">Dealer</div>
       </div>
-      
-      <div class="player-two-hand" id="player2">
-      </div>
-      
-
-      <div class="dealer" id="dealer">Dealer</div>
-    </div>
 
 
 
 
-  </section>
+    </section>
 
   </div>
 
-  <input 
-    type="hidden" 
-    name="game-socket-id" 
-    id="game-socket-id" 
-    value="<%= gameSocketId %>" 
-  />
-  <input 
-    type="hidden" 
-    name="user-socket-id" 
-    id="user-socket-id" 
-    value="<%= userSocketId %>" 
-  />
+  <input type="hidden" name="game-socket-id" id="game-socket-id" value="<%= gameSocketId %>" />
+  <input type="hidden" name="user-socket-id" id="user-socket-id" value="<%= userSocketId %>" />
 
-    <%- include('partials/chat', { roomId: gameId }) %> <!-- this room ID is linked to the gameID -->
+  <%- include('partials/chat', { roomId: gameId }) %> <!-- this room ID is linked to the gameID -->
 
 
     <template id="card">
@@ -83,16 +87,16 @@
         <img id="idToTarget" src="" />
         <p></p>
       </div>
-  </template>
+    </template>
 
 
-  <script>
-    //either create a separate game.js that
-    //will contain whole logic or do it here
-    //do logic for handeling player's actions,
-    //card dealing, betting, scoring,
-    //tracking used cards, etc
-  </script>
+    <script>
+      //either create a separate game.js that
+      //will contain whole logic or do it here
+      //do logic for handeling player's actions,
+      //card dealing, betting, scoring,
+      //tracking used cards, etc
+    </script>
 
 </body>
 

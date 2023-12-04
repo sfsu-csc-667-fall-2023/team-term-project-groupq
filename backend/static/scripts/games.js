@@ -335,8 +335,8 @@
             "",
           ),
         B = 64,
-        x = {};
-      let L,
+        L = {};
+      let x,
         N = 0,
         q = 0;
       function P(t) {
@@ -348,9 +348,9 @@
       }
       function j() {
         const t = P(+new Date());
-        return t !== L ? ((N = 0), (L = t)) : t + "." + P(N++);
+        return t !== x ? ((N = 0), (x = t)) : t + "." + P(N++);
       }
-      for (; q < B; q++) x[S[q]] = q;
+      for (; q < B; q++) L[S[q]] = q;
       let D = !1;
       try {
         D =
@@ -491,11 +491,11 @@
             ? (t) => Promise.resolve().then(t)
             : (t, e) => e(t, 0),
         Y = _.WebSocket || _.MozWebSocket,
-        $ =
+        W =
           "undefined" != typeof navigator &&
           "string" == typeof navigator.product &&
           "reactnative" === navigator.product.toLowerCase(),
-        W = {
+        z = {
           websocket: class extends C {
             constructor(t) {
               super(t), (this.supportsBinary = !t.forceBase64);
@@ -507,7 +507,7 @@
               if (!this.check()) return;
               const t = this.uri(),
                 e = this.opts.protocols,
-                s = $
+                s = W
                   ? {}
                   : E(
                       this.opts,
@@ -529,7 +529,7 @@
                     );
               this.opts.extraHeaders && (s.headers = this.opts.extraHeaders);
               try {
-                this.ws = $ ? new Y(t, e, s) : e ? new Y(t, e) : new Y(t);
+                this.ws = W ? new Y(t, e, s) : e ? new Y(t, e) : new Y(t);
               } catch (t) {
                 return this.emitReserved("error", t);
               }
@@ -855,9 +855,9 @@
             }
           },
         },
-        z =
+        J =
           /^(?:(?![^:@\/?#]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@\/?#]*)(?::([^:@\/?#]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/,
-        J = [
+        $ = [
           "source",
           "protocol",
           "authority",
@@ -884,10 +884,10 @@
             t.substring(0, s) +
             t.substring(s, n).replace(/:/g, ";") +
             t.substring(n, t.length));
-        let r = z.exec(t || ""),
+        let r = J.exec(t || ""),
           i = {},
           o = 14;
-        for (; o--; ) i[J[o]] = r[o] || "";
+        for (; o--; ) i[$[o]] = r[o] || "";
         return (
           -1 != s &&
             -1 != n &&
@@ -1029,7 +1029,7 @@
             },
             this.opts.transportOptions[t],
           );
-          return new W[t](s);
+          return new z[t](s);
         }
         open() {
           let t;
@@ -2217,17 +2217,16 @@
               const r = At.content.cloneNode(!0).querySelector(".card");
               r.classList.add(`suit-${e}`),
                 r.classList.add(`number-${s}`),
-                (r.innerText = `|| index:${n} + ${e} + ${s}`),
                 t.appendChild(r);
             });
         };
       let St;
       const Bt = document.querySelector("#game-socket-id").value,
-        xt = document.querySelector("#user-socket-id").value,
-        Lt = document.querySelector("#room-id").value;
+        Lt = document.querySelector("#user-socket-id").value,
+        xt = document.querySelector("#room-id").value;
       var Nt;
       console.log("HELLO THIS IS THE ROOM ID:"),
-        console.log(Lt, Bt, xt),
+        console.log(xt, Bt, Lt),
         ((Nt = Bt),
         (Tt = _t({ query: { id: Nt } })),
         Tt.on(
@@ -2253,11 +2252,11 @@
               }),
               console.log("User socket configured"),
               Promise.resolve()
-            ))(xt),
+            ))(Lt),
           )
           .then((t) => {
             console.log("Fetching"),
-              fetch(`/games/${Lt}/ready`, { method: "post" });
+              fetch(`/games/${xt}/ready`, { method: "post" });
           });
     })();
 })();

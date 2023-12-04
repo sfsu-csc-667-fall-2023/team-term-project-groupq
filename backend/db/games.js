@@ -16,9 +16,8 @@ const { readyPlayer } = require("./games/players-ready");
 const { dealCards } = require("./games/deal-cards");
 const { setInitialized } = require("./games/set-initialized");
 const { getState } = require("./games/get-state");
-
-// const DEAL_CARD =
-//   "UPDATE game_cards SET user_id=$1 WHERE game_id=$2 AND card_id=$3";
+const { isCurrentPlayer } = require("./games/is-currentPlayer");
+const { getCurrentPlayer } = require("./games/get-current-player");
 
 const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
@@ -78,4 +77,6 @@ module.exports = {
   isInitialized,
   readyPlayer,
   getState,
+  isCurrentPlayer,
+  getCurrentPlayer,
 };
