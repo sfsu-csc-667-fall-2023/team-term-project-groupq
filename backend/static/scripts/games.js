@@ -336,8 +336,8 @@
           ),
         B = 64,
         L = {};
-      let x,
-        N = 0,
+      let N,
+        x = 0,
         q = 0;
       function P(t) {
         let e = "";
@@ -348,7 +348,7 @@
       }
       function D() {
         const t = P(+new Date());
-        return t !== x ? ((N = 0), (x = t)) : t + "." + P(N++);
+        return t !== N ? ((x = 0), (N = t)) : t + "." + P(x++);
       }
       for (; q < B; q++) L[S[q]] = q;
       let j = !1;
@@ -495,7 +495,7 @@
           "undefined" != typeof navigator &&
           "string" == typeof navigator.product &&
           "reactnative" === navigator.product.toLowerCase(),
-        z = {
+        $ = {
           websocket: class extends C {
             constructor(t) {
               super(t), (this.supportsBinary = !t.forceBase64);
@@ -855,9 +855,9 @@
             }
           },
         },
-        J =
+        z =
           /^(?:(?![^:@\/?#]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@\/?#]*)(?::([^:@\/?#]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/,
-        $ = [
+        J = [
           "source",
           "protocol",
           "authority",
@@ -884,10 +884,10 @@
             t.substring(0, s) +
             t.substring(s, n).replace(/:/g, ";") +
             t.substring(n, t.length));
-        let r = J.exec(t || ""),
+        let r = z.exec(t || ""),
           i = {},
           o = 14;
-        for (; o--; ) i[$[o]] = r[o] || "";
+        for (; o--; ) i[J[o]] = r[o] || "";
         return (
           -1 != s &&
             -1 != n &&
@@ -1029,7 +1029,7 @@
             },
             this.opts.transportOptions[t],
           );
-          return new z[t](s);
+          return new $[t](s);
         }
         open() {
           let t;
@@ -2211,7 +2211,16 @@
       const At = document.querySelector("#card"),
         Ot = document.querySelector(".player-one-hand"),
         Rt = document.querySelector(".player-two-hand"),
-        Ct = (t, e) => {
+        Ct = document.querySelector("#community-cards"),
+        St = (t, e) => {
+          e.forEach(({ suit: e, number: s }, n) => {
+            const r = At.content.cloneNode(!0).querySelector(".card");
+            r.classList.add(`suit-${e}`),
+              r.classList.add(`number-${s}`),
+              t.appendChild(r);
+          });
+        },
+        Bt = (t, e) => {
           (t.innerHTML = ""),
             e.forEach(({ suit: e, number: s }, n) => {
               const r = At.content.cloneNode(!0).querySelector(".card");
@@ -2220,15 +2229,15 @@
                 t.appendChild(r);
             });
         };
-      let St;
-      const Bt = document.querySelector("#game-socket-id").value,
-        Lt = document.querySelector("#user-socket-id").value,
-        xt = document.querySelector("#room-id").value;
-      var Nt;
+      let Lt;
+      const Nt = document.querySelector("#game-socket-id").value,
+        xt = document.querySelector("#user-socket-id").value,
+        qt = document.querySelector("#room-id").value;
+      var Pt;
       console.log("HELLO THIS IS THE ROOM ID:"),
-        console.log(xt, Bt, Lt),
-        ((Nt = Bt),
-        (Tt = _t({ query: { id: Nt } })),
+        console.log(qt, Nt, xt),
+        ((Pt = Nt),
+        (Tt = _t({ query: { id: Pt } })),
         Tt.on(
           Et.STATE_UPDATED,
           ({ game_id: t, current_player: e, players: s }) => {
@@ -2238,43 +2247,51 @@
                 0 == t.web_position
                   ? (n = t.user_id)
                   : 1 == t.web_position && (r = t.user_id);
-              });
-            const i = s.find((t) => t.user_id === n).hand,
-              o = s.find((t) => t.user_id === r).hand;
+              }),
+              console.log("WHAT IS PLAYERS HERE"),
+              console.log(s);
+            const i = s.find((t) => -3 === t.user_id).hand,
+              o = s.find((t) => -2 === t.user_id).hand,
+              a = s.find((t) => -1 === t.user_id).hand,
+              h = s.find((t) => t.user_id === n).hand,
+              c = s.find((t) => t.user_id === r).hand;
             console.log("DOES IT LOG?"),
-              console.log({ seatOneCards: i, seatTwoCards: o }),
-              Ct(Ot, i),
-              Ct(Rt, o);
+              console.log({ seatOneCards: h, seatTwoCards: c }),
+              St(Ct, i),
+              St(Ct, o),
+              St(Ct, a),
+              Bt(Ot, h),
+              Bt(Rt, c);
           },
         ),
         console.log("Game socket configured"),
         Promise.resolve())
           .then((t) =>
             ((t) => (
-              (St = _t({ query: { id: t } })),
+              (Lt = _t({ query: { id: t } })),
               Object.keys(Et).forEach((t) => {
-                St.on(Et[t], (e) => {
+                Lt.on(Et[t], (e) => {
                   console.log({ event: Et[t], data: e });
                 });
               }),
               console.log("User socket configured"),
               Promise.resolve()
-            ))(Lt),
+            ))(xt),
           )
           .then((t) => {
             console.log("Fetching"),
-              fetch(`/games/${xt}/ready`, { method: "post" });
+              fetch(`/games/${qt}/ready`, { method: "post" });
           });
-      const qt = document.querySelector("#check-form"),
-        Pt = document.querySelector("#raise-form"),
-        Dt = document.querySelector("#fold-form"),
-        jt = (t) => {
+      const Dt = document.querySelector("#check-form"),
+        jt = document.querySelector("#raise-form"),
+        Ut = document.querySelector("#fold-form"),
+        It = (t) => {
           t.preventDefault();
           const { action: e, method: s } = t.target.attributes;
           return fetch(e.value, { method: s.value }), !1;
         };
-      qt.addEventListener("submit", jt),
-        Pt.addEventListener("submit", jt),
-        Dt.addEventListener("submit", jt);
+      Dt.addEventListener("submit", It),
+        jt.addEventListener("submit", It),
+        Ut.addEventListener("submit", It);
     })();
 })();

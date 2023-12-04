@@ -16,10 +16,25 @@ const cardTemplate = document.querySelector("#card");
 
 const playerOneHand = document.querySelector(".player-one-hand");
 const playerTwoHand = document.querySelector(".player-two-hand");
+const dealerHand = document.querySelector("#community-cards");
 
 // const playerThreeHand = document.querySelector("#player3");
 // const playerFourHand = document.querySelector("#player4");
 // const playerFiveHand = document.querySelector("#player5");
+
+const dealerUpdate = (handContainer, cardList) => {
+  // cardList = hand
+  cardList.forEach(({ suit, number }, index) => {
+    const container = cardTemplate.content.cloneNode(true);
+    const div = container.querySelector(".card");
+
+    // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
+    div.classList.add(`suit-${suit}`);
+    div.classList.add(`number-${number}`);
+
+    handContainer.appendChild(div);
+  });
+};
 
 const updateHand = (handContainer, cardList) => {
   handContainer.innerHTML = "";
@@ -37,7 +52,7 @@ const updateHand = (handContainer, cardList) => {
   });
 };
 
-// NEED TO UN HARD CODE THIS
+// get the data from game_state
 const stateUpdated = ({ game_id, current_player, players }) => {
   let firstPosition;
   let secondPosition;
@@ -51,6 +66,11 @@ const stateUpdated = ({ game_id, current_player, players }) => {
     }
   });
 
+  console.log("WHAT IS PLAYERS HERE");
+  console.log(players);
+  const FlopCards = players.find((player) => player.user_id === -3).hand;
+  const TurnCards = players.find((player) => player.user_id === -2).hand;
+  const RiverCards = players.find((player) => player.user_id === -1).hand;
   const seatOneCards = players.find(
     (player) => player.user_id === firstPosition,
   ).hand;
@@ -60,6 +80,9 @@ const stateUpdated = ({ game_id, current_player, players }) => {
   console.log("DOES IT LOG?");
   console.log({ seatOneCards, seatTwoCards });
 
+  dealerUpdate(dealerHand, FlopCards);
+  dealerUpdate(dealerHand, TurnCards);
+  dealerUpdate(dealerHand, RiverCards);
   updateHand(playerOneHand, seatOneCards);
   updateHand(playerTwoHand, seatTwoCards);
 };

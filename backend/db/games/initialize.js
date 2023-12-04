@@ -20,12 +20,21 @@ const initialize = async (gameId) => {
   await setCurrentPlayer(firstPlayer, gameId);
 
   const users = await getUsers(gameId);
+  users.push({ user_id: -1 });
+  users.push({ user_id: -2 });
+  users.push({ user_id: -3 });
+  console.log("WHO ARE THE USERS, THERE SHOULD ONLY BE 2");
+  console.log(users);
 
   // Get the total cards that need to be sent to players
-  const cards = await getCardsperPlayers(gameId, users.length * 2); // users -> number of players x 2
+  const cards = await getCardsperPlayers(gameId, users.length * 2 + 5); // users -> number of players x 2
+  console.log("THESE ARE THE CARDS CARDS CARDS");
+  console.log(cards);
 
   // Using the users, cards and gameId, deals the first cards to the players (Poker = 2)
   const dealtCards = await dealCards(users, cards, gameId);
+  console.log("THESE ARE THE DEALT CARDS");
+  console.log(dealtCards);
 
   users.forEach((user) => {
     // Create a new field under user, and only sending the cards that match the user_id

@@ -11,7 +11,9 @@ const getState = async (gameId) => {
 
   const current_player = await getCurrentPlayer(gameId);
   const users = await getUsers(gameId);
-  //users.push({ user_id: -1 }); for the community cards?
+  users.push({ user_id: -1 });
+  users.push({ user_id: -2 });
+  users.push({ user_id: -3 });
 
   const dealtCards = await getCardsAlreadyDealt(gameId);
 
