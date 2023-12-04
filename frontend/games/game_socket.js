@@ -32,7 +32,6 @@ const updateHand = (handContainer, cardList) => {
     // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
     div.classList.add(`suit-${suit}`);
     div.classList.add(`number-${number}`);
-    //div.innerText = `|| index:${index} + ${suit} + ${number}`;
 
     handContainer.appendChild(div);
   });
@@ -97,8 +96,5 @@ hand:
     number: 7
   }
 ]
-
-
-
 
 */

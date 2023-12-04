@@ -1,8 +1,6 @@
 import { configure as gameSocketConfig } from "./game_socket";
 import { configure as userSocketConfig } from "./user_socket";
 
-//import * as GAME_CONSTANTS from "../../constants/games";
-
 // We passed the game/user socket ID through the hidden field, and this code below extracts it from backend to frontend
 // Its a way to pass information from the server to the client through a specific game socket or a specific user
 const gameSocketId = document.querySelector("#game-socket-id").value;
@@ -19,3 +17,21 @@ gameSocketConfig(gameSocketId)
     console.log("Fetching");
     fetch(`/games/${roomId}/ready`, { method: "post" });
   });
+
+// The code below prevents the user from entering the new URL games/id/(check, raise or fold)
+const checkForm = document.querySelector("#check-form");
+const raiseForm = document.querySelector("#raise-form");
+const foldForm = document.querySelector("#fold-form");
+
+const handleUserAction = (event) => {
+  event.preventDefault();
+
+  const { action, method } = event.target.attributes;
+  fetch(action.value, { method: method.value });
+
+  return false;
+};
+
+checkForm.addEventListener("submit", handleUserAction);
+raiseForm.addEventListener("submit", handleUserAction);
+foldForm.addEventListener("submit", handleUserAction);

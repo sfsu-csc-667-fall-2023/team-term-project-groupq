@@ -346,18 +346,18 @@
         } while (t > 0);
         return e;
       }
-      function j() {
+      function D() {
         const t = P(+new Date());
         return t !== x ? ((N = 0), (x = t)) : t + "." + P(N++);
       }
       for (; q < B; q++) L[S[q]] = q;
-      let D = !1;
+      let j = !1;
       try {
-        D =
+        j =
           "undefined" != typeof XMLHttpRequest &&
           "withCredentials" in new XMLHttpRequest();
       } catch (t) {}
-      const U = D;
+      const U = j;
       function I(t) {
         const e = t.xdomain;
         try {
@@ -572,7 +572,7 @@
                 e = this.query || {};
               return (
                 this.opts.timestampRequests &&
-                  (e[this.opts.timestampParam] = j()),
+                  (e[this.opts.timestampParam] = D()),
                 this.supportsBinary || (e.b64 = 1),
                 this.createUri(t, e)
               );
@@ -823,7 +823,7 @@
                 e = this.query || {};
               return (
                 !1 !== this.opts.timestampRequests &&
-                  (e[this.opts.timestampParam] = j()),
+                  (e[this.opts.timestampParam] = D()),
                 this.supportsBinary || e.sid || (e.b64 = 1),
                 this.createUri(t, e)
               );
@@ -2258,5 +2258,16 @@
             console.log("Fetching"),
               fetch(`/games/${xt}/ready`, { method: "post" });
           });
+      const qt = document.querySelector("#check-form"),
+        Pt = document.querySelector("#raise-form"),
+        Dt = document.querySelector("#fold-form"),
+        jt = (t) => {
+          t.preventDefault();
+          const { action: e, method: s } = t.target.attributes;
+          return fetch(e.value, { method: s.value }), !1;
+        };
+      qt.addEventListener("submit", jt),
+        Pt.addEventListener("submit", jt),
+        Dt.addEventListener("submit", jt);
     })();
 })();

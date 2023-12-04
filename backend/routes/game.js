@@ -110,6 +110,7 @@ router.post("/:id/check", async (request, response) => {
   const { id: gameId } = request.params;
   const { id: userId, username: user } = request.session.user;
   // check if player is in game
+
   // check if this is current player
   const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
   const currentPlayer = await Games.getCurrentPlayer(gameId);
@@ -123,6 +124,8 @@ router.post("/:id/check", async (request, response) => {
     return;
   }
   // nothing happens and the current player is now +1
+
+  response.status(200).send();
 });
 
 router.post("/:id/raise", async (request, response) => {
