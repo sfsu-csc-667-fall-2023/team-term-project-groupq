@@ -37,9 +37,26 @@ const updateHand = (handContainer, cardList) => {
   });
 };
 
+// NEED TO UN HARD CODE THIS
 const stateUpdated = ({ game_id, current_player, players }) => {
-  const seatOneCards = players.find((player) => player.user_id === 1).hand;
-  const seatTwoCards = players.find((player) => player.user_id === 2).hand;
+  let firstPosition;
+  let secondPosition;
+
+  console.log("WEB POSITION HERE");
+  players.forEach((player) => {
+    if (player.web_position == 0) {
+      firstPosition = player.user_id;
+    } else if (player.web_position == 1) {
+      secondPosition = player.user_id;
+    }
+  });
+
+  const seatOneCards = players.find(
+    (player) => player.user_id === firstPosition,
+  ).hand;
+  const seatTwoCards = players.find(
+    (player) => player.user_id === secondPosition,
+  ).hand;
   console.log("DOES IT LOG?");
   console.log({ seatOneCards, seatTwoCards });
 

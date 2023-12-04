@@ -21,6 +21,9 @@ exports.up = (pgm) => {
     current_player: {
       type: "int",
     },
+    web_position: {
+      type: "int",
+    },
     chip_count: {
       type: "int",
     },

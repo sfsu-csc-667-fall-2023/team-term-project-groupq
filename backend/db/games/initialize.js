@@ -27,14 +27,10 @@ const initialize = async (gameId) => {
   // Using the users, cards and gameId, deals the first cards to the players (Poker = 2)
   const dealtCards = await dealCards(users, cards, gameId);
 
-  console.log("DEALT CARDS HERE:");
-  console.log({ dealtCards });
-
   users.forEach((user) => {
-    console.log({ user });
-
     // Create a new field under user, and only sending the cards that match the user_id
     user.hand = dealtCards.filter((card) => card.user_id === user.user_id);
+    user.turnOrder = user.current_player;
     user.current_player = firstPlayer === user.user_id;
   });
 

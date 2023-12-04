@@ -17,6 +17,7 @@ const getState = async (gameId) => {
 
   users.forEach((user) => {
     user.hand = dealtCards.filter((card) => card.user_id === user.user_id);
+    user.turnOrder = user.current_player;
     user.current_player = current_player === user.user_id;
   });
 

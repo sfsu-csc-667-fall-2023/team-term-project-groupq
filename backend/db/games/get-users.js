@@ -2,7 +2,7 @@ const database = require("../connection");
 const { connection: db } = database;
 
 const GET_USERS = `
-  SELECT user_id, (
+  SELECT user_id, web_position, current_player, (
     SELECT sid FROM session
     WHERE (sess->'user'->>'id')::int=user_id
     ORDER BY expire DESC

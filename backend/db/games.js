@@ -22,6 +22,8 @@ const { getCurrentPlayer } = require("./games/get-current-player");
 const { initialize } = require("./games/initialize");
 const { isPlayerInGame } = require("./games/is-player-inGame");
 const { getAllPlayersinGame } = require("./games/get-all-playersinGame");
+const { getTurnOrder } = require("./games/get-turnOrder");
+const { setPlayerTurnOrder } = require("./games/set-player-turnOrder");
 
 module.exports = {
   create,
@@ -44,4 +46,6 @@ module.exports = {
   getCurrentPlayer,
   isPlayerInGame,
   getAllPlayersinGame,
+  getTurnOrder,
+  setPlayerTurnOrder,
 };

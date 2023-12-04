@@ -490,8 +490,8 @@
           "function" == typeof Promise && "function" == typeof Promise.resolve
             ? (t) => Promise.resolve().then(t)
             : (t, e) => e(t, 0),
-        Y = _.WebSocket || _.MozWebSocket,
-        W =
+        W = _.WebSocket || _.MozWebSocket,
+        Y =
           "undefined" != typeof navigator &&
           "string" == typeof navigator.product &&
           "reactnative" === navigator.product.toLowerCase(),
@@ -507,7 +507,7 @@
               if (!this.check()) return;
               const t = this.uri(),
                 e = this.opts.protocols,
-                s = W
+                s = Y
                   ? {}
                   : E(
                       this.opts,
@@ -529,7 +529,7 @@
                     );
               this.opts.extraHeaders && (s.headers = this.opts.extraHeaders);
               try {
-                this.ws = W ? new Y(t, e, s) : e ? new Y(t, e) : new Y(t);
+                this.ws = Y ? new W(t, e, s) : e ? new W(t, e) : new W(t);
               } catch (t) {
                 return this.emitReserved("error", t);
               }
@@ -578,7 +578,7 @@
               );
             }
             check() {
-              return !!Y;
+              return !!W;
             }
           },
           webtransport: class extends C {
@@ -2232,12 +2232,19 @@
         Tt.on(
           Et.STATE_UPDATED,
           ({ game_id: t, current_player: e, players: s }) => {
-            const n = s.find((t) => 1 === t.user_id).hand,
-              r = s.find((t) => 2 === t.user_id).hand;
+            let n, r;
+            console.log("WEB POSITION HERE"),
+              s.forEach((t) => {
+                0 == t.web_position
+                  ? (n = t.user_id)
+                  : 1 == t.web_position && (r = t.user_id);
+              });
+            const i = s.find((t) => t.user_id === n).hand,
+              o = s.find((t) => t.user_id === r).hand;
             console.log("DOES IT LOG?"),
-              console.log({ seatOneCards: n, seatTwoCards: r }),
-              Ct(Ot, n),
-              Ct(Rt, r);
+              console.log({ seatOneCards: i, seatTwoCards: o }),
+              Ct(Ot, i),
+              Ct(Rt, o);
           },
         ),
         console.log("Game socket configured"),

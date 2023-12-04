@@ -98,7 +98,6 @@ router.post("/:id/ready", async (request, response) => {
 
   console.log("THIS IS THE READY VIEW GAMESTATE:");
   console.log(method, gameState);
-  console.log(gameState.players[0].hand);
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
   //io.emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
@@ -122,7 +121,7 @@ router.post("/:id/check", async (request, response) => {
   const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
   const currentPlayer = await Games.getCurrentPlayer(gameId);
 
-  console.log(currentPlayer);
+  console.log(isCurrentPlayer);
   if (!isCurrentPlayer) {
     // return gameState?
     // Add error message: Not your turn
@@ -130,7 +129,32 @@ router.post("/:id/check", async (request, response) => {
 
     return;
   }
+
   // nothing happens and the current player is the next player
+  if (isCurrentPlayer) {
+    console.log("THE FIRST TURNORDERS");
+    const turnOrders = await Games.getTurnOrder(gameId);
+    console.log(turnOrders);
+
+    turnOrders.forEach(async (users_position) => {
+      if (users_position.current_player == 0) {
+        await Games.setPlayerTurnOrder(1, users_position.user_id, gameId);
+      } else {
+        if (users_position.current_player == turnOrders.length - 1) {
+          await Games.setPlayerTurnOrder(0, users_position.user_id, gameId);
+        } else {
+          await Games.setPlayerTurnOrder(
+            parseInt(users_position.current_player) + 1,
+            users_position.user_id,
+            gameId,
+          );
+        }
+      }
+    });
+
+    console.log("THE SECOND TURNORDERS");
+    console.log(await Games.getTurnOrder(gameId));
+  }
 
   response.status(200).send();
 });
