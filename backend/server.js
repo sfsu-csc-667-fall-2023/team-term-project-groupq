@@ -53,6 +53,7 @@ const sessionMiddleware = session({
   }),
   secret: process.env.SESSION_SECRET, //'5HbpsviK7M4JGcNBvrZIjdAJMLFrSzaq' - makes it work for windows
   resave: false,
+  saveUninitialized: true, //added for the server configuration
   cookie: { secure: process.env.NODE_ENV !== "development" },
 });
 

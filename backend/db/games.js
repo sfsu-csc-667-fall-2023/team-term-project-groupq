@@ -16,9 +16,26 @@ const { readyPlayer } = require("./games/players-ready");
 const { dealCards } = require("./games/deal-cards");
 const { setInitialized } = require("./games/set-initialized");
 
+module.exports = {
+  create,
+  addUser,
+  userCount,
+  createShuffledDeck,
+  getUsers,
+  getPlayerByTurnOrder,
+  setCurrentPlayer,
+  getCardsperPlayers,
+  getGame,
+  getAvailableGames,
+  initialize,
+  isInitialized,
+  readyPlayer,
+};
+
 // const DEAL_CARD =
 //   "UPDATE game_cards SET user_id=$1 WHERE game_id=$2 AND card_id=$3";
 
+/*
 const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
   await createShuffledDeck(gameId);
@@ -27,8 +44,9 @@ const initialize = async (gameId) => {
 
   const { user_id: firstPlayer } = await getPlayerByTurnOrder(0, gameId);
   await setCurrentPlayer(firstPlayer, gameId);
+  */
 
-  /*
+/*
   // //deal cards to each player
   // const users = await getUsers(gameId) // Get the number of players in the gameId  getUsers(gameId)
   //   .then((userResult) => {
@@ -53,6 +71,7 @@ const initialize = async (gameId) => {
   //   );
 */
 
+/*
   const users = await getUsers(gameId);
 
   const cards = await getCardsperPlayers(gameId, users.length * 2); // users -> number of players x 2
@@ -74,8 +93,9 @@ const initialize = async (gameId) => {
     "SELECT game_cards.*, cards.* FROM game_cards, cards WHERE game_id=$1 AND game_cards.card_id=cards.id",
     [gameId],
   );
+  */
 
-  /*
+/*
   // await Promise.all(
   //   cards
   //     .slice(0, cards.length - 2)
@@ -112,7 +132,7 @@ const initialize = async (gameId) => {
   // };
 
   */
-
+/*
   return {
     game_id: gameId,
     game_socket_id,
@@ -120,19 +140,4 @@ const initialize = async (gameId) => {
     players: users,
   };
 };
-
-module.exports = {
-  create,
-  addUser,
-  userCount,
-  createShuffledDeck,
-  getUsers,
-  getPlayerByTurnOrder,
-  setCurrentPlayer,
-  getCardsperPlayers,
-  getGame,
-  getAvailableGames,
-  initialize,
-  isInitialized,
-  readyPlayer,
-};
+*/

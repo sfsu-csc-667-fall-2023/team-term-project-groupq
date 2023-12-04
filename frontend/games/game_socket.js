@@ -6,17 +6,15 @@ let gameSocket;
 const configure = (socketId) => {
   gameSocket = io({ query: { id: socketId } });
 
-  gameSocket.on(GAME_CONSTANTS.START, (data) => {
-    console.log({ event: GAME_CONSTANTS.START, data });
+  Object.keys(GAME_CONSTANTS).forEach((key) => {
+    gameSocket.on(GAME_CONSTANTS[key], (data) => {
+      console.log({ event: GAME_CONSTANTS[key], data });
+    });
   });
 
-  gameSocket.on(GAME_CONSTANTS.USER_ADDED, (data) => {
-    console.log({ event: GAME_CONSTANTS.USER_ADDED, data });
-  });
+  console.log("Game socket configured");
 
-  gameSocket.on(GAME_CONSTANTS.STATE_UPDATED, (data) => {
-    console.log({ event: GAME_CONSTANTS.STATE_UPDATED, data });
-  });
+  return Promise.resolve();
 };
 
 export { configure };
