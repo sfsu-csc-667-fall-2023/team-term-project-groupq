@@ -11,7 +11,7 @@
 }
 
 .card.suit-spades.number-1 {
-  background-image: url("/css/cards/1_of_spades.png");
+  background-image: url("/css/cards/ace_of_spades.png");
   background-size: cover;
 }
 
@@ -61,22 +61,22 @@
 }
 
 .card.suit-spades.number-11 {
-  background-image: url("/css/cards/11_of_spades.png");
+  background-image: url("/css/cards/jack_of_spades.png");
   background-size: cover;
 }
 
 .card.suit-spades.number-12 {
-  background-image: url("/css/cards/12_of_spades.png");
+  background-image: url("/css/cards/queen_of_spades.png");
   background-size: cover;
 }
 
 .card.suit-spades.number-13 {
-  background-image: url("/css/cards/13_of_spades.png");
+  background-image: url("/css/cards/king_of_spades.png");
   background-size: cover;
 }
 
 .card.suit-clubs.number-1 {
-  background-image: url("/css/cards/1_of_clubs.png");
+  background-image: url("/css/cards/ace_of_clubs.png");
   background-size: cover;
 }
 
@@ -126,22 +126,22 @@
 }
 
 .card.suit-clubs.number-11 {
-  background-image: url("/css/cards/11_of_clubs.png");
+  background-image: url("/css/cards/jack_of_clubs.png");
   background-size: cover;
 }
 
 .card.suit-clubs.number-12 {
-  background-image: url("/css/cards/12_of_clubs.png");
+  background-image: url("/css/cards/queen_of_clubs.png");
   background-size: cover;
 }
 
 .card.suit-clubs.number-13 {
-  background-image: url("/css/cards/13_of_clubs.png");
+  background-image: url("/css/cards/king_of_clubs.png");
   background-size: cover;
 }
 
 .card.suit-hearts.number-1 {
-  background-image: url("/css/cards/1_of_hearts.png");
+  background-image: url("/css/cards/ace_of_hearts.png");
   background-size: cover;
 }
 
@@ -191,22 +191,22 @@
 }
 
 .card.suit-hearts.number-11 {
-  background-image: url("/css/cards/11_of_hearts.png");
+  background-image: url("/css/cards/jack_of_hearts.png");
   background-size: cover;
 }
 
 .card.suit-hearts.number-12 {
-  background-image: url("/css/cards/12_of_hearts.png");
+  background-image: url("/css/cards/queen_of_hearts.png");
   background-size: cover;
 }
 
 .card.suit-hearts.number-13 {
-  background-image: url("/css/cards/13_of_hearts.png");
+  background-image: url("/css/cards/king_of_hearts.png");
   background-size: cover;
 }
 
 .card.suit-diamonds.number-1 {
-  background-image: url("/css/cards/1_of_diamonds.png");
+  background-image: url("/css/cards/ace_of_diamonds.png");
   background-size: cover;
 }
 
@@ -256,16 +256,16 @@
 }
 
 .card.suit-diamonds.number-11 {
-  background-image: url("/css/cards/11_of_diamonds.png");
+  background-image: url("/css/cards/jack_of_diamonds.png");
   background-size: cover;
 }
 
 .card.suit-diamonds.number-12 {
-  background-image: url("/css/cards/12_of_diamonds.png");
+  background-image: url("/css/cards/queen_of_diamonds.png");
   background-size: cover;
 }
 
 .card.suit-diamonds.number-13 {
-  background-image: url("/css/cards/13_of_diamonds.png");
+  background-image: url("/css/cards/king_of_diamonds.png");
   background-size: cover;
 }

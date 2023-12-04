@@ -11,10 +11,10 @@
     },
     e = {};
   function s(n) {
-    var i = e[n];
-    if (void 0 !== i) return i.exports;
-    var r = (e[n] = { exports: {} });
-    return t[n](r, r.exports, s), r.exports;
+    var r = e[n];
+    if (void 0 !== r) return r.exports;
+    var i = (e[n] = { exports: {} });
+    return t[n](i, i.exports, s), i.exports;
   }
   (s.d = (t, e) => {
     for (var n in e)
@@ -51,8 +51,8 @@
       Object.keys(e).forEach((t) => {
         n[e[t]] = t;
       });
-      const i = { type: "error", data: "parser error" },
-        r =
+      const r = { type: "error", data: "parser error" },
+        i =
           "function" == typeof Blob ||
           ("undefined" != typeof Blob &&
             "[object BlobConstructor]" ===
@@ -62,16 +62,16 @@
           "function" == typeof ArrayBuffer.isView
             ? ArrayBuffer.isView(t)
             : t && t.buffer instanceof ArrayBuffer,
-        h = ({ type: t, data: s }, n, i) =>
-          r && s instanceof Blob
+        h = ({ type: t, data: s }, n, r) =>
+          i && s instanceof Blob
             ? n
-              ? i(s)
-              : c(s, i)
+              ? r(s)
+              : c(s, r)
             : o && (s instanceof ArrayBuffer || a(s))
             ? n
-              ? i(s)
-              : c(new Blob([s]), i)
-            : i(e[t] + (s || "")),
+              ? r(s)
+              : c(new Blob([s]), r)
+            : r(e[t] + (s || "")),
         c = (t, e) => {
           const s = new FileReader();
           return (
@@ -107,7 +107,7 @@
             ? t.length > 1
               ? { type: n[s], data: t.substring(1) }
               : { type: n[s] }
-            : i;
+            : r;
         },
         y = (t, e) => {
           if (d) {
@@ -115,8 +115,8 @@
               let e,
                 s,
                 n,
-                i,
                 r,
+                i,
                 o = 0.75 * t.length,
                 a = t.length,
                 h = 0;
@@ -126,11 +126,11 @@
               for (e = 0; e < a; e += 4)
                 (s = l[t.charCodeAt(e)]),
                   (n = l[t.charCodeAt(e + 1)]),
-                  (i = l[t.charCodeAt(e + 2)]),
-                  (r = l[t.charCodeAt(e + 3)]),
+                  (r = l[t.charCodeAt(e + 2)]),
+                  (i = l[t.charCodeAt(e + 3)]),
                   (u[h++] = (s << 2) | (n >> 4)),
-                  (u[h++] = ((15 & n) << 4) | (i >> 2)),
-                  (u[h++] = ((3 & i) << 6) | (63 & r));
+                  (u[h++] = ((15 & n) << 4) | (r >> 2)),
+                  (u[h++] = ((3 & r) << 6) | (63 & i));
               return c;
             })(t);
             return g(s, e);
@@ -154,8 +154,8 @@
         if (t[0].length === e) return t.shift();
         const s = new Uint8Array(e);
         let n = 0;
-        for (let i = 0; i < e; i++)
-          (s[i] = t[0][n++]), n === t[0].length && (t.shift(), (n = 0));
+        for (let r = 0; r < e; r++)
+          (s[r] = t[0][n++]), n === t[0].length && (t.shift(), (n = 0));
         return t.length && n < t[0].length && (t[0] = t[0].slice(n)), s;
       }
       function k(t) {
@@ -194,9 +194,9 @@
               if (!n) return this;
               if (1 == arguments.length)
                 return delete this._callbacks["$" + t], this;
-              for (var i = 0; i < n.length; i++)
-                if ((s = n[i]) === e || s.fn === e) {
-                  n.splice(i, 1);
+              for (var r = 0; r < n.length; r++)
+                if ((s = n[r]) === e || s.fn === e) {
+                  n.splice(r, 1);
                   break;
                 }
               return 0 === n.length && delete this._callbacks["$" + t], this;
@@ -213,7 +213,7 @@
             e[n - 1] = arguments[n];
           if (s) {
             n = 0;
-            for (var i = (s = s.slice(0)).length; n < i; ++n)
+            for (var r = (s = s.slice(0)).length; n < r; ++n)
               s[n].apply(this, e);
           }
           return this;
@@ -240,11 +240,11 @@
           {},
         );
       }
-      const A = _.setTimeout,
-        T = _.clearTimeout;
+      const T = _.setTimeout,
+        A = _.clearTimeout;
       function O(t, e) {
         e.useNativeTimers
-          ? ((t.setTimeoutFn = A.bind(_)), (t.clearTimeoutFn = T.bind(_)))
+          ? ((t.setTimeoutFn = T.bind(_)), (t.clearTimeoutFn = A.bind(_)))
           : ((t.setTimeoutFn = _.setTimeout.bind(_)),
             (t.clearTimeoutFn = _.clearTimeout.bind(_)));
       }
@@ -335,9 +335,9 @@
             "",
           ),
         B = 64,
-        x = {};
-      let N,
-        L = 0,
+        L = {};
+      let x,
+        N = 0,
         q = 0;
       function P(t) {
         let e = "";
@@ -348,20 +348,20 @@
       }
       function D() {
         const t = P(+new Date());
-        return t !== N ? ((L = 0), (N = t)) : t + "." + P(L++);
+        return t !== x ? ((N = 0), (x = t)) : t + "." + P(N++);
       }
-      for (; q < B; q++) x[S[q]] = q;
-      let U = !1;
+      for (; q < B; q++) L[S[q]] = q;
+      let j = !1;
       try {
-        U =
+        j =
           "undefined" != typeof XMLHttpRequest &&
           "withCredentials" in new XMLHttpRequest();
       } catch (t) {}
-      const j = U;
+      const U = j;
       function I(t) {
         const e = t.xdomain;
         try {
-          if ("undefined" != typeof XMLHttpRequest && (!e || j))
+          if ("undefined" != typeof XMLHttpRequest && (!e || U))
             return new XMLHttpRequest();
         } catch (t) {}
         if (!e)
@@ -604,7 +604,7 @@
                         b || (b = new TextDecoder());
                         const s = [];
                         let n = 0,
-                          r = -1,
+                          i = -1,
                           o = !1;
                         return new TransformStream({
                           transform(a, h) {
@@ -613,12 +613,12 @@
                                 if (v(s) < 1) break;
                                 const t = w(s, 1);
                                 (o = 128 == (128 & t[0])),
-                                  (r = 127 & t[0]),
-                                  (n = r < 126 ? 3 : 126 === r ? 1 : 2);
+                                  (i = 127 & t[0]),
+                                  (n = i < 126 ? 3 : 126 === i ? 1 : 2);
                               } else if (1 === n) {
                                 if (v(s) < 2) break;
                                 const t = w(s, 2);
-                                (r = new DataView(
+                                (i = new DataView(
                                   t.buffer,
                                   t.byteOffset,
                                   t.length,
@@ -634,18 +634,18 @@
                                   ),
                                   o = e.getUint32(0);
                                 if (o > Math.pow(2, 21) - 1) {
-                                  h.enqueue(i);
+                                  h.enqueue(r);
                                   break;
                                 }
-                                (r = o * Math.pow(2, 32) + e.getUint32(4)),
+                                (i = o * Math.pow(2, 32) + e.getUint32(4)),
                                   (n = 3);
                               } else {
-                                if (v(s) < r) break;
-                                const t = w(s, r);
+                                if (v(s) < i) break;
+                                const t = w(s, i);
                                 h.enqueue(f(o ? t : b.decode(t), e)), (n = 0);
                               }
-                              if (0 === r || r > t) {
-                                h.enqueue(i);
+                              if (0 === i || i > t) {
+                                h.enqueue(r);
                                 break;
                               }
                             }
@@ -656,7 +656,7 @@
                       n = new TransformStream({
                         transform(t, e) {
                           !(function (t, e) {
-                            r && t.data instanceof Blob
+                            i && t.data instanceof Blob
                               ? t.data.arrayBuffer().then(u).then(e)
                               : o &&
                                 (t.data instanceof ArrayBuffer || a(t.data))
@@ -666,23 +666,23 @@
                                 });
                           })(t, (s) => {
                             const n = s.length;
-                            let i;
+                            let r;
                             if (n < 126)
-                              (i = new Uint8Array(1)),
-                                new DataView(i.buffer).setUint8(0, n);
+                              (r = new Uint8Array(1)),
+                                new DataView(r.buffer).setUint8(0, n);
                             else if (n < 65536) {
-                              i = new Uint8Array(3);
-                              const t = new DataView(i.buffer);
+                              r = new Uint8Array(3);
+                              const t = new DataView(r.buffer);
                               t.setUint8(0, 126), t.setUint16(1, n);
                             } else {
-                              i = new Uint8Array(9);
-                              const t = new DataView(i.buffer);
+                              r = new Uint8Array(9);
+                              const t = new DataView(r.buffer);
                               t.setUint8(0, 127), t.setBigUint64(1, BigInt(n));
                             }
                             t.data &&
                               "string" != typeof t.data &&
-                              (i[0] |= 128),
-                              e.enqueue(i),
+                              (r[0] |= 128),
+                              e.enqueue(r),
                               e.enqueue(s);
                           });
                         },
@@ -771,8 +771,8 @@
                 const s = t.split(m),
                   n = [];
                 for (let t = 0; t < s.length; t++) {
-                  const i = f(s[t], e);
-                  if ((n.push(i), "error" === i.type)) break;
+                  const r = f(s[t], e);
+                  if ((n.push(r), "error" === r.type)) break;
                 }
                 return n;
               })(t, this.socket.binaryType).forEach((t) => {
@@ -806,10 +806,10 @@
                 ((t, e) => {
                   const s = t.length,
                     n = new Array(s);
-                  let i = 0;
-                  t.forEach((t, r) => {
+                  let r = 0;
+                  t.forEach((t, i) => {
                     h(t, !1, (t) => {
-                      (n[r] = t), ++i === s && e(n.join(m));
+                      (n[i] = t), ++r === s && e(n.join(m));
                     });
                   });
                 })(t, (t) => {
@@ -884,31 +884,31 @@
             t.substring(0, s) +
             t.substring(s, n).replace(/:/g, ";") +
             t.substring(n, t.length));
-        let i = J.exec(t || ""),
-          r = {},
+        let r = J.exec(t || ""),
+          i = {},
           o = 14;
-        for (; o--; ) r[$[o]] = i[o] || "";
+        for (; o--; ) i[$[o]] = r[o] || "";
         return (
           -1 != s &&
             -1 != n &&
-            ((r.source = e),
-            (r.host = r.host
-              .substring(1, r.host.length - 1)
+            ((i.source = e),
+            (i.host = i.host
+              .substring(1, i.host.length - 1)
               .replace(/;/g, ":")),
-            (r.authority = r.authority
+            (i.authority = i.authority
               .replace("[", "")
               .replace("]", "")
               .replace(/;/g, ":")),
-            (r.ipv6uri = !0)),
-          (r.pathNames = (function (t, e) {
+            (i.ipv6uri = !0)),
+          (i.pathNames = (function (t, e) {
             const s = e.replace(/\/{2,9}/g, "/").split("/");
             return (
               ("/" != e.slice(0, 1) && 0 !== e.length) || s.splice(0, 1),
               "/" == e.slice(-1) && s.splice(s.length - 1, 1),
               s
             );
-          })(0, r.path)),
-          (r.queryKey = (function (t, e) {
+          })(0, i.path)),
+          (i.queryKey = (function (t, e) {
             const s = {};
             return (
               e.replace(/(?:^|&)([^&=]*)=?([^&]*)/g, function (t, e, n) {
@@ -916,8 +916,8 @@
               }),
               s
             );
-          })(0, r.query)),
-          r
+          })(0, i.query)),
+          i
         );
       }
       class X extends k {
@@ -1098,31 +1098,31 @@
                   }
               }));
           };
-          function i() {
+          function r() {
             s || ((s = !0), c(), e.close(), (e = null));
           }
-          const r = (t) => {
+          const i = (t) => {
             const s = new Error("probe error: " + t);
-            (s.transport = e.name), i(), this.emitReserved("upgradeError", s);
+            (s.transport = e.name), r(), this.emitReserved("upgradeError", s);
           };
           function o() {
-            r("transport closed");
+            i("transport closed");
           }
           function a() {
-            r("socket closed");
+            i("socket closed");
           }
           function h(t) {
-            e && t.name !== e.name && i();
+            e && t.name !== e.name && r();
           }
           const c = () => {
             e.removeListener("open", n),
-              e.removeListener("error", r),
+              e.removeListener("error", i),
               e.removeListener("close", o),
               this.off("close", a),
               this.off("upgrading", h);
           };
           e.once("open", n),
-            e.once("error", r),
+            e.once("error", i),
             e.once("close", o),
             this.once("close", a),
             this.once("upgrading", h),
@@ -1231,7 +1231,7 @@
                     ? (function (t) {
                         let e = 0,
                           s = 0;
-                        for (let n = 0, i = t.length; n < i; n++)
+                        for (let n = 0, r = t.length; n < r; n++)
                           (e = t.charCodeAt(n)),
                             e < 128
                               ? (s += 1)
@@ -1265,9 +1265,9 @@
           )
             return;
           (s = s || {}).compress = !1 !== s.compress;
-          const i = { type: t, data: e, options: s };
-          this.emitReserved("packetCreate", i),
-            this.writeBuffer.push(i),
+          const r = { type: t, data: e, options: s };
+          this.emitReserved("packetCreate", r),
+            this.writeBuffer.push(r),
             n && this.once("flush", n),
             this.flush();
         }
@@ -1350,20 +1350,20 @@
           (st && t instanceof File)
         );
       }
-      function it(t, e) {
+      function rt(t, e) {
         if (!t || "object" != typeof t) return !1;
         if (Array.isArray(t)) {
-          for (let e = 0, s = t.length; e < s; e++) if (it(t[e])) return !0;
+          for (let e = 0, s = t.length; e < s; e++) if (rt(t[e])) return !0;
           return !1;
         }
         if (nt(t)) return !0;
         if (t.toJSON && "function" == typeof t.toJSON && 1 === arguments.length)
-          return it(t.toJSON(), !0);
+          return rt(t.toJSON(), !0);
         for (const e in t)
-          if (Object.prototype.hasOwnProperty.call(t, e) && it(t[e])) return !0;
+          if (Object.prototype.hasOwnProperty.call(t, e) && rt(t[e])) return !0;
         return !1;
       }
-      function rt(t) {
+      function it(t) {
         const e = [],
           s = t.data,
           n = t;
@@ -1433,7 +1433,7 @@
           this.replacer = t;
         }
         encode(t) {
-          return (t.type !== pt.EVENT && t.type !== pt.ACK) || !it(t)
+          return (t.type !== pt.EVENT && t.type !== pt.ACK) || !rt(t)
             ? [this.encodeAsString(t)]
             : this.encodeAsBinary({
                 type: t.type === pt.EVENT ? pt.BINARY_EVENT : pt.BINARY_ACK,
@@ -1454,7 +1454,7 @@
           );
         }
         encodeAsBinary(t) {
-          const e = rt(t),
+          const e = it(t),
             s = this.encodeAsString(e.packet),
             n = e.buffers;
           return n.unshift(s), n;
@@ -1500,10 +1500,10 @@
           if (s.type === pt.BINARY_EVENT || s.type === pt.BINARY_ACK) {
             const n = e + 1;
             for (; "-" !== t.charAt(++e) && e != t.length; );
-            const i = t.substring(n, e);
-            if (i != Number(i) || "-" !== t.charAt(e))
+            const r = t.substring(n, e);
+            if (r != Number(r) || "-" !== t.charAt(e))
               throw new Error("Illegal attachments");
-            s.attachments = Number(i);
+            s.attachments = Number(r);
           }
           if ("/" === t.charAt(e + 1)) {
             const n = e + 1;
@@ -1684,21 +1684,21 @@
               ? s
               : this._opts.ackTimeout;
           if (void 0 === n) return void (this.acks[t] = e);
-          const i = this.io.setTimeoutFn(() => {
+          const r = this.io.setTimeoutFn(() => {
             delete this.acks[t];
             for (let e = 0; e < this.sendBuffer.length; e++)
               this.sendBuffer[e].id === t && this.sendBuffer.splice(e, 1);
             e.call(this, new Error("operation has timed out"));
           }, n);
           this.acks[t] = (...t) => {
-            this.io.clearTimeoutFn(i), e.apply(this, [null, ...t]);
+            this.io.clearTimeoutFn(r), e.apply(this, [null, ...t]);
           };
         }
         emitWithAck(t, ...e) {
           const s =
             void 0 !== this.flags.timeout || void 0 !== this._opts.ackTimeout;
-          return new Promise((n, i) => {
-            e.push((t, e) => (s ? (t ? i(t) : n(e)) : n(t))),
+          return new Promise((n, r) => {
+            e.push((t, e) => (s ? (t ? r(t) : n(e)) : n(t))),
               this.emit(t, ...e);
           });
         }
@@ -1978,9 +1978,9 @@
             this.timeout(null == s.timeout ? 2e4 : s.timeout),
             (this._readyState = "closed"),
             (this.uri = e);
-          const i = s.parser || t;
-          (this.encoder = new i.Encoder()),
-            (this.decoder = new i.Decoder()),
+          const r = s.parser || t;
+          (this.encoder = new r.Encoder()),
+            (this.decoder = new r.Decoder()),
             (this._autoConnect = !1 !== s.autoConnect),
             this._autoConnect && this.open();
         }
@@ -2036,24 +2036,24 @@
           const n = gt(e, "open", function () {
               s.onopen(), t && t();
             }),
-            i = (e) => {
+            r = (e) => {
               this.cleanup(),
                 (this._readyState = "closed"),
                 this.emitReserved("error", e),
                 t ? t(e) : this.maybeReconnectOnOpen();
             },
-            r = gt(e, "error", i);
+            i = gt(e, "error", r);
           if (!1 !== this._timeout) {
             const t = this._timeout,
               s = this.setTimeoutFn(() => {
-                n(), i(new Error("timeout")), e.close();
+                n(), r(new Error("timeout")), e.close();
               }, t);
             this.opts.autoUnref && s.unref(),
               this.subs.push(() => {
                 this.clearTimeoutFn(s);
               });
           }
-          return this.subs.push(n), this.subs.push(r), this;
+          return this.subs.push(n), this.subs.push(i), this;
         }
         connect(t) {
           return this.open(t);
@@ -2181,48 +2181,93 @@
                   ? (n.port = "80")
                   : /^(http|ws)s$/.test(n.protocol) && (n.port = "443")),
               (n.path = n.path || "/");
-            const i = -1 !== n.host.indexOf(":") ? "[" + n.host + "]" : n.host;
+            const r = -1 !== n.host.indexOf(":") ? "[" + n.host + "]" : n.host;
             return (
-              (n.id = n.protocol + "://" + i + ":" + n.port + e),
+              (n.id = n.protocol + "://" + r + ":" + n.port + e),
               (n.href =
                 n.protocol +
                 "://" +
-                i +
+                r +
                 (s && s.port === n.port ? "" : ":" + n.port)),
               n
             );
           })(t, (e = e || {}).path || "/socket.io"),
           n = s.source,
-          i = s.id,
-          r = s.path,
-          o = kt[i] && r in kt[i].nsps;
+          r = s.id,
+          i = s.path,
+          o = kt[r] && i in kt[r].nsps;
         let a;
         return (
           e.forceNew || e["force new connection"] || !1 === e.multiplex || o
             ? (a = new wt(n, e))
-            : (kt[i] || (kt[i] = new wt(n, e)), (a = kt[i])),
+            : (kt[r] || (kt[r] = new wt(n, e)), (a = kt[r])),
           s.query && !e.query && (e.query = s.queryKey),
           a.socket(s.path, e)
         );
       }
       Object.assign(_t, { Manager: wt, Socket: bt, io: _t, connect: _t });
       var Et = s(653);
-      let At, Tt;
-      const Ot = document.querySelector("#game-socket-id").value,
-        Rt = document.querySelector("#user-socket-id").value;
-      (At = _t({ query: { id: Ot } })),
-        At.on(Et.START, (t) => {
-          console.log({ event: Et.START, data: t });
-        }),
-        At.on(Et.USER_ADDED, (t) => {
-          console.log({ event: Et.USER_ADDED, data: t });
-        }),
-        At.on(Et.STATE_UPDATED, (t) => {
-          console.log({ event: Et.STATE_UPDATED, data: t });
-        }),
-        (Tt = _t({ query: { id: Rt } })),
-        Tt.on(Et.STATE_UPDATED, (t) => {
-          console.log({ event: Et.STATE_UPDATED, data: t });
-        });
+      let Tt;
+      const At = document.querySelector("#card"),
+        Ot = document.querySelector(".player-one-hand"),
+        Rt = document.querySelector(".player-two-hand"),
+        Ct = (t, e) => {
+          (t.innerHTML = ""),
+            e.forEach(({ suit: e, number: s }, n) => {
+              const r = At.content.cloneNode(!0).querySelector(".card");
+              r.classList.add(`suit-${e}`),
+                r.classList.add(`number-${s}`),
+                t.appendChild(r);
+            });
+        };
+      let St;
+      const Bt = document.querySelector("#game-socket-id").value,
+        Lt = document.querySelector("#user-socket-id").value,
+        xt = document.querySelector("#room-id").value;
+      var Nt;
+      console.log("HELLO THIS IS THE ROOM ID:"),
+        console.log(xt, Bt, Lt),
+        ((Nt = Bt),
+        (Tt = _t({ query: { id: Nt } })),
+        Tt.on(
+          Et.STATE_UPDATED,
+          ({ game_id: t, current_player: e, players: s }) => {
+            const n = s.find((t) => 1 === t.user_id).hand,
+              r = s.find((t) => 2 === t.user_id).hand;
+            console.log("DOES IT LOG?"),
+              console.log({ seatOneCards: n, seatTwoCards: r }),
+              Ct(Ot, n),
+              Ct(Rt, r);
+          },
+        ),
+        console.log("Game socket configured"),
+        Promise.resolve())
+          .then((t) =>
+            ((t) => (
+              (St = _t({ query: { id: t } })),
+              Object.keys(Et).forEach((t) => {
+                St.on(Et[t], (e) => {
+                  console.log({ event: Et[t], data: e });
+                });
+              }),
+              console.log("User socket configured"),
+              Promise.resolve()
+            ))(Lt),
+          )
+          .then((t) => {
+            console.log("Fetching"),
+              fetch(`/games/${xt}/ready`, { method: "post" });
+          });
+      const qt = document.querySelector("#check-form"),
+        Pt = document.querySelector("#raise-form"),
+        Dt = document.querySelector("#fold-form"),
+        jt = (t) => {
+          t.preventDefault();
+          const { action: e, method: s } = t.target.attributes;
+          return fetch(e.value, { method: s.value }), !1;
+        };
+      qt.addEventListener("submit", jt),
+        Pt.addEventListener("submit", jt),
+        Dt.addEventListener("submit", jt);
     })();
 })();
