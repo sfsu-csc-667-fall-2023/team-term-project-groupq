@@ -1,4 +1,4 @@
-const viewSessionData = (request, response, next) => {
+const viewSessionData = (request, _response, next) => {
   console.log(request.session);
   next();
 };

@@ -18,6 +18,7 @@ const {
 } = require("./middleware/");
 
 const app = express();
+const httpServer = createServer(app);
 
 app.use(morgan("dev"));
 
@@ -53,7 +54,7 @@ const sessionMiddleware = session({
   }),
   secret: process.env.SESSION_SECRET, //'5HbpsviK7M4JGcNBvrZIjdAJMLFrSzaq' - makes it work for windows
   resave: false,
-  saveUninitialized: true, //added for the server configuration
+  saveUninitialized: false, //added for the server configuration
   cookie: { secure: process.env.NODE_ENV !== "development" },
 });
 
@@ -63,7 +64,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(viewSessionData);
 }
 app.use(sessionLocals);
-const httpServer = createServer(app);
 const io = new Server(httpServer);
 io.engine.use(sessionMiddleware);
 
@@ -72,12 +72,12 @@ app.set("io", io);
 io.on("connection", (socket) => {
   socket.join(socket.request.session.id);
 
-  if (socket.handshake.query !== undefined) {
+  if (socket.handshake.query.id !== undefined) {
+    console.log("JOINING", socket.handshake.query.id)
     socket.join(socket.handshake.query.id);
   }
 });
 
-// I tried to move this to the top and it crashed the app?
 const Routes = require("./routes");
 
 app.use("/", Routes.landing);
@@ -103,5 +103,5 @@ updates state of the game and broadcasts for everyone
 
 when client makes a request to the server (playing a card), the client will issue a post request to the API
 and ignore the response (200)
-the actual update will happen asynchronously 
+the actual update will happen asynchronously
 */
