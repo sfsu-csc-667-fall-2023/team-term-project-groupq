@@ -36,8 +36,14 @@ const dealerUpdate = (handContainer, cardList) => {
   });
 };
 
-const updateHand = (handContainer, cardList) => {
+const updateHand = (handContainer, cardList, seat, chip_count) => {
   handContainer.innerHTML = "";
+
+  const seatPosition = String(seat);
+  const p = document.createElement("p");
+  p.textContent = `PLAYER ${seatPosition} HERE: CHIP_COUNT = ${chip_count}`;
+
+  handContainer.appendChild(p);
 
   // cardList = hand
   cardList.forEach(({ suit, number }, index) => {
@@ -48,12 +54,15 @@ const updateHand = (handContainer, cardList) => {
     div.classList.add(`suit-${suit}`);
     div.classList.add(`number-${number}`);
 
+
     handContainer.appendChild(div);
   });
+
+
 };
 
 // get the data from game_state
-const stateUpdated = ({ game_id, current_player, players }) => {
+const stateUpdated = ({ game_id, players }) => {
   let firstPosition;
   let secondPosition;
 
@@ -65,6 +74,19 @@ const stateUpdated = ({ game_id, current_player, players }) => {
       secondPosition = player.user_id;
     }
   });
+
+  let firstPlayerChipCount;
+  let secondPlayerChipCount;
+
+  players.forEach((player) => {
+    if (player.web_position == 0) {
+      firstPlayerChipCount = player.chip_count;
+    } else if (player.web_position == 1) {
+      secondPlayerChipCount = player.chip_count;
+    }
+  });
+
+
 
   console.log("WHAT IS PLAYERS HERE");
   console.log(players);
@@ -83,8 +105,8 @@ const stateUpdated = ({ game_id, current_player, players }) => {
   dealerUpdate(dealerHand, FlopCards);
   dealerUpdate(dealerHand, TurnCards);
   dealerUpdate(dealerHand, RiverCards);
-  updateHand(playerOneHand, seatOneCards);
-  updateHand(playerTwoHand, seatTwoCards);
+  updateHand(playerOneHand, seatOneCards, 0, firstPlayerChipCount);
+  updateHand(playerTwoHand, seatTwoCards, 1, secondPlayerChipCount);
 };
 
 export { configure };

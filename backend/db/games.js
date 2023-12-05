@@ -24,6 +24,8 @@ const { isPlayerInGame } = require("./games/is-player-inGame");
 const { getAllPlayersinGame } = require("./games/get-all-playersinGame");
 const { getTurnOrder } = require("./games/get-turnOrder");
 const { setPlayerTurnOrder } = require("./games/set-player-turnOrder");
+const { setChipCount } = require("./games/set-chipCount");
+const { getChipCount } = require("./games/get-chipCount");
 
 module.exports = {
   create,
@@ -48,4 +50,6 @@ module.exports = {
   getAllPlayersinGame,
   getTurnOrder,
   setPlayerTurnOrder,
+  setChipCount,
+  getChipCount,
 };

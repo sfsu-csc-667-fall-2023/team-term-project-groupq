@@ -80,7 +80,6 @@ router.post("/:id/ready", async (request, response) => {
   const { ready_count, player_count } = await Games.readyPlayer(userId, gameId);
 
   console.log("WE ARE IN THE :id/READY PAGE");
-  console.log({ ready_count, player_count, is_initialized });
 
   let method;
   let gameState;
@@ -95,6 +94,8 @@ router.post("/:id/ready", async (request, response) => {
     method = "initialize";
     gameState = await Games.initialize(parseInt(gameId));
   }
+
+  console.log(ready_count, is_initialized);
 
   console.log("THIS IS THE READY VIEW GAMESTATE:");
   console.log(method, gameState);
