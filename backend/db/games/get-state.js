@@ -41,7 +41,7 @@ const getState = async (gameId) => {
   return {
     game_id: gameId,
     game_socket_id,
-    current_player,
+    ...current_player,
     players: users,
   };
 };

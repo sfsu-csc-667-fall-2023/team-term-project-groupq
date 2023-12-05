@@ -69,23 +69,16 @@ router.get("/:id/join", async (request, response) => {
 
 router.post("/:id/ready", async (request, response) => {
   const { id: gameId } = request.params;
-  const { id: userId, username: user } = request.session.user;
-
+  const { id: userId } = request.session.user;
   const { sid: userSocketId } = await Users.getUserSocket(userId);
-  const { game_socket_id: gameSocketId } = await Games.getGame(gameId);
 
   const io = request.app.get("io");
 
   const { is_initialized } = await Games.isInitialized(gameId);
   const { ready_count, player_count } = await Games.readyPlayer(userId, gameId);
 
-  console.log("WE ARE IN THE :id/READY PAGE");
-
   let method;
   let gameState;
-
-  console.log("THIS IS THE READY COUNT");
-  console.log(ready_count, is_initialized);
 
   if (ready_count !== 2 || is_initialized) {
     method = "getState";
@@ -95,13 +88,39 @@ router.post("/:id/ready", async (request, response) => {
     gameState = await Games.initialize(parseInt(gameId));
   }
 
-  console.log(ready_count, is_initialized);
+  console.log("THIS IS THE READY VIEW GAMESTATE:", {
+    method,
+    gameState,
+    ready_count,
+    is_initialized,
+  });
 
-  console.log("THIS IS THE READY VIEW GAMESTATE:");
-  console.log(method, gameState);
+  const { game_id, players, current_player } = gameState;
 
-  io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
-  //io.emit(GAME_CONSTANTS.STATE_UPDATED, gameState);
+  const flopCards = players.find((player) => player.user_id === -3).hand;
+  const turnCards = players.find((player) => player.user_id === -2).hand;
+  const riverCards = players.find((player) => player.user_id === -1).hand;
+
+  io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
+    game_id,
+    flopCards,
+    turnCards,
+    riverCards,
+    current_player,
+    players: players.reduce((memo, { user_id, hand }) => {
+      memo[user_id] = hand.length;
+
+      return memo;
+    }, {}),
+  });
+
+  players.forEach(({ current_person_playing, hand, chip_count, sid }) => {
+    io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
+      current_person_playing,
+      hand,
+      chip_count,
+    });
+  });
 
   response.status(200).send();
 });

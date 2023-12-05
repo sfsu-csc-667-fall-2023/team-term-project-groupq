@@ -12,10 +12,10 @@ router.get("/sign_up", (_request, response) => {
 
 router.post("/sign_up", async (request, response) => {
   const { username, password } = request.body;
-  console.log({ username, password });
+  console.log("SIGN UP", { username, password });
 
   const username_exists = await Users.username_exists(username);
-  console.log(username_exists);
+  console.log({ username_exists });
   if (username_exists) {
     response.redirect("/");
     return;
@@ -24,13 +24,16 @@ router.post("/sign_up", async (request, response) => {
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
   const hash = await bcrypt.hash(password, salt);
 
-  const { id } = Users.create(username, hash);
+  const user = await Users.create(username, hash);
+  console.log({ user_after_create: user })
+  request.session.user = user;
 
   response.redirect("/lobby");
 });
 
 router.post("/sign_in", async (request, response) => {
   const { username, password } = request.body;
+  console.log("SIGN IN", { username, password })
 
   try {
     const user = await Users.find_username(username);

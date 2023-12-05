@@ -1,15 +1,17 @@
 import { io } from "socket.io-client";
 import * as GAME_CONSTANTS from "../../constants/games";
+import { gameSocketId } from "./page-data"
 
-let gameSocket;
 
-const configure = (socketId) => {
-  gameSocket = io({ query: { id: socketId } });
+let socket;
 
-  gameSocket.on(GAME_CONSTANTS.STATE_UPDATED, stateUpdated);
+const configure = () => {
+  socket = io({ query: { id: gameSocketId } });
+
+  socket.on(GAME_CONSTANTS.STATE_UPDATED, stateUpdated);
 
   console.log("Game socket configured");
-  return Promise.resolve();
+  return Promise.resolve(socket)
 };
 
 const cardTemplate = document.querySelector("#card");
@@ -36,82 +38,54 @@ const dealerUpdate = (handContainer, cardList) => {
   });
 };
 
-const updateHand = (handContainer, cardList, seat, chip_count) => {
-  handContainer.innerHTML = "";
-
-  const seatPosition = String(seat);
-  const p = document.createElement("p");
-  p.textContent = `PLAYER ${seatPosition} HERE: CHIP_COUNT = ${chip_count}`;
-
-  handContainer.appendChild(p);
-
-  // cardList = hand
-  cardList.forEach(({ suit, number }, index) => {
-    const container = cardTemplate.content.cloneNode(true);
-    const div = container.querySelector(".card");
-
-    // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
-    div.classList.add(`suit-${suit}`);
-    div.classList.add(`number-${number}`);
-
-
-    handContainer.appendChild(div);
-  });
-
-
-};
-
 // get the data from game_state
-const stateUpdated = ({ game_id, players }) => {
-  let firstPosition;
-  let secondPosition;
+const stateUpdated = ({ game_id, flopCards, turnCards, riverCards }) => {
+  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards })
+
+  // let firstPosition;
+  // let secondPosition;
 
   console.log("WEB POSITION HERE");
-  players.forEach((player) => {
-    if (player.web_position == 0) {
-      firstPosition = player.user_id;
-    } else if (player.web_position == 1) {
-      secondPosition = player.user_id;
-    }
-  });
+  // players.forEach((player) => {
+  //   if (player.web_position == 0) {
+  //     firstPosition = player.user_id;
+  //   } else if (player.web_position == 1) {
+  //     secondPosition = player.user_id;
+  //   }
+  // });
 
-  let firstPlayerChipCount;
-  let secondPlayerChipCount;
+  // let firstPlayerChipCount;
+  // let secondPlayerChipCount;
 
-  players.forEach((player) => {
-    if (player.web_position == 0) {
-      firstPlayerChipCount = player.chip_count;
-    } else if (player.web_position == 1) {
-      secondPlayerChipCount = player.chip_count;
-    }
-  });
+  // players.forEach((player) => {
+  //   if (player.web_position == 0) {
+  //     firstPlayerChipCount = player.chip_count;
+  //   } else if (player.web_position == 1) {
+  //     secondPlayerChipCount = player.chip_count;
+  //   }
+  // });
 
+  // console.log("WHAT IS PLAYERS HERE");
+  // console.log(players);
 
+  // const seatOneCards = players.find(
+  //   (player) => player.user_id === firstPosition,
+  // ).hand;
+  // const seatTwoCards = players.find(
+  //   (player) => player.user_id === secondPosition,
+  // ).hand;
+  // console.log("DOES IT LOG?");
+  // console.log({ seatOneCards, seatTwoCards });
 
-  console.log("WHAT IS PLAYERS HERE");
-  console.log(players);
-  const FlopCards = players.find((player) => player.user_id === -3).hand;
-  const TurnCards = players.find((player) => player.user_id === -2).hand;
-  const RiverCards = players.find((player) => player.user_id === -1).hand;
-  const seatOneCards = players.find(
-    (player) => player.user_id === firstPosition,
-  ).hand;
-  const seatTwoCards = players.find(
-    (player) => player.user_id === secondPosition,
-  ).hand;
-  console.log("DOES IT LOG?");
-  console.log({ seatOneCards, seatTwoCards });
-
-  dealerUpdate(dealerHand, FlopCards);
-  dealerUpdate(dealerHand, TurnCards);
-  dealerUpdate(dealerHand, RiverCards);
-  updateHand(playerOneHand, seatOneCards, 0, firstPlayerChipCount);
-  updateHand(playerTwoHand, seatTwoCards, 1, secondPlayerChipCount);
+  dealerHand.innerHTML = "";
+  dealerUpdate(dealerHand, flopCards);
+  dealerUpdate(dealerHand, turnCards);
+  dealerUpdate(dealerHand, riverCards);
 };
 
 export { configure };
 
-/* 
+/*
 The info sent to the stateUpdated is GAMESTATE, which contains this for example:
 gameState: {
   game_id: 39,
@@ -153,6 +127,7 @@ hand:
     game_id: 44,
     card_id: 33,
     card_order: 1,
+
     id: 33,
     suit: 'spades',
     number: 7

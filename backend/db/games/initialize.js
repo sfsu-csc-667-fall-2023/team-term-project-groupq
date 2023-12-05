@@ -78,7 +78,7 @@ const initialize = async (gameId) => {
   return {
     game_id: gameId,
     game_socket_id,
-    current_player: firstPlayer,
+    ...firstPlayer,
     players: users,
   };
 };
