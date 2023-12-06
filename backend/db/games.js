@@ -26,6 +26,12 @@ const { getTurnOrder } = require("./games/get-turnOrder");
 const { setPlayerTurnOrder } = require("./games/set-player-turnOrder");
 const { setChipCount } = require("./games/set-chipCount");
 const { getChipCount } = require("./games/get-chipCount");
+const { getPotCount } = require("./games/get-dealerPot");
+const { setPotCount } = require("./games/set-dealerPot");
+const { getPerformedAction } = require("./games/get-performedAction");
+const { setPerformedAction } = require("./games/set-performedAction");
+const { setAllActiontoFalse } = require("./games/set-AllActionToFalse");
+const { getAllAction } = require("./games/get-AllActions");
 
 module.exports = {
   create,
@@ -52,4 +58,10 @@ module.exports = {
   setPlayerTurnOrder,
   setChipCount,
   getChipCount,
+  setPotCount,
+  getPotCount,
+  setPerformedAction,
+  getPerformedAction,
+  setAllActiontoFalse,
+  getAllAction,
 };

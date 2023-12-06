@@ -9,17 +9,23 @@ const configure = () => {
   socket = io({ query: { id: userSocketId } });
 
 
-  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, chip_count, web_position, ready_count, current_player, simplifiedPlayers}) => {
-    console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, chip_count, web_position, ready_count, current_player, simplifiedPlayers })
+  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers}) => {
+    console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
 
-    
-    updatePlayerHand(hand, chip_count, web_position, user_id);
+    //console.log("THIS IS SIMPLIFIED PLAYER", simplifiedPlayers);
+    const playerId = user_id;
+    simplifiedPlayers.forEach(({ user_id, chip_count }) => {
+      //console.log(user_id);
+      if (user_id > 0 ) {
+        if (playerId === user_id) {
+          updatePlayerHand(hand, chip_count, playerId);
+        }
+        else {
+          updateHiddenHand(otherHandContainers[ready_count-1], hand, chip_count, user_id);
+        }
+      }
+    });
 
-    let num = ready_count;
-    if (num>1) {
-
-      updateHiddenHand(otherHandContainers[ready_count-1], hand, chip_count, web_position, num, user_id);
-    }
 
     const playerUserId = user_id;
     const filteredPlayers = simplifiedPlayers.filter(player => player.user_id >= 0);
@@ -66,18 +72,15 @@ const configure = () => {
   return Promise.resolve(socket)
 };
 
-const updatePlayerHand = (cardList, chip_count, seat, user_id) => {
+const updatePlayerHand = (cardList, chip_count, user_id) => {
 
   otherHandContainers[0].innerHTML = "";
-
 
   const seatPosition = String(user_id);
   const p = document.createElement("p");
   p.textContent = `Player ${seatPosition}: chip_count = ${chip_count}`;
 
-
   otherHandContainers[0].appendChild(p);
-
 
   // cardList = hand
   cardList.forEach(({ suit, number }, index) => {
@@ -92,11 +95,11 @@ const updatePlayerHand = (cardList, chip_count, seat, user_id) => {
   });
 };
 
-const updateHiddenHand = (container, cardList, chip_count, seat, num, user_id) => {
+const updateHiddenHand = (container, cardList, chip_count, user_id) => {
 
   container.innerHTML = "";
 
-  const seatPosition = String(user_id+42);
+  const seatPosition = String(user_id);
   const p = document.createElement("p");
   p.textContent = `Player ${seatPosition}: chip_count = ${chip_count}`;
 

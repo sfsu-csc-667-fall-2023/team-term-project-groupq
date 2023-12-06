@@ -88,27 +88,19 @@ router.post("/:id/ready", async (request, response) => {
     gameState = await Games.initialize(parseInt(gameId));
   }
 
-  // console.log("THIS IS THE READY VIEW GAMESTATE:", {
-  //   method,
-  //   gameState,
-  //   ready_count,
-  //   is_initialized,
-  // });
-
-  console.log("THIS IS GAMESTATE: ", gameState);
-  // console.log("THIS IS THE HAND ARRAY: ", gameState.players[0].hand);
+ 
 
   const { game_id, players, current_player } = gameState;
+
+  console.log("THIS IS GAMESTATE: ", gameState);
 
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
-  const numOfCards = players.reduce((memo, { user_id, hand }) => {
-    memo[user_id] = hand.length;
-    // console.log("THIS IS THE MEMO: ", memo); // This it the length of cards each player has
-    return memo;
-  }, {})
+  console.log("THIS IS FLORP CARD: ", flopCards);
+
+  const { pot_count } = await Games.getPotCount(parseInt(gameId));
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     game_id,
@@ -116,22 +108,21 @@ router.post("/:id/ready", async (request, response) => {
     turnCards,
     riverCards,
     current_player,
-    numOfCards,
-    players
+    players,
+    pot_count
   });
 
     // let playerInfo;
     // gameState.players.forEach((player) => {
 
     // });
-  const simplifiedPlayers = players.map(({ user_id, current_player }) => ({ user_id, current_player }));
+    const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
 
-  players.forEach(({ user_id, current_person_playing, hand, chip_count, web_position, sid }) => {
+  players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
       user_id,
       current_person_playing,
       hand,
-      chip_count,
       web_position,
       ready_count,
       current_player,
@@ -159,32 +150,19 @@ router.post("/:id/check", async (request, response) => {
 
   // check if this is current player
   const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
-  const currentPlayerId = await Games.getCurrentPlayer(gameId);
 
-  console.log(isCurrentPlayer);
-  // if (!isCurrentPlayer) {
-  //   // return gameState?
-  //   // Add error message: Not your turn
-  //   // Emit directly to player (userSocket)
-
-  //   return;
-  // }
-
-  // nothing happens and the current player is the next player
+  // THIS MOVES THE DEALER BUTTON -> MAKE IT A METHOD SOMEHWERE
   if (isCurrentPlayer) {
-    console.log("THE FIRST TURNORDERS");
     const turnOrders = await Games.getTurnOrder(gameId);
-    console.log(turnOrders);
+    await Games.setPerformedAction(userId, gameId, true);
 
     for (const { user_id, current_player } of turnOrders) {
       if (current_player == 0) {
         await Games.setPlayerTurnOrder(1, user_id, gameId);
-        console.log("FIRST");
       } 
       else {
         if (current_player === turnOrders.length - 1) {
           await Games.setPlayerTurnOrder(0, user_id, gameId);
-          console.log("SECOND");
         } 
         else {
           await Games.setPlayerTurnOrder(
@@ -192,32 +170,42 @@ router.post("/:id/check", async (request, response) => {
             user_id,
             gameId,
           );
-          console.log("THIRD");
         }
       }
     }
-
-    console.log("THE SECOND TURNORDERS");
-    console.log(await Games.getTurnOrder(gameId));
   }
 
   else {
     console.log("NOT THE CURRENT PLAYER");
-    const turnOrders = await Games.getTurnOrder(gameId);
-    console.log(turnOrders);
+    // Add error message: Not your turn
+    // Emit directly to player (userSocket)
     return;
   }
 
   gameState = await Games.getState(parseInt(gameId));
   const { players, current_player } = gameState;
+  const { pot_count } = await Games.getPotCount(gameId);
 
-  const simplifiedPlayers = players.map(({ user_id, current_player }) => ({ user_id, current_player }));
-  players.forEach(({ user_id, current_person_playing, hand, chip_count, web_position, sid }) => {
+  const flopCards = players.find((player) => player.user_id === -3).hand;
+  const turnCards = players.find((player) => player.user_id === -2).hand;
+  const riverCards = players.find((player) => player.user_id === -1).hand;
+
+  io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
+    gameId,
+    flopCards,
+    turnCards,
+    riverCards,
+    current_player,
+    players,
+    pot_count
+  });
+
+  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
+  players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
       user_id,
       current_person_playing,
       hand,
-      chip_count,
       web_position,
       ready_count,
       current_player,
@@ -230,10 +218,97 @@ router.post("/:id/check", async (request, response) => {
 });
 
 router.post("/:id/raise", async (request, response) => {
-  // check if player is in game
-  // check if this is current player
+
+  const { id: gameId } = request.params;
+  const { id: userId, username: user } = request.session.user;
+  const io = request.app.get("io");
   // Add money into the pot
   // Decrement money from own chip stack
+
+  const { raiseInput } = request.body;
+  console.log({ raiseInput });
+
+  // check if player is in game
+  const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
+  const { ready_count } = await Games.readyPlayer(userId, gameId);
+  console.log({ isPlayerInGame, gameId, userId });
+
+  if (!isPlayerInGame) {
+    response.status(200).send();
+    return;
+  }
+  // check if this is current player
+  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
+
+
+  if (isCurrentPlayer) {
+    const turnOrders = await Games.getTurnOrder(gameId);
+    await Games.setPerformedAction(userId, gameId, true);
+
+    for (const { user_id, current_player } of turnOrders) {
+      console.log("USER_ID IS = ", user_id);
+      if (current_player == 0) {
+
+        await Games.setPlayerTurnOrder(1, user_id, gameId); //changing current_player in game_users - NO EFFECT ON users_id or chip_count
+        const { chip_count } = await Games.getChipCount(user_id, gameId);
+        await Games.setChipCount(user_id, gameId, chip_count - raiseInput);
+        const { pot_count } = await Games.getPotCount(gameId);
+        await Games.setPotCount(gameId, pot_count+chip_count);
+      } 
+      else {
+        if (current_player === turnOrders.length - 1) {
+          await Games.setPlayerTurnOrder(0, user_id, gameId);
+        } 
+        else {
+          await Games.setPlayerTurnOrder(
+            parseInt(current_player) + 1,
+            user_id,
+            gameId,
+          );
+        }
+      }
+    }
+  }
+
+  else {
+    console.log("NOT THE CURRENT PLAYER");
+    // Add error message: Not your turn
+    // Emit directly to player (userSocket)
+    return;
+  }
+
+  gameState = await Games.getState(parseInt(gameId));
+  const { players, current_player } = gameState;
+
+  const flopCards = players.find((player) => player.user_id === -3).hand;
+  const turnCards = players.find((player) => player.user_id === -2).hand;
+  const riverCards = players.find((player) => player.user_id === -1).hand;
+
+  io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
+    game_id,
+    flopCards,
+    turnCards,
+    riverCards,
+    current_player,
+    players,
+    pot_count
+  });
+
+  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
+  players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
+    io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
+      user_id,
+      current_person_playing,
+      hand,
+      web_position,
+      ready_count,
+      current_player,
+      simplifiedPlayers,
+    });
+  });
+
+  response.status(200).send();
+
 });
 
 router.post("/:id/fold", async (request, response) => {});
@@ -251,48 +326,3 @@ router.get("/:id", async (request, response) => {
 });
 
 module.exports = router;
-
-
-
-/*
-turnOrders.forEach(async ({ user_id, current_player }) => {
-      if (current_player == 0) {
-        await Games.setPlayerTurnOrder(1, user_id, gameId);
-        console.log("FIRST");
-      } 
-      else {
-        if (current_player === turnOrders.length - 1) {
-          await Games.setPlayerTurnOrder(0, user_id, gameId);
-          console.log("SECOND");
-        } 
-        else {
-          await Games.setPlayerTurnOrder(
-            parseInt(current_player) + 1,
-            user_id,
-            gameId,
-          );
-          console.log("THIRD");
-        }
-      }
-    });
-
-for (const { user_id, current_player } of turnOrders) {
-    if (current_player == 0) {
-      await Games.setPlayerTurnOrder(1, user_id, gameId);
-      console.log("FIRST");
-    } else {
-      if (current_player === turnOrders.length - 1) {
-        await Games.setPlayerTurnOrder(0, user_id, gameId);
-        console.log("SECOND");
-      } else {
-        await Games.setPlayerTurnOrder(
-          parseInt(current_player) + 1,
-          user_id,
-          gameId,
-        );
-        console.log("THIRD");
-      }
-    }
-
-
-*/

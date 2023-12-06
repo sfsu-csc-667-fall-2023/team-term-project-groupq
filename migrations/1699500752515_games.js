@@ -21,9 +21,6 @@ exports.up = (pgm) => {
     current_player: {
       type: "int",
     },
-    starting_chip: {
-      type: "int",
-    },
     game_phase: {
       type: "stages",
     },
@@ -47,12 +44,12 @@ exports.up = (pgm) => {
       type: "int",
       references: "cards",
     },
-    small_blind: {
-      type: "int",
-    },
-    big_blind: {
-      type: "int",
-    },
+    // small_blind: {
+    //   type: "int",
+    // },
+    // big_blind: {
+    //   type: "int",
+    // },
     pot_count: {
       type: "int",
     },

@@ -30,6 +30,9 @@ exports.up = (pgm) => {
     left_game: {
       type: "boolean",
     },
+    performed_action: {
+      type: "boolean",
+    },
     // created_at: {
     //   type: "timestamp",
     //   notNull: true,

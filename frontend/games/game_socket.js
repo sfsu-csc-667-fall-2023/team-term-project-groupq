@@ -19,8 +19,8 @@ const configure = () => {
 // const playerFiveHand = document.querySelector("#player5");
 
 
-const dealerUpdate = (handContainer, cardList) => {
-  // cardList = hand
+const dealerUpdate = (handContainer, cardList, pot_count) => {
+
   cardList.forEach(({ suit, number }, index) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
@@ -31,71 +31,57 @@ const dealerUpdate = (handContainer, cardList) => {
 
     handContainer.appendChild(div);
   });
+  
+};
+
+const potCountUpdate = (handContainer, pot_count) => {
+  const p = document.createElement("p");
+  p.textContent = `Dealer Pot = ${pot_count}`;
+  p.classList.add("pot-count");
+
+  handContainer.appendChild(p);
+
 };
 
 // get the data from game_state
-const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards }) => {
-  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards })
-  // console.log("LENGTH OF PLAYERS", Object.keys(players).length)
+const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count }) => {
+  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count })
 
-  dealerHand.innerHTML = "";
-  dealerUpdate(dealerHand, flopCards);
-  dealerUpdate(dealerHand, turnCards);
-  dealerUpdate(dealerHand, riverCards);
+  const filler = [{ suit: 'filler', number: 'filler'}];
+  console.log("FILLER", filler);
+  console.log("not filler: ", riverCards);
+
+  if (true) { // pre-flop (all cards are hidden)
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+  }
+  else if (true) { // flop 3 cards visible
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, flopCards, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+  }
+  else if (true) { // turn 4 cards visible
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, flopCards, pot_count);
+    dealerUpdate(dealerHand, turnCards, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+  }
+  else { // river 5 cards visible
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, flopCards, pot_count);
+    dealerUpdate(dealerHand, turnCards, pot_count);
+    dealerUpdate(dealerHand, riverCards, pot_count);
+  }
+
 };
 
 export { configure };
-
-
-
-
-/*
-The info sent to the stateUpdated is GAMESTATE, which contains this for example:
-gameState: {
-  game_id: 39,
-  game_socket_id: '8daa8a275faf67505b2bb2378f1eef2340dc17bd',
-  current_player: { current_player: 2 },
-  players: [ [Object], [Object], [Object] ]
-},
-
-players:
-[
-  {
-    user_id: 1,
-    sid: '6_dLjVLpRkb2BdP1zQRdre1k3rBNLSdQ',
-    hand: [ [Object], [Object] ],
-    current_player: true
-  },
-
-  {
-    user_id: 2,
-    sid: '0HfR-odpDVxUxju--0lmvkjoMZKOYIND',
-    hand: [ [Object], [Object] ],
-    current_player: false
-  }
-]
-
-hand:
-[
-  {
-    user_id: 2,
-    game_id: 44,
-    card_id: 29,
-    card_order: 3,
-    id: 29,
-    suit: 'spades',
-    number: 3
-  },
-  {
-    user_id: 2,
-    game_id: 44,
-    card_id: 33,
-    card_order: 1,
-
-    id: 33,
-    suit: 'spades',
-    number: 7
-  }
-]
-
-*/

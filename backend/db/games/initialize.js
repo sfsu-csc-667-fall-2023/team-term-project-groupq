@@ -12,6 +12,8 @@ const { dealCards } = require("./deal-cards");
 const { setInitialized } = require("./set-initialized");
 const { setChipCount } = require("./set-chipCount");
 const { getChipCount } = require("./get-chipCount");
+const { setPotCount } = require("./set-dealerPot");
+const { setAllActiontoFalse } = require("./set-AllActionToFalse");
 
 const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
@@ -51,6 +53,8 @@ const initialize = async (gameId) => {
     }
   };
 
+  await setPotCount(gameId, 0);
+  await setAllActiontoFalse(gameId);
 
   // When the game is ready to be initialized - playerCount is reached, set the is_initialize field to True
   await setInitialized(gameId);
