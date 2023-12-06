@@ -33,6 +33,9 @@ exports.up = (pgm) => {
     performed_action: {
       type: "boolean",
     },
+    hand_score: {
+      type: "int",
+    },
     // created_at: {
     //   type: "timestamp",
     //   notNull: true,

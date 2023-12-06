@@ -227,3 +227,8 @@ h2 {
 .pot-count {
   color: white;
 }
+
+#game-phase {
+  color: white;
+  font-size: 18px;
+}

@@ -4,6 +4,7 @@ const router = express.Router();
 
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
+const { setRoundWinner } = require("../db/games");
 
 // This is the page the first person comes in - but waiting for other people to join
 router.get("/create", async (request, response) => {
@@ -91,11 +92,18 @@ router.post("/:id/ready", async (request, response) => {
 
   const { game_id, players, current_player } = gameState;
 
-  //console.log("THIS IS GAMESTATE: ", gameState);
+ 
 
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
+
+
+
+
+  //console.log("THIS IS GAMESTATE: ");
+
+
 
   const { pot_count } = await Games.getPotCount(parseInt(gameId));
   const updateGamePhase = await Games.getGamePhase(gameId);
@@ -175,7 +183,6 @@ router.post("/:id/check", async (request, response) => {
       }
     }
   }
-
   else {
     console.log("NOT THE CURRENT PLAYER");
     // Add error message: Not your turn
@@ -183,24 +190,7 @@ router.post("/:id/check", async (request, response) => {
     return;
   }
 
-
-  const allActions = await Games.getAllAction(gameId);
-  const { game_phase } = await Games.getGamePhase(gameId);
-  console.log(game_phase, allActions[0].count, parseInt(allActions[0].count) == 0);
-
-  if (parseInt(allActions[0].count) === 0 && is_initialized) {
-    if (game_phase === "preflop") {
-      await Games.setGamePhase(gameId, "flop");
-    }
-    else if (game_phase === "flop") {
-      await Games.setGamePhase(gameId, "turn");
-    }
-    else if (game_phase === "turn") {
-      await Games.setGamePhase(gameId, "river");
-    }
-    // ELSE NEED TO MAKE A WIN CONDITION
-    await Games.setAllActiontoFalse(gameId);
-  }
+  await set_game_phase(gameId);
   const updateGamePhase = await Games.getGamePhase(gameId);
 
   gameState = await Games.getState(parseInt(gameId));
@@ -301,23 +291,7 @@ router.post("/:id/raise", async (request, response) => {
     return;
   }
 
-  const allActions = await Games.getAllAction(gameId);
-  const { game_phase } = await Games.getGamePhase(gameId);
-  console.log(game_phase, allActions[0].count, parseInt(allActions[0].count) == 0);
-
-  if (parseInt(allActions[0].count) === 0 && is_initialized) {
-    if (game_phase === "preflop") {
-      await Games.setGamePhase(gameId, "flop");
-    }
-    else if (game_phase === "flop") {
-      await Games.setGamePhase(gameId, "turn");
-    }
-    else if (game_phase === "turn") {
-      await Games.setGamePhase(gameId, "river");
-    }
-    // ELSE NEED TO MAKE A WIN CONDITION
-    await Games.setAllActiontoFalse(gameId);
-  }
+  await set_game_phase(gameId);
   const updateGamePhase = await Games.getGamePhase(gameId);
 
   gameState = await Games.getState(parseInt(gameId));
@@ -327,6 +301,7 @@ router.post("/:id/raise", async (request, response) => {
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
+
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -369,5 +344,54 @@ router.get("/:id", async (request, response) => {
 
   response.render("game", { gameId, gameSocketId, userSocketId }); // these are sent as hidden field in the game.ejs file
 });
+
+
+const set_game_phase = async (gameId, players) => {
+  const allActions = await Games.getAllAction(gameId);
+  const { game_phase } = await Games.getGamePhase(gameId);
+  const { is_initialized } = await Games.isInitialized(gameId);
+
+  if (parseInt(allActions[0].count) === 0 && is_initialized) {
+    if (game_phase === "preflop") {
+      await Games.setGamePhase(gameId, "flop");
+    }
+    else if (game_phase === "flop") {
+      await Games.setGamePhase(gameId, "turn");
+    }
+    else if (game_phase === "turn") {
+      await Games.setGamePhase(gameId, "river");
+    }
+    // ELSE NEED TO MAKE A WIN CONDITION
+    else if (game_phase === "river") {
+      await endofRound(gameId, players);
+    }
+    await Games.setAllActiontoFalse(gameId);
+  }
+
+};
+
+const endofRound = async(gameId, players) => {
+  const { game_phase } = await Games.getGamePhase(gameId);
+  const allActions = await Games.getAllAction(gameId);
+
+  //const dealerCards = players.filter((player) => player.user_id < 0).map(({ hand }) => hand);
+
+  // THIS TAKES A USER_ID
+  await setRoundWinner(1, gameId);
+
+  console.log("END OF ROUND");
+  await Games.setGamePhase(gameId, "preflop");
+  const { pot_count } = await Games.getPotCount(gameId);
+  const { round_winner } = await Games.getRoundWinner(gameId);
+  
+  // WINNER CHIP COUNT
+  const { chip_count } = await Games.getChipCount(round_winner, gameId);
+
+  await Games.setChipCount(round_winner, gameId, chip_count+pot_count);
+  await Games.setPotCount(gameId, 0);
+  
+  
+};
+
 
 module.exports = router;

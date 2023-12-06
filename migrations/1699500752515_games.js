@@ -24,26 +24,26 @@ exports.up = (pgm) => {
     game_phase: {
       type: "stages",
     },
-    flop1: {
-      type: "int",
-      references: "cards",
-    },
-    flop2: {
-      type: "int",
-      references: "cards",
-    },
-    flop3: {
-      type: "int",
-      references: "cards",
-    },
-    turn: {
-      type: "int",
-      references: "cards",
-    },
-    river: {
-      type: "int",
-      references: "cards",
-    },
+    // flop1: {
+    //   type: "int",
+    //   references: "cards",
+    // },
+    // flop2: {
+    //   type: "int",
+    //   references: "cards",
+    // },
+    // flop3: {
+    //   type: "int",
+    //   references: "cards",
+    // },
+    // turn: {
+    //   type: "int",
+    //   references: "cards",
+    // },
+    // river: {
+    //   type: "int",
+    //   references: "cards",
+    // },
     // small_blind: {
     //   type: "int",
     // },
@@ -52,6 +52,10 @@ exports.up = (pgm) => {
     // },
     pot_count: {
       type: "int",
+    },
+    round_winner: {
+      type: "int",
+      references: "users",
     },
     // created_at: {
     //   type: "timestamp",

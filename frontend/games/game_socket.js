@@ -40,7 +40,11 @@ const potCountUpdate = (handContainer, pot_count) => {
   p.classList.add("pot-count");
 
   handContainer.appendChild(p);
+};
 
+const gamePhaseUpdate = (gamePhase) => {
+  const p = document.getElementById("game-phase");
+  p.textContent = `CURRENT GAME PHASE: ${gamePhase}`; //CURRENT GAME PHASE: PRE-FLOP
 };
 
 // get the data from game_state
@@ -49,7 +53,9 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
 
   const filler = [{ suit: 'filler', number: 'filler'}];
 
-  if (true) { // pre-flop (all cards are hidden)
+  gamePhaseUpdate(updateGamePhase.game_phase);
+
+  if (updateGamePhase.game_phase === "preflop") { // pre-flop (all cards are hidden)
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
@@ -58,21 +64,21 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
   }
-  else if (true) { // flop 3 cards visible
+  else if (updateGamePhase.game_phase === "flop") { // flop 3 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
   }
-  else if (true) { // turn 4 cards visible
+  else if (updateGamePhase.game_phase === "turn") { // turn 4 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
   }
-  else { // river 5 cards visible
+  else if (updateGamePhase.game_phase === "river") { // river 5 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);

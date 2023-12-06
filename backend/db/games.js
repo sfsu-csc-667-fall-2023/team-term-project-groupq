@@ -34,6 +34,8 @@ const { setAllActiontoFalse } = require("./games/set-AllActionToFalse");
 const { getAllAction } = require("./games/get-AllActionsPerformed");
 const { setGamePhase } = require("./games/set-gamePhase");
 const { getGamePhase } = require("./games/get-gamePhase");
+const { setRoundWinner } = require("./games/set-roundWinner");
+const { getRoundWinner } = require("./games/get-roundWinner");
 
 
 module.exports = {
@@ -68,5 +70,7 @@ module.exports = {
   setAllActiontoFalse,
   getAllAction,
   setGamePhase,
-  getGamePhase
+  getGamePhase,
+  setRoundWinner,
+  getRoundWinner
 };

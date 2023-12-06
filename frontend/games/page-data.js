@@ -4,6 +4,7 @@ const userSocketId = document.querySelector("#user-socket-id").value;
 
 const cardTemplate = document.querySelector("#card");
 const dealerHand = document.querySelector("#community-cards");
+const gameBoard = document.querySelector("#game-board");
 
 const checkForm = document.querySelector("#check-form");
 const raiseForm = document.querySelector("#raise-form");
