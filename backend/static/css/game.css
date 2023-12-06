@@ -204,3 +204,22 @@ h2 {
   color: rgb(23, 70, 121);
   text-align: center;
 }
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  top: 50px;
+}
+
+.dotHidden {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  top: 50px;
+}

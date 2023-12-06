@@ -3,14 +3,10 @@ import { configure as userSocketConfig } from "./user_socket";
 import { checkForm, raiseForm, foldForm } from "./page-data"
 import { ready } from "./ready"
 
-const gameSocket = await gameSocketConfig()
+const gameSocket = await gameSocketConfig() //configure
 const userSocket = await userSocketConfig()
 
 ready(gameSocket, userSocket);
-
-
-
-
 
 
 // The code below prevents the user from entering the new URL games/id/(check, raise or fold)

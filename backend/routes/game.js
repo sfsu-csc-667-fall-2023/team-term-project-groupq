@@ -88,12 +88,15 @@ router.post("/:id/ready", async (request, response) => {
     gameState = await Games.initialize(parseInt(gameId));
   }
 
-  console.log("THIS IS THE READY VIEW GAMESTATE:", {
-    method,
-    gameState,
-    ready_count,
-    is_initialized,
-  });
+  // console.log("THIS IS THE READY VIEW GAMESTATE:", {
+  //   method,
+  //   gameState,
+  //   ready_count,
+  //   is_initialized,
+  // });
+
+  // console.log("THIS IS THE PLAYER ARRAY: ", gameState.players);
+  // console.log("THIS IS THE HAND ARRAY: ", gameState.players[0].hand);
 
   const { game_id, players, current_player } = gameState;
 
@@ -101,24 +104,38 @@ router.post("/:id/ready", async (request, response) => {
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
+  const numOfCards = players.reduce((memo, { user_id, hand }) => {
+    memo[user_id] = hand.length;
+    // console.log("THIS IS THE MEMO: ", memo); // This it the length of cards each player has
+    return memo;
+  }, {})
+
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     game_id,
     flopCards,
     turnCards,
     riverCards,
     current_player,
-    players: players.reduce((memo, { user_id, hand }) => {
-      memo[user_id] = hand.length;
-
-      return memo;
-    }, {}),
+    numOfCards,
+    players
   });
 
-  players.forEach(({ current_person_playing, hand, chip_count, sid }) => {
+    // let playerInfo;
+    // gameState.players.forEach((player) => {
+
+    // });
+  const simplifiedPlayers = players.map(({ user_id, current_player }) => ({ user_id, current_player }));
+
+  players.forEach(({ user_id, current_person_playing, hand, chip_count, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
+      user_id,
       current_person_playing,
       hand,
       chip_count,
+      web_position,
+      ready_count,
+      current_player,
+      simplifiedPlayers,
     });
   });
 
@@ -128,8 +145,11 @@ router.post("/:id/ready", async (request, response) => {
 router.post("/:id/check", async (request, response) => {
   const { id: gameId } = request.params;
   const { id: userId, username: user } = request.session.user;
+  const io = request.app.get("io");
+  
   // check if player is in game
   const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
+  const { ready_count } = await Games.readyPlayer(userId, gameId);
   console.log({ isPlayerInGame, gameId, userId });
 
   if (!isPlayerInGame) {
@@ -175,6 +195,24 @@ router.post("/:id/check", async (request, response) => {
     console.log("THE SECOND TURNORDERS");
     console.log(await Games.getTurnOrder(gameId));
   }
+
+  gameState = await Games.getState(parseInt(gameId));
+  const { players, current_player } = gameState;
+
+  const simplifiedPlayers = players.map(({ user_id, current_player }) => ({ user_id, current_player }));
+  players.forEach(({ user_id, current_person_playing, hand, chip_count, web_position, sid }) => {
+    io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
+      user_id,
+      current_person_playing,
+      hand,
+      chip_count,
+      web_position,
+      ready_count,
+      current_player,
+      simplifiedPlayers,
+    });
+  });
+
 
   response.status(200).send();
 });

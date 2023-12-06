@@ -26,8 +26,6 @@ const getState = async (gameId) => {
 
     if (user.user_id > 0) {
       const test = await getChipCount(user.user_id, gameId);
-      // console.log(test);
-      // console.log(test.chip_count);
 
       user.chip_count = (await getChipCount(user.user_id, gameId)).chip_count;
     } else {
@@ -35,8 +33,8 @@ const getState = async (gameId) => {
     }
   };
 
-  console.log("THE USERS IN GET-TSTATE");
-  console.log(users);
+  // console.log("THE USERS IN GET-TSTATE");
+  // console.log(users);
 
   return {
     game_id: gameId,

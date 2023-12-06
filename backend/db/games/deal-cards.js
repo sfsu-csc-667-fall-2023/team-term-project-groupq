@@ -37,8 +37,8 @@ const dealCards = (users, cards, gameId) => {
     })),
   ];
 
-  console.log("THIS IS THE BIG DEALT CARD HERE");
-  console.log(dealtCards);
+  // console.log("THIS IS THE BIG DEALT CARD HERE");
+  // console.log(dealtCards);
   // const dealtCards = cards.slice(0, users.length * 2)
   // .map(({ card_id }, index) => ({
   //   card_id,
