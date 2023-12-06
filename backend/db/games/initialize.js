@@ -14,6 +14,7 @@ const { setChipCount } = require("./set-chipCount");
 const { getChipCount } = require("./get-chipCount");
 const { setPotCount } = require("./set-dealerPot");
 const { setAllActiontoFalse } = require("./set-AllActionToFalse");
+const { setGamePhase } = require("./set-gamePhase");
 
 const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
@@ -55,6 +56,7 @@ const initialize = async (gameId) => {
 
   await setPotCount(gameId, 0);
   await setAllActiontoFalse(gameId);
+  await setGamePhase(gameId, "preflop");
 
   // When the game is ready to be initialized - playerCount is reached, set the is_initialize field to True
   await setInitialized(gameId);

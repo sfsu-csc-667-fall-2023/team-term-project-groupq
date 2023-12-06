@@ -31,7 +31,10 @@ const { setPotCount } = require("./games/set-dealerPot");
 const { getPerformedAction } = require("./games/get-performedAction");
 const { setPerformedAction } = require("./games/set-performedAction");
 const { setAllActiontoFalse } = require("./games/set-AllActionToFalse");
-const { getAllAction } = require("./games/get-AllActions");
+const { getAllAction } = require("./games/get-AllActionsPerformed");
+const { setGamePhase } = require("./games/set-gamePhase");
+const { getGamePhase } = require("./games/get-gamePhase");
+
 
 module.exports = {
   create,
@@ -64,4 +67,6 @@ module.exports = {
   getPerformedAction,
   setAllActiontoFalse,
   getAllAction,
+  setGamePhase,
+  getGamePhase
 };

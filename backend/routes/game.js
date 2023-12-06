@@ -88,7 +88,23 @@ router.post("/:id/ready", async (request, response) => {
     gameState = await Games.initialize(parseInt(gameId));
   }
 
- 
+  const allActions = await Games.getAllAction(gameId);
+  const { game_phase } = await Games.getGamePhase(gameId);
+  console.log(game_phase, allActions[0].count, is_initialized);
+
+  if (allActions[0].count === 0 && is_initialized) {
+    if (game_phase === "preflop") {
+      await Games.setGamePhase(gameId, "flop");
+    }
+    else if (game_phase === "flop") {
+      await Games.setGamePhase(gameId, "turn");
+    }
+    else if (game_phase === "turn") {
+      await Games.setGamePhase(gameId, "river");
+    }
+    // ELSE NEED TO MAKE A WIN CONDITION
+    await Games.setAllActiontoFalse(gameId);
+  }
 
   const { game_id, players, current_player } = gameState;
 
@@ -109,7 +125,8 @@ router.post("/:id/ready", async (request, response) => {
     riverCards,
     current_player,
     players,
-    pot_count
+    pot_count,
+    game_phase
   });
 
     // let playerInfo;
@@ -197,7 +214,9 @@ router.post("/:id/check", async (request, response) => {
     riverCards,
     current_player,
     players,
-    pot_count
+    pot_count,
+    game_phase
+
   });
 
   const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
@@ -212,7 +231,6 @@ router.post("/:id/check", async (request, response) => {
       simplifiedPlayers,
     });
   });
-
 
   response.status(200).send();
 });
@@ -279,19 +297,21 @@ router.post("/:id/raise", async (request, response) => {
 
   gameState = await Games.getState(parseInt(gameId));
   const { players, current_player } = gameState;
+  const { pot_count } = await Games.getPotCount(gameId);
 
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
-    game_id,
+    gameId,
     flopCards,
     turnCards,
     riverCards,
     current_player,
     players,
-    pot_count
+    pot_count,
+    game_phase
   });
 
   const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));

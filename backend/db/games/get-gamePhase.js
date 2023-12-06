@@ -8,6 +8,6 @@ const SELECT_GAME_PHASE = `
 `;
 
 const getGamePhase = (gameId) =>
-  db.none(SELECT_GAME_PHASE, [gameId]);
+  db.one(SELECT_GAME_PHASE, [gameId]);
 
 module.exports = { getGamePhase };

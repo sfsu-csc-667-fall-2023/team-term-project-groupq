@@ -44,12 +44,10 @@ const potCountUpdate = (handContainer, pot_count) => {
 };
 
 // get the data from game_state
-const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count }) => {
-  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count })
+const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, game_phase }) => {
+  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count,game_phase })
 
   const filler = [{ suit: 'filler', number: 'filler'}];
-  console.log("FILLER", filler);
-  console.log("not filler: ", riverCards);
 
   if (true) { // pre-flop (all cards are hidden)
     dealerHand.innerHTML = "";

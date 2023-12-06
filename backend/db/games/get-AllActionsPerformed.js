@@ -3,7 +3,7 @@ const { connection: db } = database;
 
 
 const SELECT_ALL_ACTIONS = `
-  SELECT performed_action
+  SELECT count(performed_action)
   FROM game_users
   WHERE NOT performed_action AND game_id=$1
 `;
