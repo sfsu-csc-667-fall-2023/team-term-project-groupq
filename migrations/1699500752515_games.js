@@ -55,7 +55,6 @@ exports.up = (pgm) => {
     },
     round_winner: {
       type: "int",
-      references: "users",
     },
     // created_at: {
     //   type: "timestamp",

@@ -8,7 +8,11 @@ let socket;
 const configure = () => {
   socket = io({ query: { id: userSocketId } });
 
-
+  socket.on('showPopup', (data) => {
+    const errorMessage = data.message;  
+    alert(errorMessage);
+  });
+  
   socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers}) => {
     console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
 

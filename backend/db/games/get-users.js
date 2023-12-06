@@ -12,6 +12,19 @@ const GET_USERS = `
   WHERE game_id=$1
 `;
 
-const getUsers = (gameId) => db.many(GET_USERS, [gameId]);
+const GET_USER_SID = `
+  SELECT user_id, (
+    SELECT sid FROM session
+    WHERE (sess->'user'->>'id')::int=user_id
+    ORDER BY expire DESC
+    LIMIT 1
+  ) as sid
+  FROM game_users
+  WHERE game_id=$1 AND user_id=$2
+`
 
-module.exports = { getUsers };
+const getUsers = (gameId) => db.many(GET_USERS, [gameId]);
+const getUserSID = (gameId, userId) => db.one(GET_USER_SID, [gameId, userId]);
+
+
+module.exports = { getUsers, getUserSID };

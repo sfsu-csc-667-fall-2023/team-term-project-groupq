@@ -10,6 +10,11 @@ const configure = () => {
 
   socket.on(GAME_CONSTANTS.STATE_UPDATED, stateUpdated);
 
+  socket.on('showPopup', (data) => {
+    const errorMessage = data.message;  
+    alert(errorMessage);
+  });
+
   console.log("Game socket configured");
   return Promise.resolve(socket)
 };

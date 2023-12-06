@@ -8,7 +8,7 @@ const { userCount } = require("./games/user-count");
 const { createShuffledDeck } = require("./games/shuffle-deck");
 const { create } = require("./games/create-game");
 const { getAvailableGames } = require("./games/get-availableGames");
-const { getUsers } = require("./games/get-users");
+const { getUsers, getUserSID } = require("./games/get-users");
 const { getPlayerByTurnOrder } = require("./games/get-player-by-turnOrder");
 const { setCurrentPlayer } = require("./games/set-current-player");
 const { getCardsperPlayers } = require("./games/get-cards-per-players");
@@ -72,5 +72,6 @@ module.exports = {
   setGamePhase,
   getGamePhase,
   setRoundWinner,
-  getRoundWinner
+  getRoundWinner,
+  getUserSID
 };

@@ -140,6 +140,7 @@ router.post("/:id/ready", async (request, response) => {
 router.post("/:id/check", async (request, response) => {
   const { id: gameId } = request.params;
   const { id: userId, username: user } = request.session.user;
+  const { sid } = await Games.getUserSID(gameId, userId);
   const io = request.app.get("io");
   
   // check if player is in game
@@ -184,13 +185,17 @@ router.post("/:id/check", async (request, response) => {
     }
   }
   else {
-    console.log("NOT THE CURRENT PLAYER");
-    // Add error message: Not your turn
-    // Emit directly to player (userSocket)
+
+    
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
 
   await set_game_phase(gameId);
+
+  
+
+
   const updateGamePhase = await Games.getGamePhase(gameId);
 
   gameState = await Games.getState(parseInt(gameId));
@@ -200,6 +205,13 @@ router.post("/:id/check", async (request, response) => {
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
+
+  const { round_winner } = await Games.getRoundWinner(gameId);
+    if (round_winner > 0) {
+      io.to(gameState.game_socket_id).emit('showPopup', { message: 'PLAYER 1 IS THE WINNER!' });
+      await setRoundWinner(-1, gameId);
+    }
+    
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -285,9 +297,8 @@ router.post("/:id/raise", async (request, response) => {
   }
 
   else {
-    console.log("NOT THE CURRENT PLAYER");
-    // Add error message: Not your turn
-    // Emit directly to player (userSocket)
+    const { sid } = await Games.getUserSID(gameId, userId);
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
 
@@ -380,7 +391,6 @@ const endofRound = async(gameId, players) => {
   await setRoundWinner(1, gameId);
 
   console.log("END OF ROUND");
-  await Games.setGamePhase(gameId, "preflop");
   const { pot_count } = await Games.getPotCount(gameId);
   const { round_winner } = await Games.getRoundWinner(gameId);
   
@@ -388,8 +398,10 @@ const endofRound = async(gameId, players) => {
   const { chip_count } = await Games.getChipCount(round_winner, gameId);
 
   await Games.setChipCount(round_winner, gameId, chip_count+pot_count);
+
+  // re-initialize settings
+  await Games.setGamePhase(gameId, "preflop");
   await Games.setPotCount(gameId, 0);
-  
   
 };
 
