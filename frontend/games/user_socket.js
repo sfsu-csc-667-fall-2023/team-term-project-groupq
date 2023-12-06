@@ -21,49 +21,43 @@ const configure = () => {
       updateHiddenHand(otherHandContainers[ready_count-1], hand, chip_count, web_position, num, user_id);
     }
 
-    //const circle = document.createElement("div");
-    // if (current_person_playing) {
-    //   circle.classList.add(`dot`);
-    //   otherHandContainers[0].appendChild(circle);
-    // }
-    // else {
-    //   circle.classList.add(`dotHidden`);
-    //   otherHandContainers[0].appendChild(circle);
-    // }
-
     const playerUserId = user_id;
     const filteredPlayers = simplifiedPlayers.filter(player => player.user_id >= 0);
-    filteredPlayers.forEach(({ user_id: filteredUserId, current_player: filteredCurrentPlayer}) => {
 
-      // console.log("THIS IS MY USER_ID: ", playerUserId);
-      // console.log("FILTERED_ID: ", filteredUserId);
-      // console.log("FILTERED current_player: ", filteredCurrentPlayer);
-      if (filteredUserId > 0) {
-        
-        if (filteredUserId == user_id && filteredCurrentPlayer == 0) {
-          // console.log("DOES IT GO HERE #1")
-          const circle1 = document.createElement("div");
-          circle1.classList.add(`dot`);
-          otherHandContainers[0].appendChild(circle1);
+    if (ready_count >= 2) {
+      filteredPlayers.forEach(({ user_id: filteredUserId, current_player: filteredCurrentPlayer}) => {
 
-        }
+        // console.log("THIS IS MY USER_ID: ", playerUserId);
+        // console.log("FILTERED_ID: ", filteredUserId);
+        // console.log("FILTERED current_player: ", filteredCurrentPlayer);
+        if (filteredUserId > 0) {
+          
+          if (filteredUserId == user_id && filteredCurrentPlayer == 0) {
+            // console.log("DOES IT GO HERE #1")
+            const circle1 = document.createElement("div");
+            circle1.classList.add(`dot`);
+            otherHandContainers[0].appendChild(circle1);
 
-        else if (filteredUserId == user_id && filteredCurrentPlayer > 0) {
-          const circle1 = document.createElement("div");
-          circle1.classList.add(`dotHidden`);
-          otherHandContainers[0].appendChild(circle1);
-        }
-
-        else {
-          if (filteredCurrentPlayer == 0) {
-            const circle2 = document.createElement("div");
-            circle2.classList.add(`dot`);
-            otherHandContainers[1].appendChild(circle2);
           }
-          // console.log(" #2 #2 #2 ");
+
+          else if (filteredUserId == user_id && filteredCurrentPlayer > 0) {
+            const circle1 = document.createElement("div");
+            circle1.classList.add(`dotHidden`);
+            otherHandContainers[0].appendChild(circle1);
+          }
+
+          else {
+            if (filteredCurrentPlayer == 0) {
+              const circle2 = document.createElement("div");
+              circle2.classList.add(`dot`);
+              otherHandContainers[1].appendChild(circle2);
+            }
+            // console.log(" #2 #2 #2 ");
+          }
         }
-      }
-    });
+      });
+    }
+
     
   })
 

@@ -95,7 +95,7 @@ router.post("/:id/ready", async (request, response) => {
   //   is_initialized,
   // });
 
-  // console.log("THIS IS THE PLAYER ARRAY: ", gameState.players);
+  console.log("THIS IS GAMESTATE: ", gameState);
   // console.log("THIS IS THE HAND ARRAY: ", gameState.players[0].hand);
 
   const { game_id, players, current_player } = gameState;
@@ -159,16 +159,16 @@ router.post("/:id/check", async (request, response) => {
 
   // check if this is current player
   const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
-  const currentPlayer = await Games.getCurrentPlayer(gameId);
+  const currentPlayerId = await Games.getCurrentPlayer(gameId);
 
   console.log(isCurrentPlayer);
-  if (!isCurrentPlayer) {
-    // return gameState?
-    // Add error message: Not your turn
-    // Emit directly to player (userSocket)
+  // if (!isCurrentPlayer) {
+  //   // return gameState?
+  //   // Add error message: Not your turn
+  //   // Emit directly to player (userSocket)
 
-    return;
-  }
+  //   return;
+  // }
 
   // nothing happens and the current player is the next player
   if (isCurrentPlayer) {
@@ -176,24 +176,36 @@ router.post("/:id/check", async (request, response) => {
     const turnOrders = await Games.getTurnOrder(gameId);
     console.log(turnOrders);
 
-    turnOrders.forEach(async (users_position) => {
-      if (users_position.current_player == 0) {
-        await Games.setPlayerTurnOrder(1, users_position.user_id, gameId);
-      } else {
-        if (users_position.current_player == turnOrders.length - 1) {
-          await Games.setPlayerTurnOrder(0, users_position.user_id, gameId);
-        } else {
+    for (const { user_id, current_player } of turnOrders) {
+      if (current_player == 0) {
+        await Games.setPlayerTurnOrder(1, user_id, gameId);
+        console.log("FIRST");
+      } 
+      else {
+        if (current_player === turnOrders.length - 1) {
+          await Games.setPlayerTurnOrder(0, user_id, gameId);
+          console.log("SECOND");
+        } 
+        else {
           await Games.setPlayerTurnOrder(
-            parseInt(users_position.current_player) + 1,
-            users_position.user_id,
+            parseInt(current_player) + 1,
+            user_id,
             gameId,
           );
+          console.log("THIRD");
         }
       }
-    });
+    }
 
     console.log("THE SECOND TURNORDERS");
     console.log(await Games.getTurnOrder(gameId));
+  }
+
+  else {
+    console.log("NOT THE CURRENT PLAYER");
+    const turnOrders = await Games.getTurnOrder(gameId);
+    console.log(turnOrders);
+    return;
   }
 
   gameState = await Games.getState(parseInt(gameId));
@@ -239,3 +251,48 @@ router.get("/:id", async (request, response) => {
 });
 
 module.exports = router;
+
+
+
+/*
+turnOrders.forEach(async ({ user_id, current_player }) => {
+      if (current_player == 0) {
+        await Games.setPlayerTurnOrder(1, user_id, gameId);
+        console.log("FIRST");
+      } 
+      else {
+        if (current_player === turnOrders.length - 1) {
+          await Games.setPlayerTurnOrder(0, user_id, gameId);
+          console.log("SECOND");
+        } 
+        else {
+          await Games.setPlayerTurnOrder(
+            parseInt(current_player) + 1,
+            user_id,
+            gameId,
+          );
+          console.log("THIRD");
+        }
+      }
+    });
+
+for (const { user_id, current_player } of turnOrders) {
+    if (current_player == 0) {
+      await Games.setPlayerTurnOrder(1, user_id, gameId);
+      console.log("FIRST");
+    } else {
+      if (current_player === turnOrders.length - 1) {
+        await Games.setPlayerTurnOrder(0, user_id, gameId);
+        console.log("SECOND");
+      } else {
+        await Games.setPlayerTurnOrder(
+          parseInt(current_player) + 1,
+          user_id,
+          gameId,
+        );
+        console.log("THIRD");
+      }
+    }
+
+
+*/
