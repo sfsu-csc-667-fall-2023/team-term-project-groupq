@@ -88,35 +88,17 @@ router.post("/:id/ready", async (request, response) => {
     gameState = await Games.initialize(parseInt(gameId));
   }
 
-  const allActions = await Games.getAllAction(gameId);
-  const { game_phase } = await Games.getGamePhase(gameId);
-  console.log(game_phase, allActions[0].count, is_initialized);
-
-  if (allActions[0].count === 0 && is_initialized) {
-    if (game_phase === "preflop") {
-      await Games.setGamePhase(gameId, "flop");
-    }
-    else if (game_phase === "flop") {
-      await Games.setGamePhase(gameId, "turn");
-    }
-    else if (game_phase === "turn") {
-      await Games.setGamePhase(gameId, "river");
-    }
-    // ELSE NEED TO MAKE A WIN CONDITION
-    await Games.setAllActiontoFalse(gameId);
-  }
 
   const { game_id, players, current_player } = gameState;
 
-  console.log("THIS IS GAMESTATE: ", gameState);
+  //console.log("THIS IS GAMESTATE: ", gameState);
 
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
-  console.log("THIS IS FLORP CARD: ", flopCards);
-
   const { pot_count } = await Games.getPotCount(parseInt(gameId));
+  const updateGamePhase = await Games.getGamePhase(gameId);
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     game_id,
@@ -126,14 +108,11 @@ router.post("/:id/ready", async (request, response) => {
     current_player,
     players,
     pot_count,
-    game_phase
+    updateGamePhase
   });
 
-    // let playerInfo;
-    // gameState.players.forEach((player) => {
 
-    // });
-    const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
+  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
 
   players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
@@ -158,9 +137,14 @@ router.post("/:id/check", async (request, response) => {
   // check if player is in game
   const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
   const { ready_count } = await Games.readyPlayer(userId, gameId);
+  const { is_initialized } = await Games.isInitialized(gameId);
   console.log({ isPlayerInGame, gameId, userId });
 
   if (!isPlayerInGame) {
+    response.status(200).send();
+    return;
+  }
+  else if (!is_initialized) {
     response.status(200).send();
     return;
   }
@@ -199,6 +183,26 @@ router.post("/:id/check", async (request, response) => {
     return;
   }
 
+
+  const allActions = await Games.getAllAction(gameId);
+  const { game_phase } = await Games.getGamePhase(gameId);
+  console.log(game_phase, allActions[0].count, parseInt(allActions[0].count) == 0);
+
+  if (parseInt(allActions[0].count) === 0 && is_initialized) {
+    if (game_phase === "preflop") {
+      await Games.setGamePhase(gameId, "flop");
+    }
+    else if (game_phase === "flop") {
+      await Games.setGamePhase(gameId, "turn");
+    }
+    else if (game_phase === "turn") {
+      await Games.setGamePhase(gameId, "river");
+    }
+    // ELSE NEED TO MAKE A WIN CONDITION
+    await Games.setAllActiontoFalse(gameId);
+  }
+  const updateGamePhase = await Games.getGamePhase(gameId);
+
   gameState = await Games.getState(parseInt(gameId));
   const { players, current_player } = gameState;
   const { pot_count } = await Games.getPotCount(gameId);
@@ -215,7 +219,7 @@ router.post("/:id/check", async (request, response) => {
     current_player,
     players,
     pot_count,
-    game_phase
+    updateGamePhase
 
   });
 
@@ -239,6 +243,7 @@ router.post("/:id/raise", async (request, response) => {
 
   const { id: gameId } = request.params;
   const { id: userId, username: user } = request.session.user;
+  const { is_initialized } = await Games.isInitialized(gameId);
   const io = request.app.get("io");
   // Add money into the pot
   // Decrement money from own chip stack
@@ -270,8 +275,9 @@ router.post("/:id/raise", async (request, response) => {
         await Games.setPlayerTurnOrder(1, user_id, gameId); //changing current_player in game_users - NO EFFECT ON users_id or chip_count
         const { chip_count } = await Games.getChipCount(user_id, gameId);
         await Games.setChipCount(user_id, gameId, chip_count - raiseInput);
+
         const { pot_count } = await Games.getPotCount(gameId);
-        await Games.setPotCount(gameId, pot_count+chip_count);
+        await Games.setPotCount(gameId, pot_count+raiseInput);
       } 
       else {
         if (current_player === turnOrders.length - 1) {
@@ -295,6 +301,25 @@ router.post("/:id/raise", async (request, response) => {
     return;
   }
 
+  const allActions = await Games.getAllAction(gameId);
+  const { game_phase } = await Games.getGamePhase(gameId);
+  console.log(game_phase, allActions[0].count, parseInt(allActions[0].count) == 0);
+
+  if (parseInt(allActions[0].count) === 0 && is_initialized) {
+    if (game_phase === "preflop") {
+      await Games.setGamePhase(gameId, "flop");
+    }
+    else if (game_phase === "flop") {
+      await Games.setGamePhase(gameId, "turn");
+    }
+    else if (game_phase === "turn") {
+      await Games.setGamePhase(gameId, "river");
+    }
+    // ELSE NEED TO MAKE A WIN CONDITION
+    await Games.setAllActiontoFalse(gameId);
+  }
+  const updateGamePhase = await Games.getGamePhase(gameId);
+
   gameState = await Games.getState(parseInt(gameId));
   const { players, current_player } = gameState;
   const { pot_count } = await Games.getPotCount(gameId);
@@ -311,7 +336,7 @@ router.post("/:id/raise", async (request, response) => {
     current_player,
     players,
     pot_count,
-    game_phase
+    updateGamePhase
   });
 
   const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));

@@ -44,8 +44,8 @@ const potCountUpdate = (handContainer, pot_count) => {
 };
 
 // get the data from game_state
-const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, game_phase }) => {
-  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count,game_phase })
+const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase }) => {
+  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase })
 
   const filler = [{ suit: 'filler', number: 'filler'}];
 
