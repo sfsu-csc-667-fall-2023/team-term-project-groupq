@@ -8,19 +8,19 @@ let socket;
 const configure = () => {
   socket = io({ query: { id: userSocketId } });
 
-  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers, username }) => {
-    console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers, username })
+  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers }) => {
+    console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
 
     //console.log("THIS IS SIMPLIFIED PLAYER", simplifiedPlayers);
     const playerId = user_id;
-    simplifiedPlayers.forEach(({ user_id, chip_count }) => {
+    simplifiedPlayers.forEach(({ user_id, chip_count, username }) => {
       //console.log(user_id);
       if (user_id > 0 ) {
         if (playerId === user_id) {
-          updatePlayerHand(hand, chip_count, playerId);
+          updatePlayerHand(hand, chip_count, username);
         }
         else {
-          updateHiddenHand(otherHandContainers[ready_count-1], hand, chip_count, user_id);
+          updateHiddenHand(otherHandContainers[ready_count-1], hand, chip_count, username);
         }
       }
     });
@@ -68,7 +68,7 @@ const updatePlayerHand = (cardList, chip_count, user_id) => {
 
   const seatPosition = String(user_id);
   const p = document.createElement("p");
-  p.textContent = `Player ${seatPosition}: chip_count = ${chip_count}`;
+  p.textContent = `Player ${seatPosition}, chip_count = ${chip_count}`;
 
   otherHandContainers[0].appendChild(p);
 
@@ -91,7 +91,7 @@ const updateHiddenHand = (container, cardList, chip_count, user_id) => {
 
   const seatPosition = String(user_id);
   const p = document.createElement("p");
-  p.textContent = `Player ${seatPosition}: chip_count = ${chip_count}`;
+  p.textContent = `Player ${seatPosition}, chip_count = ${chip_count}`;
 
   container.appendChild(p);
 

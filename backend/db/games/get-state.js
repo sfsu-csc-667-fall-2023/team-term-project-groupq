@@ -13,12 +13,14 @@ const getState = async (gameId) => {
 
   //const current_player = await getCurrentPlayer(gameId);
   const users = await getUsers(gameId);
+
+  // console.log("THE USERS IN GET-TSTATE");
+  // console.log(users);
   users.push({ user_id: -1 });
   users.push({ user_id: -2 });
   users.push({ user_id: -3 });
 
-  // console.log("THE USERS IN GET-TSTATE");
-  // console.log(users);
+  
 
   const dealtCards = await getCardsAlreadyDealt(gameId);
 

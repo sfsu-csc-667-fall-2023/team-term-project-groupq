@@ -108,7 +108,7 @@ router.post("/:id/ready", async (request, response) => {
     updateGamePhase
   });
 
-  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
+  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count, username }) => ({ user_id, current_player, chip_count, username }));
 
   players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
@@ -119,7 +119,6 @@ router.post("/:id/ready", async (request, response) => {
       ready_count,
       current_player,
       simplifiedPlayers,
-      username,
     });
   });
 
@@ -207,7 +206,7 @@ router.post("/:id/check", async (request, response) => {
     updateGamePhase,
   });
 
-  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
+  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count, username }) => ({ user_id, current_player, chip_count, username }));
   players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
       user_id,
@@ -217,7 +216,6 @@ router.post("/:id/check", async (request, response) => {
       ready_count,
       current_player,
       simplifiedPlayers,
-      username,
     });
   });
 
@@ -318,7 +316,7 @@ router.post("/:id/raise", async (request, response) => {
     updateGamePhase
   });
 
-  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
+  const simplifiedPlayers = players.map(({ user_id, current_player, chip_count, username }) => ({ user_id, current_player, chip_count, username }));
   players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
     io.to(sid).emit(GAME_CONSTANTS.HAND_UPDATED, {
       user_id,
@@ -328,7 +326,6 @@ router.post("/:id/raise", async (request, response) => {
       ready_count,
       current_player,
       simplifiedPlayers,
-      username,
     });
   });
 
