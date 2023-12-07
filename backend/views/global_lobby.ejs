@@ -29,21 +29,32 @@
                 <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %>
                 </h2>
             </div>
-            <div class="inner list">
+            <!-- <div class="inner list">
                 <ul>
                     <li><a href="/">Landing</a></li>
                     <li><a href="/auth/sign_up">sign-up</a></li>
                     <li><a href="/lobby">lobby</a></li>
                     <li><a href="/games/1">game</a></li>
                 </ul>
-            </div>
+            </div> -->
             <div class="inner grid">
+                <h2>Returning Games</h2>
+                <section id="game-list">
+                    <ul>
+                        <% returningGames.forEach(game => { %>
+                            <li>
+                                <a href="/games/<%= game.game_id %>/join">Return to Game: <%= game.game_id %></a>
+                            </li>
+                            <% }) %>
+                    </ul>
+                </section>
+
                 <h2>Available Games</h2>
                 <section id="game-list">
                     <ul>
                         <% availableGames.forEach(game => { %>
                             <li>
-                                <a href="/games/<%= game.id %>/join">Join <%= game.id %></a>
+                                <a href="/games/<%= game.id %>/join">Join Game: <%= game.id %></a>
                             </li>
                             <% }) %>
                     </ul>

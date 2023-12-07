@@ -14,14 +14,10 @@ chatSocket.on(`chat:message:${roomId}`, ({ from, timestamp, message }) => {
   p.innerText = from + ": " + message;
 
   chatWindow.scrollTop = chatWindow.scrollHeight;
-
-
   chatWindow.appendChild(div);
 });
 
 document.querySelector("#message").addEventListener("keydown", (event) => {
-  //console.log({event})
-  //keycode 13
   if (event.keyCode == 13) {
     const message = event.target.value;
     const url = event.target.dataset.url;
@@ -35,10 +31,3 @@ document.querySelector("#message").addEventListener("keydown", (event) => {
     event.target.value = "";
   }
 });
-
-// const div = document.createElement("div");
-// div.classList.add("message");
-// const p = document.createElement("p");
-// p.innerText = from + ": " + message;
-// div.appendChild(p);
-// chatWindow.appendChild(div);

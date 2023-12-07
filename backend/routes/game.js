@@ -60,10 +60,14 @@ router.get("/:id/join", async (request, response) => {
   const io = request.app.get("io");
 
   // Add the user that just joined into the game_users table
-  await Games.addUser(userId, gameId);
-  io.emit(GAME_CONSTANTS.USER_ADDED, { userId, username, gameId });
+  const test = await Games.isAlreadyInGame(gameId, userId);
+  console.log("IS THIS TRUE", test);
+  console.log("IS THIS TRUE", test[0], test[0].count);
 
-  const userCount = await Games.userCount(gameId);
+  if (test[0].count != 1) {
+    await Games.addUser(userId, gameId);
+    io.emit(GAME_CONSTANTS.USER_ADDED, { userId, username, gameId });
+  }
 
   response.redirect(`/games/${gameId}`);
 });
