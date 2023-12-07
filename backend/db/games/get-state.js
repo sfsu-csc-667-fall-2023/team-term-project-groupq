@@ -21,7 +21,6 @@ const getState = async (gameId) => {
   users.push({ user_id: -3 });
 
   
-
   const dealtCards = await getCardsAlreadyDealt(gameId);
 
   for (const user of users) {
@@ -30,16 +29,13 @@ const getState = async (gameId) => {
     user.current_person_playing = user.current_player == 0;
 
     if (user.user_id > 0) {
-      const test = await getChipCount(user.user_id, gameId);
+      //const test = await getChipCount(user.user_id, gameId);
 
       user.chip_count = (await getChipCount(user.user_id, gameId)).chip_count;
     } else {
       user.chip_count = -1;
     }
   };
-
-  // console.log("THE USERS IN GET-TSTATE");
-  // console.log(users);
 
   return {
     game_id: gameId,

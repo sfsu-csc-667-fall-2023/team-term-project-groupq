@@ -14,7 +14,7 @@ const handler = (request, response) => {
         message,
     })
 
-    response.status(200);
+    response.status(200).send();
 }
 
 router.post("/chat", handler);

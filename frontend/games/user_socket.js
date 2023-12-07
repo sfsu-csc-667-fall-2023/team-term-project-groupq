@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import * as GAME_CONSTANTS from "../../constants/games";
-import { userSocketId, playerOneHandContainer, cardTemplate, otherHandContainers } from "./page-data"
+import { userSocketId, cardTemplate, otherHandContainers } from "./page-data"
 
 
 let socket;
@@ -11,10 +11,8 @@ const configure = () => {
   socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers }) => {
     console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
 
-    //console.log("THIS IS SIMPLIFIED PLAYER", simplifiedPlayers);
     const playerId = user_id;
     simplifiedPlayers.forEach(({ user_id, chip_count, username }) => {
-      //console.log(user_id);
       if (user_id > 0 ) {
         if (playerId === user_id) {
           updatePlayerHand(hand, chip_count, username);
@@ -72,12 +70,10 @@ const updatePlayerHand = (cardList, chip_count, user_id) => {
 
   otherHandContainers[0].appendChild(p);
 
-  // cardList = hand
   cardList.forEach(({ suit, number }, index) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
 
-    // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
     div.classList.add(`suit-${suit}`);
     div.classList.add(`number-${number}`);
 
@@ -99,13 +95,11 @@ const updateHiddenHand = (container, cardList, chip_count, user_id) => {
     const containerhand = cardTemplate.content.cloneNode(true);
     const div = containerhand.querySelector(".card");
 
-    // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
     div.classList.add(`player-${seatPosition}`);
     div.classList.add(`card-${seatPosition}`);
 
     container.appendChild(div);
   });
-
 };
 
 

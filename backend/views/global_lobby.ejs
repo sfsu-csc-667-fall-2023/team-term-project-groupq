@@ -22,45 +22,56 @@
             </a>
     </nav>
 
-    <main>
-        <div>
-            <h1>Lobby</h1>
-            <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %>
-            </h2>
-        </div>
-        <div>
-            <ul>
-                <li><a href="/">Landing</a></li>
-                <li><a href="/auth/sign_up">sign-up</a></li>
-                <li><a href="/lobby">lobby</a></li>
-                <li><a href="/games/1">game</a></li>
-            </ul>
-        </div>
-        <div class="grid">
-            <h2>Available Games</h2>
-            <section id="game-list">
+    <main class="main-container">
+        <div class="outer-container">
+            <div class="inner welcome">
+                <h1>Lobby</h1>
+                <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %>
+                </h2>
+            </div>
+            <div class="inner list">
                 <ul>
-                    <% availableGames.forEach(game=> { %>
-                        <li>
-                            <a href="/games/<%= game.id %>/join">Join <%= game.id %></a>
-                        </li>
-                        <% }) %>
+                    <li><a href="/">Landing</a></li>
+                    <li><a href="/auth/sign_up">sign-up</a></li>
+                    <li><a href="/lobby">lobby</a></li>
+                    <li><a href="/games/1">game</a></li>
                 </ul>
-            </section>
+            </div>
+            <div class="inner grid">
+                <h2>Available Games</h2>
+                <section id="game-list">
+                    <ul>
+                        <% availableGames.forEach(game => { %>
+                            <li>
+                                <a href="/games/<%= game.id %>/join">Join <%= game.id %></a>
+                            </li>
+                            <% }) %>
+                    </ul>
+                </section>
 
-            <template id="join-game-entry">
-                <li>
-                    <a href=""></a>
-                </li>
-            </template>
+                <template id="join-game-entry">
+                    <li>
+                        <a href=""></a>
+                    </li>
+                </template>
 
-            <form action="/games/create" method="get">
-                <button type="submit">Create Game</button>
-            </form>
+                <form action="/games/create" method="get">
+                    <button type="submit">Create Game</button>
+                </form>
+            </div>
+            <div class="sidebar">
+                <p> List of Players: </p>
+                <br>
+                <br>
+                <% activePlayers.forEach(players => { %>
+                    <li>
+                        Player: <%= players.username %>
+                    </li>
+                    <% }) %>
+            </div>
         </div>
 
         <%- include('partials/chat', { roomId:0 }) %>
-
     </main>
 </body>
 

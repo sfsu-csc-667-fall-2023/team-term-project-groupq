@@ -11,8 +11,7 @@ const GET_USERS = `
     LIMIT 1
   ) as sid
   FROM game_users, users
-  WHERE game_id=7 AND (game_users.user_id=users.id);
-
+  WHERE game_id=$1 AND (game_users.user_id=users.id);
 `;
 
 const GET_USER_SID = `
@@ -26,17 +25,12 @@ const GET_USER_SID = `
   WHERE game_id=$1 AND user_id=$2
 `
 
+const GET_ACTIVE_PLAYERS = `
+  SELECT (sess->'user'->>'username') as username FROM session;
+`
+
 const getUsers = (gameId) => db.many(GET_USERS, [gameId]);
 const getUserSID = (gameId, userId) => db.one(GET_USER_SID, [gameId, userId]);
+const getActivePlayers = () => db.any(GET_ACTIVE_PLAYERS);
 
-
-module.exports = { getUsers, getUserSID };
-
-// SELECT user_id, web_position, current_player, (
-//   SELECT sid FROM session
-//   WHERE (sess->'user'->>'id')::int=user_id
-//   ORDER BY expire DESC
-//   LIMIT 1
-// ) as sid
-// FROM game_users
-// WHERE game_id=$1
+module.exports = { getUsers, getUserSID, getActivePlayers };
