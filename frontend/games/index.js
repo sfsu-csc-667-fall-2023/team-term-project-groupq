@@ -17,9 +17,7 @@ const handleUserAction = (event) => {
 
   const { action, method } = event.target.attributes;
 
-
   fetch(action.value, { method: method.value });
-
   return false;
 };
 
