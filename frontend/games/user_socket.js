@@ -8,13 +8,8 @@ let socket;
 const configure = () => {
   socket = io({ query: { id: userSocketId } });
 
-  socket.on('showPopup', (data) => {
-    const errorMessage = data.message;  
-    alert(errorMessage);
-  });
-  
-  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers}) => {
-    console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
+  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers, username }) => {
+    console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers, username })
 
     //console.log("THIS IS SIMPLIFIED PLAYER", simplifiedPlayers);
     const playerId = user_id;
@@ -30,24 +25,17 @@ const configure = () => {
       }
     });
 
-
-    const playerUserId = user_id;
     const filteredPlayers = simplifiedPlayers.filter(player => player.user_id >= 0);
 
     if (ready_count >= 2) {
       filteredPlayers.forEach(({ user_id: filteredUserId, current_player: filteredCurrentPlayer}) => {
 
-        // console.log("THIS IS MY USER_ID: ", playerUserId);
-        // console.log("FILTERED_ID: ", filteredUserId);
-        // console.log("FILTERED current_player: ", filteredCurrentPlayer);
         if (filteredUserId > 0) {
           
           if (filteredUserId == user_id && filteredCurrentPlayer == 0) {
-            // console.log("DOES IT GO HERE #1")
             const circle1 = document.createElement("div");
             circle1.classList.add(`dot`);
             otherHandContainers[0].appendChild(circle1);
-
           }
 
           else if (filteredUserId == user_id && filteredCurrentPlayer > 0) {
@@ -55,14 +43,12 @@ const configure = () => {
             circle1.classList.add(`dotHidden`);
             otherHandContainers[0].appendChild(circle1);
           }
-
           else {
             if (filteredCurrentPlayer == 0) {
               const circle2 = document.createElement("div");
               circle2.classList.add(`dot`);
               otherHandContainers[1].appendChild(circle2);
             }
-            // console.log(" #2 #2 #2 ");
           }
         }
       });

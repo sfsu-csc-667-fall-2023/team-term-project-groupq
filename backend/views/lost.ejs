@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Board</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="/css/game.css">
+  <link rel="stylesheet" href="/css/card.css">
+  <script src="/scripts/chat.js" defer></script>
+  <script src="/scripts/games.js" defer></script>
+</head>
+
+<body>
+
+  <nav>
+    <a href="/lobby">
+      <button class="menu-button">lobby</button>
+    </a>
+    <a href="/rules"> <!--get href to work maybe use action?-->
+      <button class="rules-button">Rules</button>
+    </a>
+    <a href="/auth/logout"> <!--get href to work maybe use action?-->
+      <button class="logout-button">Logout</button>
+    </a>
+  </nav>
+
+
+  <input type="hidden" name="game-socket-id" id="game-socket-id" value="<%= gameSocketId %>" />
+  <input type="hidden" name="user-socket-id" id="user-socket-id" value="<%= userSocketId %>" />
+
+
+</body>
+
+</html>

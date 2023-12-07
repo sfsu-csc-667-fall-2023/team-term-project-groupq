@@ -56,12 +56,12 @@ router.get("/:id/join", async (request, response) => {
   // Get the gameID from the URL
   // Get the userID and username from the stored session in the websocket
   const { id: gameId } = request.params;
-  const { id: userId, username: user } = request.session.user;
+  const { id: userId, username } = request.session.user;
   const io = request.app.get("io");
 
   // Add the user that just joined into the game_users table
   await Games.addUser(userId, gameId);
-  io.emit(GAME_CONSTANTS.USER_ADDED, { userId, user, gameId });
+  io.emit(GAME_CONSTANTS.USER_ADDED, { userId, username, gameId });
 
   const userCount = await Games.userCount(gameId);
 
@@ -70,7 +70,7 @@ router.get("/:id/join", async (request, response) => {
 
 router.post("/:id/ready", async (request, response) => {
   const { id: gameId } = request.params;
-  const { id: userId } = request.session.user;
+  const { id: userId, username } = request.session.user;
   const { sid: userSocketId } = await Users.getUserSocket(userId);
 
   const io = request.app.get("io");
@@ -88,22 +88,11 @@ router.post("/:id/ready", async (request, response) => {
     method = "initialize";
     gameState = await Games.initialize(parseInt(gameId));
   }
-
-
   const { game_id, players, current_player } = gameState;
-
- 
 
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
-
-
-
-
-  //console.log("THIS IS GAMESTATE: ");
-
-
 
   const { pot_count } = await Games.getPotCount(parseInt(gameId));
   const updateGamePhase = await Games.getGamePhase(gameId);
@@ -119,7 +108,6 @@ router.post("/:id/ready", async (request, response) => {
     updateGamePhase
   });
 
-
   const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
 
   players.forEach(({ user_id, current_person_playing, hand, web_position, sid }) => {
@@ -131,6 +119,7 @@ router.post("/:id/ready", async (request, response) => {
       ready_count,
       current_player,
       simplifiedPlayers,
+      username,
     });
   });
 
@@ -139,7 +128,7 @@ router.post("/:id/ready", async (request, response) => {
 
 router.post("/:id/check", async (request, response) => {
   const { id: gameId } = request.params;
-  const { id: userId, username: user } = request.session.user;
+  const { id: userId, username } = request.session.user;
   const { sid } = await Games.getUserSID(gameId, userId);
   const io = request.app.get("io");
   
@@ -185,16 +174,11 @@ router.post("/:id/check", async (request, response) => {
     }
   }
   else {
-
-    
     io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
 
   await set_game_phase(gameId);
-
-  
-
 
   const updateGamePhase = await Games.getGamePhase(gameId);
 
@@ -208,11 +192,10 @@ router.post("/:id/check", async (request, response) => {
 
   const { round_winner } = await Games.getRoundWinner(gameId);
     if (round_winner > 0) {
-      io.to(gameState.game_socket_id).emit('showPopup', { message: 'PLAYER 1 IS THE WINNER!' });
+      io.to(gameState.game_socket_id).emit('showPopup', { message: `${username} IS THE WINNER!` });
       await setRoundWinner(-1, gameId);
     }
     
-
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
     flopCards,
@@ -221,8 +204,7 @@ router.post("/:id/check", async (request, response) => {
     current_player,
     players,
     pot_count,
-    updateGamePhase
-
+    updateGamePhase,
   });
 
   const simplifiedPlayers = players.map(({ user_id, current_player, chip_count }) => ({ user_id, current_player, chip_count }));
@@ -235,6 +217,7 @@ router.post("/:id/check", async (request, response) => {
       ready_count,
       current_player,
       simplifiedPlayers,
+      username,
     });
   });
 
@@ -244,14 +227,19 @@ router.post("/:id/check", async (request, response) => {
 router.post("/:id/raise", async (request, response) => {
 
   const { id: gameId } = request.params;
-  const { id: userId, username: user } = request.session.user;
+  const { id: userId, username } = request.session.user;
+  const { sid } = await Games.getUserSID(gameId, userId);
   const { is_initialized } = await Games.isInitialized(gameId);
   const io = request.app.get("io");
   // Add money into the pot
   // Decrement money from own chip stack
 
   const { raiseInput } = request.body;
-  console.log({ raiseInput });
+  const { chip_count } = await Games.getChipCount(userId, gameId);
+    if (parseInt(chip_count) < parseInt(raiseInput)) {
+      io.to(sid).emit('showPopup', { message: `CANNOT RAISE MORE THAN ${chip_count}` });
+      return;
+    }
 
   // check if player is in game
   const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
@@ -313,6 +301,11 @@ router.post("/:id/raise", async (request, response) => {
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
+  const { round_winner } = await Games.getRoundWinner(gameId);
+    if (round_winner > 0) {
+      io.to(gameState.game_socket_id).emit('showPopup', { message: `${username} IS THE WINNER!` });
+      await setRoundWinner(-1, gameId);
+    }
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -335,6 +328,7 @@ router.post("/:id/raise", async (request, response) => {
       ready_count,
       current_player,
       simplifiedPlayers,
+      username,
     });
   });
 
@@ -355,6 +349,12 @@ router.get("/:id", async (request, response) => {
 
   response.render("game", { gameId, gameSocketId, userSocketId }); // these are sent as hidden field in the game.ejs file
 });
+
+router.get("/:id/match_end", (request, response) => {
+  const { id } = request.params;
+  response.render("match_end", { id });
+});
+
 
 
 const set_game_phase = async (gameId, players) => {

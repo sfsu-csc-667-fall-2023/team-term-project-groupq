@@ -85,6 +85,7 @@ app.use("/auth", Routes.authentication);
 app.use("/lobby", isAuthenticated, Routes.lobby, Routes.chat);
 app.use("/rules", Routes.rules);
 app.use("/games", isAuthenticated, Routes.game, Routes.chat);
+app.use("/match_end", Routes.match_end);
 
 /** Existing server.js content **/
 app.use((request, response, next) => {
