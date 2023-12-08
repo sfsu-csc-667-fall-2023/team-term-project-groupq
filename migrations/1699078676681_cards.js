@@ -25,7 +25,7 @@ exports.up = (pgm) => {
   const suits_type = ["hearts", "diamonds", "spades", "clubs"];
 
   for (const suit_card of suits_type) {
-    for (let number_type = 1; number_type <= 13; number_type++) {
+    for (let number_type = 2; number_type <= 14; number_type++) {
       cardValues.push(`('${suit_card}', ${number_type})`);
     }
   }

@@ -11,7 +11,7 @@ const GET_USERS = `
     LIMIT 1
   ) as sid
   FROM game_users, users
-  WHERE game_id=$1 AND (game_users.user_id=users.id);
+  WHERE game_id=$1 AND (game_users.user_id=users.id) ORDER BY game_users.user_id;
 `;
 
 const GET_USER_SID = `

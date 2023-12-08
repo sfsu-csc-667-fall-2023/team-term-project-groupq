@@ -10,7 +10,7 @@
   margin: 0 5px;
 }
 
-.card.suit-spades.number-1 {
+.card.suit-spades.number-14 {
   background-image: url("/css/cards/ace_of_spades.png");
   background-size: cover;
 }
@@ -75,7 +75,7 @@
   background-size: cover;
 }
 
-.card.suit-clubs.number-1 {
+.card.suit-clubs.number-14 {
   background-image: url("/css/cards/ace_of_clubs.png");
   background-size: cover;
 }
@@ -140,7 +140,7 @@
   background-size: cover;
 }
 
-.card.suit-hearts.number-1 {
+.card.suit-hearts.number-14 {
   background-image: url("/css/cards/ace_of_hearts.png");
   background-size: cover;
 }
@@ -205,7 +205,7 @@
   background-size: cover;
 }
 
-.card.suit-diamonds.number-1 {
+.card.suit-diamonds.number-14 {
   background-image: url("/css/cards/ace_of_diamonds.png");
   background-size: cover;
 }

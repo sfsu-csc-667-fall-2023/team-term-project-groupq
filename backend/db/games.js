@@ -24,7 +24,7 @@ const { isPlayerInGame } = require("./games/is-player-inGame");
 const { getAllPlayersinGame } = require("./games/get-all-playersinGame");
 const { getTurnOrder } = require("./games/get-turnOrder");
 const { setPlayerTurnOrder } = require("./games/set-player-turnOrder");
-const { getChipCount } = require("./games/get-chipCount");
+const { getChipCount, getStartingChips, stillHaveChips } = require("./games/get-chipCount");
 const { getPotCount } = require("./games/get-dealerPot");
 const { setPotCount } = require("./games/set-dealerPot");
 const { getPerformedAction } = require("./games/get-performedAction");
@@ -79,5 +79,7 @@ module.exports = {
   isAlreadyInGame,
   getLeftGames,
   setStartingPlayersAllowed,
-  getStartingPlayersAllowed
+  getStartingPlayersAllowed,
+  getStartingChips, 
+  stillHaveChips
 };

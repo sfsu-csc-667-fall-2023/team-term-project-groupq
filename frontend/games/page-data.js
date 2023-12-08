@@ -16,7 +16,7 @@ const playerThreeHandContainer = document.querySelector("#player3");
 const playerFourHandContainer = document.querySelector("#player4");
 const playerFiveHandContainer = document.querySelector("#player5");
 
-const otherHandContainers = [playerOneHandContainer, playerTwoHandContainer, playerThreeHandContainer, playerFourHandContainer, playerFiveHandContainer];
+const otherHandContainers = [playerTwoHandContainer, playerThreeHandContainer, playerFourHandContainer, playerFiveHandContainer];
 
 export {
   roomId,
@@ -27,5 +27,6 @@ export {
   raiseForm,
   foldForm,
   dealerHand,
+  playerOneHandContainer,
   otherHandContainers
 }

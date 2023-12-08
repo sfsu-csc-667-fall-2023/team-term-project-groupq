@@ -2,12 +2,9 @@ const path = require("path");
 const express = require("express");
 const createError = require("http-errors");
 const session = require("express-session");
-//const requestTime = require("./middleware/request-time");
 
 const { createServer, validateHeaderName } = require("http");
-
 const { Server } = require("socket.io");
-
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
@@ -21,9 +18,6 @@ const app = express();
 const httpServer = createServer(app);
 
 app.use(morgan("dev"));
-
-//app.use(requestTime);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -88,7 +82,6 @@ app.use("/games", isAuthenticated, Routes.game, Routes.chat);
 app.use("/match_end", Routes.match_end);
 app.use("/create_game", Routes.create_game);
 
-/** Existing server.js content **/
 app.use((request, response, next) => {
   next(createError(404));
 });
@@ -96,14 +89,3 @@ app.use((request, response, next) => {
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
-
-// General logic is:
-/*
-API endpoint (which takes some information user X in game Y -> plays this card)
-create an endpoint for that validates if its validate
-updates state of the game and broadcasts for everyone
-
-when client makes a request to the server (playing a card), the client will issue a post request to the API
-and ignore the response (200)
-the actual update will happen asynchronously
-*/

@@ -1,10 +1,11 @@
 const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
+const match_end = require("./match_end");
 
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
-const { setRoundWinner, getStartingPlayersAllowed } = require("../db/games");
+const { setRoundWinner, getStartingPlayersAllowed, stillHaveChips, getChipCount } = require("../db/games");
 
 // This is the page the first person comes in - but waiting for other people to join
 router.get("/create", async (request, response) => {
@@ -184,7 +185,16 @@ router.post("/:id/check", async (request, response) => {
     return;
   }
 
-  await set_game_phase(gameId);
+  const isEndofRound = await set_game_phase(gameId);
+  if (isEndofRound) {
+    await endofRound(gameId);
+  }
+
+  const { chip_count } = await getChipCount(userId, gameId);
+  if (parseInt(chip_count)===0) {
+    console.log("DOES IT GO THROUGH HERE?????")
+    response.redirect(`/games/${gameId}/match_end`);
+  }
 
   const updateGamePhase = await Games.getGamePhase(gameId);
 
@@ -295,7 +305,17 @@ router.post("/:id/raise", async (request, response) => {
     return;
   }
 
-  await set_game_phase(gameId);
+  const isEndofRound = await set_game_phase(gameId);
+  if (isEndofRound) {
+    await endofRound(gameId);
+  }
+
+  const noMoreChips = await stillHaveChips(userId, gameId);
+  console.log(username, noMoreChips.chip_count, parseInt(noMoreChips.chip_count)===0);
+  if (noMoreChips) {
+    response.redirect(`/games/${gameId}/match_end`);
+  }
+  
   const updateGamePhase = await Games.getGamePhase(gameId);
 
   gameState = await Games.getState(parseInt(gameId));
@@ -310,7 +330,7 @@ router.post("/:id/raise", async (request, response) => {
     if (round_winner > 0) {
       io.to(gameState.game_socket_id).emit('showPopup', { message: `${username} IS THE WINNER!` });
       await setRoundWinner(-1, gameId);
-    }
+  }
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -360,7 +380,7 @@ router.get("/:id/match_end", (request, response) => {
 });
 
 // Helper functions
-const set_game_phase = async (gameId, players) => {
+const set_game_phase = async (gameId) => {
   const allActions = await Games.getAllAction(gameId);
   const { game_phase } = await Games.getGamePhase(gameId);
   const { is_initialized } = await Games.isInitialized(gameId);
@@ -377,14 +397,15 @@ const set_game_phase = async (gameId, players) => {
     }
     // ELSE NEED TO MAKE A WIN CONDITION
     else if (game_phase === "river") {
-      await endofRound(gameId, players);
+      //await endofRound(gameId, players);
+      return true;
     }
     await Games.setAllActiontoFalse(gameId);
   }
-
+  return false; 
 };
 
-const endofRound = async(gameId, players) => {
+const endofRound = async(gameId) => {
   const { game_phase } = await Games.getGamePhase(gameId);
   const allActions = await Games.getAllAction(gameId);
 
