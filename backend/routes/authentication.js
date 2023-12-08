@@ -21,10 +21,10 @@ router.post("/sign_up", async (request, response) => {
     return;
   }
 
-  const salt = await bcrypt.genSalt(SALT_ROUNDS);
-  const hash = await bcrypt.hash(password, salt);
+  // const salt = await bcrypt.genSalt(SALT_ROUNDS);
+  // const hash = await bcrypt.hash(password, salt);
 
-  const user = await Users.create(username, hash);
+  const user = await Users.create(username, password);
   console.log({ user_after_create: user })
   request.session.user = user;
 
@@ -33,11 +33,15 @@ router.post("/sign_up", async (request, response) => {
 
 router.post("/sign_in", async (request, response) => {
   const { username, password } = request.body;
-  console.log("SIGN IN", { username, password })
-
+  console.log("SIGN IN", { username, password });
   try {
     const user = await Users.find_username(username);
-    const isValidUser = await bcrypt.compare(password, user.password);
+
+    const isValidUser = password == user.password;
+    //const isValidUser = await bcrypt.compare(password, user.password);
+
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    const hash = await bcrypt.hash(password, salt);
 
     if (isValidUser) {
       request.session.user = {
