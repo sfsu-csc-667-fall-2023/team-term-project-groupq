@@ -19,11 +19,6 @@ const configure = () => {
   return Promise.resolve(socket)
 };
 
-// const playerThreeHand = document.querySelector("#player3");
-// const playerFourHand = document.querySelector("#player4");
-// const playerFiveHand = document.querySelector("#player5");
-
-
 const dealerUpdate = (handContainer, cardList, pot_count) => {
 
   cardList.forEach(({ suit, number }, index) => {
@@ -90,7 +85,6 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, riverCards, pot_count);
   }
-
 };
 
 export { configure };

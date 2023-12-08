@@ -11,14 +11,17 @@ const configure = () => {
   socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers }) => {
     console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
 
+    console.log(simplifiedPlayers);
     const playerId = user_id;
+    let count = 1;
     simplifiedPlayers.forEach(({ user_id, chip_count, username }) => {
       if (user_id > 0 ) {
         if (playerId === user_id) {
           updatePlayerHand(hand, chip_count, username);
         }
         else {
-          updateHiddenHand(otherHandContainers[ready_count-1], hand, chip_count, username);
+          updateHiddenHand(otherHandContainers[count], hand, chip_count, username);
+          count++;
         }
       }
     });

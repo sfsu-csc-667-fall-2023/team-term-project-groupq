@@ -359,6 +359,7 @@ router.get("/:id/match_end", (request, response) => {
   response.render("match_end", { id });
 });
 
+// Helper functions
 const set_game_phase = async (gameId, players) => {
   const allActions = await Games.getAllAction(gameId);
   const { game_phase } = await Games.getGamePhase(gameId);
