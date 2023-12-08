@@ -1,7 +1,11 @@
 import { io } from "socket.io-client";
 import * as GAME_CONSTANTS from "../../constants/games";
-import { dealerHand, cardTemplate, gameSocketId, otherHandContainers } from "./page-data"
-
+import {
+  dealerHand,
+  cardTemplate,
+  gameSocketId,
+  otherHandContainers,
+} from "./page-data";
 
 let socket;
 
@@ -10,17 +14,16 @@ const configure = () => {
 
   socket.on(GAME_CONSTANTS.STATE_UPDATED, stateUpdated);
 
-  socket.on('showPopup', (data) => {
-    const errorMessage = data.message;  
+  socket.on("showPopup", (data) => {
+    const errorMessage = data.message;
     alert(errorMessage);
   });
 
   console.log("Game socket configured");
-  return Promise.resolve(socket)
+  return Promise.resolve(socket);
 };
 
 const dealerUpdate = (handContainer, cardList, pot_count) => {
-
   cardList.forEach(({ suit, number }, index) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
@@ -31,12 +34,11 @@ const dealerUpdate = (handContainer, cardList, pot_count) => {
 
     handContainer.appendChild(div);
   });
-  
 };
 
 const potCountUpdate = (handContainer, pot_count) => {
   const p = document.createElement("p");
-  p.textContent = `Dealer Pot = ${pot_count}`;
+  p.textContent = `Dealer Pot = $${pot_count}`;
   p.classList.add("pot-count");
 
   handContainer.appendChild(p);
@@ -47,10 +49,43 @@ const gamePhaseUpdate = (gamePhase) => {
   p.textContent = `CURRENT GAME PHASE: ${gamePhase}`; //CURRENT GAME PHASE: PRE-FLOP
 };
 
+<<<<<<< HEAD
 const updateDealerCards = (game_phase, pot_count) => {
 
   const filler = [{ suit: 'filler', number: 'filler'}];
   if (game_phase === "preflop") { // pre-flop (all cards are hidden)
+=======
+// get the data from game_state
+const stateUpdated = ({
+  game_id,
+  flopCards,
+  turnCards,
+  riverCards,
+  players,
+  current_player,
+  numOfCards,
+  pot_count,
+  updateGamePhase,
+}) => {
+  console.log(GAME_CONSTANTS.STATE_UPDATED, {
+    game_id,
+    flopCards,
+    turnCards,
+    riverCards,
+    players,
+    current_player,
+    numOfCards,
+    pot_count,
+    updateGamePhase,
+  });
+
+  const filler = [{ suit: "filler", number: "filler" }];
+
+  gamePhaseUpdate(updateGamePhase.game_phase);
+
+  if (updateGamePhase.game_phase === "preflop") {
+    // pre-flop (all cards are hidden)
+>>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
@@ -58,22 +93,37 @@ const updateDealerCards = (game_phase, pot_count) => {
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
+<<<<<<< HEAD
   }
   else if (game_phase === "flop") { // flop 3 cards visible
+=======
+  } else if (updateGamePhase.game_phase === "flop") {
+    // flop 3 cards visible
+>>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
+<<<<<<< HEAD
   }
   else if (game_phase === "turn") { // turn 4 cards visible
+=======
+  } else if (updateGamePhase.game_phase === "turn") {
+    // turn 4 cards visible
+>>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
+<<<<<<< HEAD
   }
   else if (game_phase === "river") { // river 5 cards visible
+=======
+  } else if (updateGamePhase.game_phase === "river") {
+    // river 5 cards visible
+>>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
@@ -254,6 +304,7 @@ const hasStraight = (numbers) => {
   }
 };
 
+<<<<<<< HEAD
 const toString = (rank, number, suit) => {
   let s;
   if (number == 11) {
@@ -376,3 +427,6 @@ export { configure };
 }
 
 */
+=======
+export { configure };
+>>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
