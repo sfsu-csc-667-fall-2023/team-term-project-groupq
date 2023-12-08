@@ -1,7 +1,11 @@
 import { io } from "socket.io-client";
 import * as GAME_CONSTANTS from "../../constants/games";
-import { dealerHand, cardTemplate, gameSocketId, otherHandContainers } from "./page-data"
-
+import {
+  dealerHand,
+  cardTemplate,
+  gameSocketId,
+  otherHandContainers,
+} from "./page-data";
 
 let socket;
 
@@ -10,17 +14,16 @@ const configure = () => {
 
   socket.on(GAME_CONSTANTS.STATE_UPDATED, stateUpdated);
 
-  socket.on('showPopup', (data) => {
-    const errorMessage = data.message;  
+  socket.on("showPopup", (data) => {
+    const errorMessage = data.message;
     alert(errorMessage);
   });
 
   console.log("Game socket configured");
-  return Promise.resolve(socket)
+  return Promise.resolve(socket);
 };
 
 const dealerUpdate = (handContainer, cardList, pot_count) => {
-
   cardList.forEach(({ suit, number }, index) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
@@ -31,12 +34,11 @@ const dealerUpdate = (handContainer, cardList, pot_count) => {
 
     handContainer.appendChild(div);
   });
-  
 };
 
 const potCountUpdate = (handContainer, pot_count) => {
   const p = document.createElement("p");
-  p.textContent = `Dealer Pot = ${pot_count}`;
+  p.textContent = `Dealer Pot = $${pot_count}`;
   p.classList.add("pot-count");
 
   handContainer.appendChild(p);
@@ -48,14 +50,35 @@ const gamePhaseUpdate = (gamePhase) => {
 };
 
 // get the data from game_state
-const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase }) => {
-  console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase })
+const stateUpdated = ({
+  game_id,
+  flopCards,
+  turnCards,
+  riverCards,
+  players,
+  current_player,
+  numOfCards,
+  pot_count,
+  updateGamePhase,
+}) => {
+  console.log(GAME_CONSTANTS.STATE_UPDATED, {
+    game_id,
+    flopCards,
+    turnCards,
+    riverCards,
+    players,
+    current_player,
+    numOfCards,
+    pot_count,
+    updateGamePhase,
+  });
 
-  const filler = [{ suit: 'filler', number: 'filler'}];
+  const filler = [{ suit: "filler", number: "filler" }];
 
   gamePhaseUpdate(updateGamePhase.game_phase);
 
-  if (updateGamePhase.game_phase === "preflop") { // pre-flop (all cards are hidden)
+  if (updateGamePhase.game_phase === "preflop") {
+    // pre-flop (all cards are hidden)
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
@@ -63,22 +86,22 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
-  }
-  else if (updateGamePhase.game_phase === "flop") { // flop 3 cards visible
+  } else if (updateGamePhase.game_phase === "flop") {
+    // flop 3 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
-  }
-  else if (updateGamePhase.game_phase === "turn") { // turn 4 cards visible
+  } else if (updateGamePhase.game_phase === "turn") {
+    // turn 4 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
-  }
-  else if (updateGamePhase.game_phase === "river") { // river 5 cards visible
+  } else if (updateGamePhase.game_phase === "river") {
+    // river 5 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);

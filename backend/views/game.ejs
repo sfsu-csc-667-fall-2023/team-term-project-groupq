@@ -18,10 +18,10 @@
     <a href="/lobby">
       <button class="menu-button">lobby</button>
     </a>
-    <a href="/rules"> <!--get href to work maybe use action?-->
+    <a href="/rules"> 
       <button class="rules-button">Rules</button>
     </a>
-    <a href="/auth/logout"> <!--get href to work maybe use action?-->
+    <a href="/auth/logout">
       <button class="logout-button">Logout</button>
     </a>
   </nav>
@@ -32,27 +32,30 @@
       <button type="submit">Test</button>
     </form> -->
     <button id="refreshButton">Start!</button>
-    <form action="/games/<%= gameId %>/check" method="post" id="check-form">
-      <button type="submit">check</button>
-    </form>
 
-    <form action="/games/<%= gameId %>/raise" method="post" id="raise-form">
-      <button type="submit">raise</button>
-      <input type="text" name="raise" id="raise" placeholder="Raise" pattern="\d+" title="Raise" maxlength="5" style="width: 50px;" required>
-    </form>
+    <div id="actions">
+        <form action="/games/<%= gameId %>/check" method="post" id="check-form">
+            <button type="submit">Check</button>
+          </form>
+      
+          <form action="/games/<%= gameId %>/fold" method="post" id="fold-form">
+            <button type="submit">Fold</button>
+          </form>
 
-    <form action="/games/<%= gameId %>/fold" method="post" id="fold-form">
-      <button type="submit">Fold</button>
-    </form>
+          <form action="/games/<%= gameId %>/raise" method="post" id="raise-form">
+            <input type="text" name="raise" id="raise" placeholder="Amount:" pattern="\d+" title="Raise" maxlength="5" required>
+            <button type="submit">Raise</button>
+          </form>
+    </div>
 
     <p id="game-phase"> CURRENT GAME PHASE: Initialize</p>
+
     <div id="deck">
-      <!--deck content goes here-->
+
       
     </div>
 
     <div id="community-cards">
-
     </div>
 
     <section id="players_cards">
@@ -70,11 +73,8 @@
         <div class="player-five-hand" id="player5">
         </div>
 
-        <div class="dealer" id="dealer">Dealer</div>
+        <!--<div class="dealer" id="dealer">Dealer</div>-->
       </div>
-
-
-
 
     </section>
 

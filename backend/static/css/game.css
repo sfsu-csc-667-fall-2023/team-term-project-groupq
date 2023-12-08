@@ -32,7 +32,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   display: flex;
-  margin-left: 30%;
+  margin-left: 450%; /*!!!*/
   bottom: 93.5%;
 }
 
@@ -45,14 +45,41 @@ button {
   padding-top: 5%;
 }
 
+#actions {
+  position: fixed;
+  bottom: 40px;
+  right: 250px;
+}
+
+#actions button {
+  width: 70px;
+  height: 30px;
+  margin-top: 5px;
+  padding: 8px 12px;
+  background-color: rgb(23, 70, 121);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#raise {
+  width: 50px;
+  color: black;
+  background-color: #74db34;
+}
+
 #deck {
   width: 90px;
   height: 120px;
-  background-color: #3498db;
-  border: 1px solid #2980b9;
+  /*background-color: #3498db;
+  border: 1px solid #2980b9; */
   margin-left: 30%;
   margin-top: 15%;
   bottom: 80%;
+  background-size: cover;
+  background-image: url("/back_of_the_card.png");
 }
 
 #community-cards {
@@ -108,8 +135,8 @@ button {
   margin-left: 10%;
   margin-top: 80%;
   bottom: 10%;
-  background-color: #e74c3c;
-  border: 1px solid #c0392b;
+  /*background-color: #e74c3c;
+  border: 1px solid #c0392b; */
   margin: 0 5px;
 }
 
@@ -145,8 +172,8 @@ button {
   width: 90px;
   height: 120px;
   display: flex;
-  background-color: #e74c3c;
-  border: 1px solid #c0392b;
+  /*background-color: #e74c3c;
+  border: 1px solid #c0392b; */
   margin: 0 5px;
 }
 
@@ -155,8 +182,8 @@ button {
   width: 90px;
   height: 120px;
   display: flex;
-  background-color: #e74c3c;
-  border: 1px solid #c0392b;
+  /*background-color: #e74c3c;
+  border: 1px solid #c0392b; */
   margin: 0 5px;
 }
 
@@ -165,8 +192,8 @@ button {
   width: 90px;
   height: 120px;
   display: flex;
-  background-color: #e74c3c;
-  border: 1px solid #c0392b;
+  /*background-color: #e74c3c;
+  border: 1px solid #c0392b; */
   margin: 0 5px;
 }
 
@@ -175,8 +202,8 @@ button {
   width: 90px;
   height: 120px;
   display: flex;
-  background-color: #e74c3c;
-  border: 1px solid #c0392b;
+  /*background-color: #e74c3c;
+  border: 1px solid #c0392b; */
   margin: 0 5px;
 }
 
@@ -222,13 +249,4 @@ h2 {
   display: inline-block;
   position: absolute;
   top: 50px;
-}
-
-.pot-count {
-  color: white;
-}
-
-#game-phase {
-  color: white;
-  font-size: 18px;
 }
