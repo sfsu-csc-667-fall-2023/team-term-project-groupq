@@ -5,6 +5,8 @@
   margin-left: 10%;
   margin-top: 80%;
   bottom: 10%;
+  background-image: url("/back_of_the_card.png");
+  background-size: cover;
   /*background-color: #e74c3c;
   border: 1px solid #c0392b;*/
   margin: 0 5px;

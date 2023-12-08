@@ -24,7 +24,7 @@ const configure = () => {
 };
 
 const dealerUpdate = (handContainer, cardList, pot_count) => {
-  cardList.forEach(({ suit, number }, index) => {
+  cardList.forEach(({ suit, number }) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
 
@@ -49,88 +49,40 @@ const gamePhaseUpdate = (gamePhase) => {
   p.textContent = `CURRENT GAME PHASE: ${gamePhase}`; //CURRENT GAME PHASE: PRE-FLOP
 };
 
-<<<<<<< HEAD
-const updateDealerCards = (game_phase, pot_count) => {
-
-  const filler = [{ suit: 'filler', number: 'filler'}];
-  if (game_phase === "preflop") { // pre-flop (all cards are hidden)
-=======
-// get the data from game_state
-const stateUpdated = ({
-  game_id,
-  flopCards,
-  turnCards,
-  riverCards,
-  players,
-  current_player,
-  numOfCards,
-  pot_count,
-  updateGamePhase,
-}) => {
-  console.log(GAME_CONSTANTS.STATE_UPDATED, {
-    game_id,
-    flopCards,
-    turnCards,
-    riverCards,
-    players,
-    current_player,
-    numOfCards,
-    pot_count,
-    updateGamePhase,
-  });
-
-  const filler = [{ suit: "filler", number: "filler" }];
-
-  gamePhaseUpdate(updateGamePhase.game_phase);
-
-  if (updateGamePhase.game_phase === "preflop") {
-    // pre-flop (all cards are hidden)
->>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
-    dealerHand.innerHTML = "";
-    potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-<<<<<<< HEAD
-  }
-  else if (game_phase === "flop") { // flop 3 cards visible
-=======
-  } else if (updateGamePhase.game_phase === "flop") {
-    // flop 3 cards visible
->>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
-    dealerHand.innerHTML = "";
-    potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, flopCards, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-<<<<<<< HEAD
-  }
-  else if (game_phase === "turn") { // turn 4 cards visible
-=======
-  } else if (updateGamePhase.game_phase === "turn") {
-    // turn 4 cards visible
->>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
-    dealerHand.innerHTML = "";
-    potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, flopCards, pot_count);
-    dealerUpdate(dealerHand, turnCards, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-<<<<<<< HEAD
-  }
-  else if (game_phase === "river") { // river 5 cards visible
-=======
-  } else if (updateGamePhase.game_phase === "river") {
-    // river 5 cards visible
->>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42
-    dealerHand.innerHTML = "";
-    potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, flopCards, pot_count);
-    dealerUpdate(dealerHand, turnCards, pot_count);
-    dealerUpdate(dealerHand, riverCards, pot_count);
-  }
-}
+// const updateDealerCards = (game_phase, flopCards, turnCards, riverCards, pot_count) => {
+//   console.log("WHAT ARE THE DEALER CARDS, ", flopCards, turnCards, riverCards);
+//   const filler = [{ suit: 'filler', number: 'filler'}];
+//   if (game_phase === "preflop") { // pre-flop (all cards are hidden)
+//     dealerHand.innerHTML = "";
+//     potCountUpdate(dealerHand, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//   }
+//   else if (game_phase === "flop") { // flop 3 cards visible
+//     dealerHand.innerHTML = "";
+//     potCountUpdate(dealerHand, pot_count);
+//     dealerUpdate(dealerHand, flopCards, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//   }
+//   else if (game_phase === "turn") { // turn 4 cards visible
+//     dealerHand.innerHTML = "";
+//     potCountUpdate(dealerHand, pot_count);
+//     dealerUpdate(dealerHand, flopCards, pot_count);
+//     dealerUpdate(dealerHand, turnCards, pot_count);
+//     dealerUpdate(dealerHand, filler, pot_count);
+//   }
+//   else if (game_phase === "river") { // river 5 cards visible
+//     dealerHand.innerHTML = "";
+//     potCountUpdate(dealerHand, pot_count);
+//     dealerUpdate(dealerHand, flopCards, pot_count);
+//     dealerUpdate(dealerHand, turnCards, pot_count);
+//     dealerUpdate(dealerHand, riverCards, pot_count);
+//   }
+// }
 
 function createPlayerCards() {
   return {
@@ -304,7 +256,6 @@ const hasStraight = (numbers) => {
   }
 };
 
-<<<<<<< HEAD
 const toString = (rank, number, suit) => {
   let s;
   if (number == 11) {
@@ -329,8 +280,43 @@ const toString = (rank, number, suit) => {
 const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase }) => {
   //console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase })
 
+  // gamePhaseUpdate(updateGamePhase.game_phase);
+  // updateDealerCards(updateGamePhase.game_phase, pot_count, flopCards, turnCards, riverCards);
+  const filler = [{ suit: "filler", number: "filler" }];
+
   gamePhaseUpdate(updateGamePhase.game_phase);
-  updateDealerCards(updateGamePhase.game_phase, pot_count);
+
+  if (updateGamePhase.game_phase === "preflop") {
+    // pre-flop (all cards are hidden)
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+  } else if (updateGamePhase.game_phase === "flop") {
+    // flop 3 cards visible
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, flopCards, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+  } else if (updateGamePhase.game_phase === "turn") {
+    // turn 4 cards visible
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, flopCards, pot_count);
+    dealerUpdate(dealerHand, turnCards, pot_count);
+    dealerUpdate(dealerHand, filler, pot_count);
+  } else if (updateGamePhase.game_phase === "river") {
+    // river 5 cards visible
+    dealerHand.innerHTML = "";
+    potCountUpdate(dealerHand, pot_count);
+    dealerUpdate(dealerHand, flopCards, pot_count);
+    dealerUpdate(dealerHand, turnCards, pot_count);
+    dealerUpdate(dealerHand, riverCards, pot_count);
+  }
 
   const dealerCards = {suit: [], number: []};
   const playerCardsArray = [];
@@ -364,9 +350,6 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
   });
 
 
-  
-  
-
   const test = 
   {"userId": [
         1,
@@ -396,37 +379,6 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
 
 };
 
-
-
 export { configure };
 
-/*
-{
-    "userId": [
-        1,
-        1
-    ],
-    "suit": [
-        "hearts",
-        "hearts",
-        "hearts",
-        "hearts",
-        "hearts",
-        "clubs",
-        "diamonds"
-    ],
-    "number": [
-        11,
-        4,
-        6,
-        5,
-        10,
-        8,
-        9
-    ]
-}
 
-*/
-=======
-export { configure };
->>>>>>> 4dd9c9308c430e3d1442e1117587cd3d512fbb42

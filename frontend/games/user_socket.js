@@ -11,45 +11,44 @@ const configure = () => {
   socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers }) => {
     //console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
 
-    console.log(simplifiedPlayers);
-    const playerId = user_id;
-    //let count = 1;
-    simplifiedPlayers.forEach(({ user_id, chip_count, username }, index) => {
-      if (user_id > 0 ) {
-        if (playerId === user_id) {
-          updatePlayerHand(hand, chip_count, username);
-        }
-        else {
-          updateHiddenHand(otherHandContainers[index], hand, chip_count, username);
-        }
+    const filteredPlayers = simplifiedPlayers.filter(player => player.user_id >= 0);
+
+    let num = 0;
+    filteredPlayers.forEach(({ user_id: playerId , chip_count, username }) => {
+      if (playerId === user_id) {
+        updatePlayerHand(hand, chip_count, username);
+      }
+      else {
+        console.log(num, otherHandContainers[num]);
+        updateHiddenHand(otherHandContainers[num], hand, chip_count, username);
+        num++;
       }
     });
 
-    const filteredPlayers = simplifiedPlayers.filter(player => player.user_id >= 0);
-
+    
+    num = 0;
     if (ready_count >= 2) { // MIGHT NEED TO CHANGE THIS
       filteredPlayers.forEach(({ user_id: filteredUserId, current_player: filteredCurrentPlayer}, index) => {
 
-        if (filteredUserId > 0) {
-          
-          if (filteredUserId == user_id && filteredCurrentPlayer == 0) { // we are looking at me, AND i am current player
-            const circle1 = document.createElement("div");
-            circle1.classList.add(`dot`);
-            playerOneHandContainer.appendChild(circle1);
-          }
-          else if (filteredUserId == user_id && filteredCurrentPlayer > 0) {
-            const circle1 = document.createElement("div");
-            circle1.classList.add(`dotHidden`);
-            playerOneHandContainer.appendChild(circle1);
-          }
-          else {
-            if (filteredCurrentPlayer == 0) {
-              const circle2 = document.createElement("div");
-              circle2.classList.add(`dot`);
-              otherHandContainers[index].appendChild(circle2);
-            }
+        if (filteredUserId == user_id && filteredCurrentPlayer == 0) { // we are looking at me, AND i am current player
+          const circle1 = document.createElement("div");
+          circle1.classList.add(`dot`);
+          playerOneHandContainer.appendChild(circle1);
+        }
+        else if (filteredUserId == user_id && filteredCurrentPlayer > 0) {
+          const circle1 = document.createElement("div");
+          circle1.classList.add(`dotHidden`);
+          playerOneHandContainer.appendChild(circle1);
+        }
+        else {
+          if (filteredCurrentPlayer == 0) {
+            const circle2 = document.createElement("div");
+            circle2.classList.add(`dot`);
+            otherHandContainers[num].appendChild(circle2);
+            num++
           }
         }
+        
       });
     }
   })
@@ -90,7 +89,7 @@ const updateHiddenHand = (container, cardList, chip_count, user_id) => {
 
   container.appendChild(p);
 
-  cardList.forEach(({ suit, number }, index) => {
+  cardList.forEach((_) => {
     const containerhand = cardTemplate.content.cloneNode(true);
     const div = containerhand.querySelector(".card");
 
