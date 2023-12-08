@@ -14,19 +14,21 @@
 
 <body>
     <nav>
-            <a href="/rules">
-                <button class="rules-button">Rules</button>
-            </a>
-            <h1 style="color: #333">Lobby</h1>
-            <a href="/auth/logout">
-                <button class="logout-button">Logout</button>
-            </a>
+        <form action="/create_game" method="get" id="create-game">
+            <button type="submit">Create Game</button>
+        </form>
+        <a href="/rules">
+            <button class="rules-button">Rules</button>
+        </a>
+        <h1>Lobby</h1>
+        <a href="/auth/logout">
+            <button class="logout-button">Logout</button>
+        </a>
     </nav>
 
     <main class="main-container">
         <div class="outer-container">
-            <div class="inner welcome">
-                <h1>Lobby</h1>
+            <div class="inner-welcome">
                 <h2>WELCOME ID: <%= user.id %> USERNAME: <%= user.username %>
                 </h2>
             </div>
@@ -38,7 +40,7 @@
                     <li><a href="/games/1">game</a></li>
                 </ul>
             </div> -->
-            <div class="inner grid">
+            <div class="inner-grid">
                 <h2>Returning Games</h2>
                 <section id="game-list">
                     <ul>
@@ -70,9 +72,6 @@
                 <!-- <form action="/games/create" method="get">
                     <button type="submit">Create Game</button>
                 </form> -->
-                <form action="/create_game" method="get">
-                    <button type="submit">Create Game</button>
-                </form>
             </div>
             <div class="sidebar">
                 <p> List of Players: </p>
