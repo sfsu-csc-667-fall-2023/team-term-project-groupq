@@ -22,6 +22,20 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 20px;
+}
+
+button:hover {
+  background-color: rgb(23, 70, 121);
+}
+
+.logout-button {
+  background-color: rgb(23, 70, 121);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .rules-button {
@@ -32,7 +46,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   display: flex;
-  margin-left: 450%; /*!!!*/
+  margin-left: 400%; /*!!!*/
   bottom: 93.5%;
 }
 
@@ -52,16 +66,14 @@ button {
 }
 
 #actions button {
-  width: 70px;
-  height: 30px;
   margin-top: 5px;
-  padding: 8px 12px;
+  padding: 10px 40px;
   background-color: rgb(23, 70, 121);
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 #raise {
@@ -214,6 +226,16 @@ button {
   margin-top: 80%;
   bottom: 85%;
   color: white;
+}
+
+/* This is for the submit message part */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 #chat-container {
