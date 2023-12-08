@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match End</title>
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/test.css">
+</head>
+<body>
+
+    <form action="/create_game" method="post">
+            <label for="max_players">Enter Max Players (max 5):</label>
+            <input type="number" id="max_players" name="max_players" placeholder="Max Players" required>
+    
+            <label for="start_chip">Enter Starting Chip Count:</label>
+            <input type="number" id="start_chip" name="start_chip" placeholder="Chip count" required>
+        <button type="submit">Create Game</button>
+    </form>
+
+</body>
+</html>

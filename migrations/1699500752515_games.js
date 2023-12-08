@@ -24,6 +24,9 @@ exports.up = (pgm) => {
     game_phase: {
       type: "stages",
     },
+    starting_chips: {
+      type: "int",
+    },
     // flop1: {
     //   type: "int",
     //   references: "cards",

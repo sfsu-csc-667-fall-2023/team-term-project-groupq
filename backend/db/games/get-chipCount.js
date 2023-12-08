@@ -7,7 +7,15 @@ const GET_CHIP_COUNT = `
     WHERE user_id=$1 AND game_id=$2
 `;
 
+const GET_STARTING_CHIP = `
+  SELECT starting_chips FROM games
+  WHERE id=$1
+`;
+
 const getChipCount = (userId, gameId) =>
   db.one(GET_CHIP_COUNT, [userId, gameId]);
 
-module.exports = { getChipCount };
+  const getStartingChips = (gameId) =>
+  db.one(GET_STARTING_CHIP, [gameId]);
+
+module.exports = { getChipCount, getStartingChips };

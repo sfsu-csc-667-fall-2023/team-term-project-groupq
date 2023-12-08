@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
-const { setRoundWinner } = require("../db/games");
+const { setRoundWinner, getStartingPlayersAllowed } = require("../db/games");
 
 // This is the page the first person comes in - but waiting for other people to join
 router.get("/create", async (request, response) => {
@@ -12,17 +12,19 @@ router.get("/create", async (request, response) => {
   const io = request.app.get("io");
 
   // generates an encrypted_game_id and outputs that as gameId
-  const { id: gameId } = await Games.create(
-    crypto.randomBytes(20).toString("hex"),
-  );
+  // const { id: gameId } = await Games.create(
+  //   crypto.randomBytes(20).toString("hex"),
+  // );
 
   // Add the creator of the game to the game_users table
-  await Games.addUser(userId, gameId);
+  // await Games.addUser(userId, gameId);
 
-  io.emit(GAME_CONSTANTS.CREATED, { id: gameId, createdBy: userId });
+  // io.emit(GAME_CONSTANTS.CREATED, { id: gameId, createdBy: userId });
 
   response.redirect(`/games/${gameId}`);
 });
+
+
 
 router.post("/:id/test", async (request, response) => {
   const { id: gameId } = request.params;
@@ -60,11 +62,9 @@ router.get("/:id/join", async (request, response) => {
   const io = request.app.get("io");
 
   // Add the user that just joined into the game_users table
-  const test = await Games.isAlreadyInGame(gameId, userId);
-  console.log("IS THIS TRUE", test);
-  console.log("IS THIS TRUE", test[0], test[0].count);
+  const isAlreadyPlaying = await Games.isAlreadyInGame(gameId, userId);
 
-  if (test[0].count != 1) {
+  if (isAlreadyPlaying[0].count != 1) {
     await Games.addUser(userId, gameId);
     io.emit(GAME_CONSTANTS.USER_ADDED, { userId, username, gameId });
   }
@@ -81,11 +81,14 @@ router.post("/:id/ready", async (request, response) => {
 
   const { is_initialized } = await Games.isInitialized(gameId);
   const { ready_count, player_count } = await Games.readyPlayer(userId, gameId);
+  const { players_allowed } = await getStartingPlayersAllowed(gameId);
 
   let method;
   let gameState;
 
-  if (ready_count !== 2 || is_initialized) {
+  console.log(ready_count, parseInt(players_allowed), ready_count===parseInt(players_allowed));
+
+  if (ready_count !== parseInt(players_allowed) || is_initialized) {
     method = "getState";
     gameState = await Games.getState(parseInt(gameId));
   } else {
@@ -355,8 +358,6 @@ router.get("/:id/match_end", (request, response) => {
   const { id } = request.params;
   response.render("match_end", { id });
 });
-
-
 
 const set_game_phase = async (gameId, players) => {
   const allActions = await Games.getAllAction(gameId);

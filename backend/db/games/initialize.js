@@ -11,11 +11,13 @@ const { getCardsperPlayers } = require("./get-cards-per-players");
 const { dealCards } = require("./deal-cards");
 const { setInitialized } = require("./set-initialized");
 const { setChipCount } = require("./set-chipCount");
-const { getChipCount } = require("./get-chipCount");
+const { getChipCount, getStartingChips } = require("./get-chipCount");
 const { setPotCount } = require("./set-dealerPot");
 const { setAllActiontoFalse } = require("./set-AllActionToFalse");
 const { setGamePhase } = require("./set-gamePhase");
 const { setRoundWinner } = require("./set-roundWinner");
+const { getStartingPlayersAllowed } = require("./maxPlayers");
+
 
 const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
@@ -26,9 +28,11 @@ const initialize = async (gameId) => {
   // await setCurrentPlayer(firstPlayer, gameId);
 
   const users = await getUsers(gameId);
+  const { starting_chips } = await getStartingChips(gameId);
+  //const { players_allowed } = await getStartingPlayersAllowed(gameId);
 
   for (const user of users) {
-    await setChipCount(user.user_id, gameId, 1000);
+    await setChipCount(user.user_id, gameId, parseInt(starting_chips));
   };
 
   // Get the total cards that need to be sent to players

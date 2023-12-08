@@ -8,7 +8,17 @@ const UPDATE_CHIP_COUNT = `
   WHERE user_id=$1 AND game_id=$2
 `;
 
+const SET_STARTING_CHIP = `
+UPDATE games
+SET starting_chips=$2
+WHERE id=$1
+`;
+
+
 const setChipCount = (userId, gameId, chipCount) =>
   db.none(UPDATE_CHIP_COUNT, [userId, gameId, chipCount]);
 
-module.exports = { setChipCount };
+const setStartingChip = (gameId, chipCount) =>
+db.none(SET_STARTING_CHIP, [gameId, chipCount]);
+
+module.exports = { setChipCount, setStartingChip };
