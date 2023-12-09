@@ -101,6 +101,14 @@ button:hover {
   padding: 5px;
 }
 
+#game-phase {
+  color: white;
+  display: flex;
+  margin-left: 10%;
+  margin-top: 5%;
+  font-size: 25px;
+}
+
 #community-cards {
   display: flex;
   justify-content: center;
