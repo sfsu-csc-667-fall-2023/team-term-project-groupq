@@ -6,6 +6,7 @@ const match_end = require("./match_end");
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
 const { setRoundWinner, getStartingPlayersAllowed, stillHaveChips, getChipCount, nextRound } = require("../db/games");
+const { getBestCards } = require("./card_strength");
 
 // This is the page the first person comes in - but waiting for other people to join
 router.get("/create", async (request, response) => {
@@ -182,19 +183,12 @@ router.post("/:id/check", async (request, response) => {
   }
   else {
     const flag = -1;
-    const players = -1;
-    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', players, flag });
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', flag });
     return;
-  }
-
-  const isEndofRound = await set_game_phase(gameId);
-  if (isEndofRound) {
-    await endofRound(gameId);
   }
 
   const { chip_count } = await getChipCount(userId, gameId);
   if (parseInt(chip_count)===0) {
-    console.log("DOES IT GO THROUGH HERE?????")
     response.redirect(`/games/${gameId}/match_end`);
   }
 
@@ -208,14 +202,18 @@ router.post("/:id/check", async (request, response) => {
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
-  const { round_winner } = await Games.getRoundWinner(gameId);
+  const isEndofRound = await set_game_phase(gameId);
+  if (isEndofRound) {
+    const { bestScore, bestUsername, bestHand, bestUserId } = getBestCards(players);
+
+    await endofRound(bestUserId, gameId);
+    const { round_winner } = await Games.getRoundWinner(gameId);
     if (round_winner > 0) {
-      var message;
-      const flag = 0;
-      io.to(gameState.game_socket_id).emit('showPopup', { message, flag, players });
+      const message = `THE WINNER IS ${bestUsername} WITH A HAND OF ${bestHand}`;
+      io.to(gameState.game_socket_id).emit('showPopup', { message });
       gameState = await Games.nextRound(parseInt(gameId));
-      //await setRoundWinner(-1, gameId);
     }
+  }
     
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -261,7 +259,6 @@ router.post("/:id/raise", async (request, response) => {
       return;
     }
 
-  // check if player is in game
   const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
   const { ready_count } = await Games.readyPlayer(userId, gameId);
   console.log({ isPlayerInGame, gameId, userId });
@@ -270,9 +267,8 @@ router.post("/:id/raise", async (request, response) => {
     response.status(200).send();
     return;
   }
-  // check if this is current player
-  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
 
+  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
 
   if (isCurrentPlayer) {
     const turnOrders = await Games.getTurnOrder(gameId);
@@ -307,14 +303,8 @@ router.post("/:id/raise", async (request, response) => {
   else {
     const { sid } = await Games.getUserSID(gameId, userId);
     const flag = -1;
-    const players = -1;
-    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', players, flag });
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', flag });
     return;
-  }
-
-  const isEndofRound = await set_game_phase(gameId);
-  if (isEndofRound) {
-    await endofRound(gameId);
   }
 
   const noMoreChips = await stillHaveChips(userId, gameId);
@@ -333,13 +323,22 @@ router.post("/:id/raise", async (request, response) => {
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
-  const { round_winner } = await Games.getRoundWinner(gameId);
+  const isEndofRound = await set_game_phase(gameId);
+
+  if (isEndofRound) {
+    const { bestScore, bestUsername, bestHand, bestUserId } = getBestCards(players);
+    await endofRound(bestUserId, gameId);
+    const { round_winner } = await Games.getRoundWinner(gameId);
+    
     if (round_winner > 0) {
-      const flag = 0;
-      io.to(gameState.game_socket_id).emit('showPopup', { message: `${username} IS THE WINNER!` });
+      const message = `THE WINNER IS ${bestUsername} WITH A HAND OF ${bestHand}`;
+      io.to(gameState.game_socket_id).emit('showPopup', { message });
       gameState = await Games.nextRound(parseInt(gameId));
-      //await setRoundWinner(-1, gameId);
+    }
   }
+
+
+
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -414,14 +413,13 @@ const set_game_phase = async (gameId) => {
   return false; 
 };
 
-const endofRound = async(gameId) => {
+const endofRound = async(userId, gameId) => {
   const { game_phase } = await Games.getGamePhase(gameId);
   const allActions = await Games.getAllAction(gameId);
 
-  //const dealerCards = players.filter((player) => player.user_id < 0).map(({ hand }) => hand);
-
+  console.log("WHAT IS THIS USERID ", userId);
   // THIS TAKES A USER_ID
-  await setRoundWinner(1, gameId);
+  await setRoundWinner(userId, gameId);
 
   console.log("END OF ROUND");
   const { pot_count } = await Games.getPotCount(gameId);

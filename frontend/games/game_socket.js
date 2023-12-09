@@ -15,67 +15,62 @@ const configure = () => {
   socket.on(GAME_CONSTANTS.STATE_UPDATED, stateUpdated);
 
   socket.on("showPopup", (data) => {
-    if (data.flag == -1) {
       alert(data.message);
-    }
-    else {
-      //console.log("THIS NEEDS TO WORK", data.players);
-      const playerCardsArray = extractCardInformation(data.players);
-      //console.log("whats in here:", playerCardsArray);
+    // else {
+    //   const playerCardsArray = extractCardInformation(data.players);
+    //   for (let i=0; i<playerCardsArray.length; i++) {
+    //     //console.log(playerCardsArray[i].userId[0]);
+    //     data.players.forEach(({ user_id, username }) => {
+    //       //console.log(playerCardsArray[i].userId[0] == user_id)
+    //       if (playerCardsArray[i].userId[0] == user_id) {
+    //         playerCardsArray[i].username = username;
+    //       }
+    //     });
+    //   }
 
-      for (let i=0; i<playerCardsArray.length; i++) {
-        //console.log(playerCardsArray[i].userId[0]);
-        data.players.forEach(({ user_id, username }) => {
-          //console.log(playerCardsArray[i].userId[0] == user_id)
-          if (playerCardsArray[i].userId[0] == user_id) {
-            playerCardsArray[i].username = username;
-          }
-        });
-      }
+    //   //console.log("ALMOST THERE, ", playerCardsArray);
 
-      //console.log("ALMOST THERE, ", playerCardsArray);
+    //   const playerInfo = (userId, username, scores, handRank) => {
+    //     const info = {
+    //       userId,
+    //       username,
+    //       scores,
+    //       handRank
+    //     }
+    //     return info
+    //   }
 
-      const playerInfo = (userId, username, scores, handRank) => {
-        const info = {
-          userId,
-          username,
-          scores,
-          handRank
-        }
-        return info
-      }
-
-      const playerScores = [];
+    //   const playerScores = [];
       
-      playerCardsArray.forEach((playerHand) => {
-        const {score, rank} = playerHandStrength(playerHand);
-        //console.log("WHAT ABOUT HERE", score);
-        const infoStructure = playerInfo(playerHand.userId, playerHand.username, score, rank);
-        playerScores.push(infoStructure);
-      });
-      console.log("WHAT ABOUT HERE", playerScores);
+    //   playerCardsArray.forEach((playerHand) => {
+    //     const {score, rank} = playerHandStrength(playerHand);
+    //     //console.log("WHAT ABOUT HERE", score);
+    //     const infoStructure = playerInfo(playerHand.userId, playerHand.username, score, rank);
+    //     playerScores.push(infoStructure);
+    //   });
+    //   console.log("WHAT ABOUT HERE", playerScores);
 
-      let bestScore;
-      let bestUsername;
-      let bestHand;
+    //   let bestScore;
+    //   let bestUsername;
+    //   let bestHand;
 
-      for (let i=0; i<playerScores.length; i++) {
-        if (i == 0) {
-          bestScore = playerScores[i].scores;
-          bestUsername = playerScores[i].username;
-          bestHand = playerScores[i].handRank;
-        }
-        else {
-          if (bestScore < playerScores[i].scores){
-            bestScore = playerScores[i].scores;
-            bestUsername = playerScores[i].username;
-            bestHand = playerScores[i].handRank;
-          }
-        }
-      }
+    //   for (let i=0; i<playerScores.length; i++) {
+    //     if (i == 0) {
+    //       bestScore = playerScores[i].scores;
+    //       bestUsername = playerScores[i].username;
+    //       bestHand = playerScores[i].handRank;
+    //     }
+    //     else {
+    //       if (bestScore < playerScores[i].scores){
+    //         bestScore = playerScores[i].scores;
+    //         bestUsername = playerScores[i].username;
+    //         bestHand = playerScores[i].handRank;
+    //       }
+    //     }
+    //   }
 
-      alert(`THE WINNER IS ${bestUsername} WITH A HAND OF ${bestHand}`);
-    }
+    //   alert(`THE WINNER IS ${bestUsername} WITH A HAND OF ${bestHand}`);
+    // }
     
   });
 
@@ -378,8 +373,6 @@ const toString = (rank, number, suit) => {
 const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase }) => {
   //console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase })
 
-  // gamePhaseUpdate(updateGamePhase.game_phase);
-  // updateDealerCards(updateGamePhase.game_phase, pot_count, flopCards, turnCards, riverCards);
   const filler = [{ suit: "filler", number: "filler" }];
 
   gamePhaseUpdate(updateGamePhase.game_phase);
@@ -415,37 +408,6 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, riverCards, pot_count);
   }
-
-  // const dealerCards = {suit: [], number: []};
-  // const playerCardsArray = [];
-
-  // const handStrength = players.map(({ hand }) => hand);
-  // handStrength.forEach((hand) => {
-  //   if (hand.length !== 2) {
-  //     hand.forEach(({ suit, number}) => {
-  //       dealerCards.suit.push(suit);
-  //       dealerCards.number.push(number);
-  //     });
-  //   }
-  //   else {
-  //     const playerCards = createPlayerCards();
-  //     hand.forEach(({ user_id, suit, number}) => {
-  //       playerCards.userId.push(user_id);
-  //       playerCards.suit.push(suit);
-  //       playerCards.number.push(number);
-  //     });
-  //     playerCardsArray.push(playerCards);
-  //   }
-  // });
-
-
-  // playerCardsArray.forEach((player) => {
-  //   for(let i=0; i<5; i++) {
-  //     player.suit.push(dealerCards.suit[i]);
-  //     player.number.push(dealerCards.number[i]);
-  //   }
-  // });
-
 
   const test = 
   {
