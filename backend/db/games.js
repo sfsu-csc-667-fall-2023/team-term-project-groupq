@@ -34,7 +34,7 @@ const { getAllAction } = require("./games/get-AllActionsPerformed");
 const { setGamePhase } = require("./games/set-gamePhase");
 const { getGamePhase } = require("./games/get-gamePhase");
 const { setRoundWinner } = require("./games/set-roundWinner");
-const { getRoundWinner } = require("./games/get-roundWinner");
+const { getRoundWinner, getFolderWinner } = require("./games/get-roundWinner");
 const { setChipCount, setStartingChip } = require("./games/set-chipCount");
 const { setStartingPlayersAllowed, getStartingPlayersAllowed } = require("./games/maxPlayers");
 const { nextRound } = require("./games/next-round");
@@ -83,5 +83,6 @@ module.exports = {
   getStartingPlayersAllowed,
   getStartingChips, 
   stillHaveChips,
-  nextRound
+  nextRound,
+  getFolderWinner
 };

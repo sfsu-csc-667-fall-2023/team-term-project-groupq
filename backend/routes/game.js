@@ -5,8 +5,9 @@ const match_end = require("./match_end");
 
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
-const { setRoundWinner, getStartingPlayersAllowed, stillHaveChips, getChipCount, nextRound } = require("../db/games");
+const { getStartingPlayersAllowed, stillHaveChips, getChipCount } = require("../db/games");
 const { getBestCards } = require("./card_strength");
+const { set_game_phase, endofRound, folded_reset } = require("./game_helpers");
 
 // This is the page the first person comes in - but waiting for other people to join
 router.get("/create", async (request, response) => {
@@ -192,19 +193,17 @@ router.post("/:id/check", async (request, response) => {
     response.redirect(`/games/${gameId}/match_end`);
   }
 
-  const updateGamePhase = await Games.getGamePhase(gameId);
-
   gameState = await Games.getState(parseInt(gameId));
+  const updateGamePhase = await Games.getGamePhase(gameId);
   const { players, current_player } = gameState;
   const { pot_count } = await Games.getPotCount(gameId);
-
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
 
   const isEndofRound = await set_game_phase(gameId);
   if (isEndofRound) {
-    const { bestScore, bestUsername, bestHand, bestUserId } = getBestCards(players);
+    const { bestUsername, bestHand, bestUserId } = getBestCards(players);
 
     await endofRound(bestUserId, gameId);
     const { round_winner } = await Games.getRoundWinner(gameId);
@@ -249,8 +248,6 @@ router.post("/:id/raise", async (request, response) => {
   const { sid } = await Games.getUserSID(gameId, userId);
   const { is_initialized } = await Games.isInitialized(gameId);
   const io = request.app.get("io");
-  // Add money into the pot
-  // Decrement money from own chip stack
 
   const { raiseInput } = request.body;
   const { chip_count } = await Games.getChipCount(userId, gameId);
@@ -302,8 +299,7 @@ router.post("/:id/raise", async (request, response) => {
 
   else {
     const { sid } = await Games.getUserSID(gameId, userId);
-    const flag = -1;
-    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', flag });
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
 
@@ -313,20 +309,17 @@ router.post("/:id/raise", async (request, response) => {
     response.redirect(`/games/${gameId}/match_end`);
   }
   
-  const updateGamePhase = await Games.getGamePhase(gameId);
-
   gameState = await Games.getState(parseInt(gameId));
+  const updateGamePhase = await Games.getGamePhase(gameId);
   const { players, current_player } = gameState;
   const { pot_count } = await Games.getPotCount(gameId);
-
   const flopCards = players.find((player) => player.user_id === -3).hand;
   const turnCards = players.find((player) => player.user_id === -2).hand;
   const riverCards = players.find((player) => player.user_id === -1).hand;
-
   const isEndofRound = await set_game_phase(gameId);
 
   if (isEndofRound) {
-    const { bestScore, bestUsername, bestHand, bestUserId } = getBestCards(players);
+    const { bestUsername, bestHand, bestUserId } = getBestCards(players);
     await endofRound(bestUserId, gameId);
     const { round_winner } = await Games.getRoundWinner(gameId);
     
@@ -336,9 +329,6 @@ router.post("/:id/raise", async (request, response) => {
       gameState = await Games.nextRound(parseInt(gameId));
     }
   }
-
-
-
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -368,7 +358,25 @@ router.post("/:id/raise", async (request, response) => {
 
 });
 
-router.post("/:id/fold", async (request, response) => {});
+router.post("/:id/fold", async (request, response) => {
+  const { id: gameId } = request.params;
+  const { id: userId, username } = request.session.user;
+  const { sid } = await Games.getUserSID(gameId, userId);
+  const { is_initialized } = await Games.isInitialized(gameId);
+  const { ready_count } = await Games.readyPlayer(userId, gameId);
+  gameState = await Games.getState(parseInt(gameId));
+  const io = request.app.get("io");
+
+  if (ready_count == 2) {
+    await folded_reset(gameId, userId);
+    const message = `${username} HAS FOLDED THIS ROUND`;
+    io.to(gameState.game_socket_id).emit('showPopup', { message });
+    gameState = await Games.nextRound(parseInt(gameId));
+  }
+
+  response.status(200).send();
+
+});
 
 router.get("/:id", async (request, response) => {
   const { id: gameId } = request.params; // Get the game Id from the URL link
@@ -386,55 +394,5 @@ router.get("/:id/match_end", (request, response) => {
   const { id } = request.params;
   response.render("match_end", { id });
 });
-
-// Helper functions
-const set_game_phase = async (gameId) => {
-  const allActions = await Games.getAllAction(gameId);
-  const { game_phase } = await Games.getGamePhase(gameId);
-  const { is_initialized } = await Games.isInitialized(gameId);
-
-  if (parseInt(allActions[0].count) === 0 && is_initialized) {
-    if (game_phase === "preflop") {
-      await Games.setGamePhase(gameId, "flop");
-    }
-    else if (game_phase === "flop") {
-      await Games.setGamePhase(gameId, "turn");
-    }
-    else if (game_phase === "turn") {
-      await Games.setGamePhase(gameId, "river");
-    }
-    // ELSE NEED TO MAKE A WIN CONDITION
-    else if (game_phase === "river") {
-      //await endofRound(gameId, players);
-      return true;
-    }
-    await Games.setAllActiontoFalse(gameId);
-  }
-  return false; 
-};
-
-const endofRound = async(userId, gameId) => {
-  const { game_phase } = await Games.getGamePhase(gameId);
-  const allActions = await Games.getAllAction(gameId);
-
-  console.log("WHAT IS THIS USERID ", userId);
-  // THIS TAKES A USER_ID
-  await setRoundWinner(userId, gameId);
-
-  console.log("END OF ROUND");
-  const { pot_count } = await Games.getPotCount(gameId);
-  const { round_winner } = await Games.getRoundWinner(gameId);
-  
-  // WINNER CHIP COUNT
-  const { chip_count } = await Games.getChipCount(round_winner, gameId);
-
-  await Games.setChipCount(round_winner, gameId, chip_count+pot_count);
-
-  // re-initialize settings
-  await Games.setGamePhase(gameId, "preflop");
-  await Games.setPotCount(gameId, 0);
-  
-};
-
 
 module.exports = router;
