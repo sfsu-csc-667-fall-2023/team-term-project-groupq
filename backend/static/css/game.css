@@ -61,25 +61,44 @@ button:hover {
 
 #actions {
   position: fixed;
-  bottom: 40px;
-  right: 250px;
+  bottom: 100px;
+  right: 130px;
+  display: flex;
+  gap: 10px;
+}
+
+#actions form {
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 #actions button {
-  margin-top: 5px;
+  /*margin-top: 5px;
   padding: 10px 40px;
   background-color: rgb(23, 70, 121);
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 20px; */
+  width: 110px;
+  height: 30px;
+  border-radius: 30px;
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 #raise {
-  width: 50px;
+  width: 100px;
   color: black;
-  background-color: #74db34;
+  background-color: rgb(219, 211, 200);
+  padding: 5px;
 }
 
 #community-cards {
