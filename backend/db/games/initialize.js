@@ -23,10 +23,6 @@ const initialize = async (gameId) => {
   const { game_socket_id } = await getGame(gameId);
   await createShuffledDeck(gameId);
 
-  //set the turn - Set the first player (which is the person creating the room)
-  // const { user_id: firstPlayer } = await getPlayerByTurnOrder(0, gameId);
-  // await setCurrentPlayer(firstPlayer, gameId);
-
   const users = await getUsers(gameId);
   const { starting_chips } = await getStartingChips(gameId);
   //const { players_allowed } = await getStartingPlayersAllowed(gameId);

@@ -37,6 +37,7 @@ const { setRoundWinner } = require("./games/set-roundWinner");
 const { getRoundWinner } = require("./games/get-roundWinner");
 const { setChipCount, setStartingChip } = require("./games/set-chipCount");
 const { setStartingPlayersAllowed, getStartingPlayersAllowed } = require("./games/maxPlayers");
+const { nextRound } = require("./games/next-round");
 
 module.exports = {
   create,
@@ -81,5 +82,6 @@ module.exports = {
   setStartingPlayersAllowed,
   getStartingPlayersAllowed,
   getStartingChips, 
-  stillHaveChips
+  stillHaveChips,
+  nextRound
 };

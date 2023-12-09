@@ -5,7 +5,7 @@ const match_end = require("./match_end");
 
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
-const { setRoundWinner, getStartingPlayersAllowed, stillHaveChips, getChipCount } = require("../db/games");
+const { setRoundWinner, getStartingPlayersAllowed, stillHaveChips, getChipCount, nextRound } = require("../db/games");
 
 // This is the page the first person comes in - but waiting for other people to join
 router.get("/create", async (request, response) => {
@@ -181,7 +181,9 @@ router.post("/:id/check", async (request, response) => {
     }
   }
   else {
-    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
+    const flag = -1;
+    const players = -1;
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', players, flag });
     return;
   }
 
@@ -208,8 +210,11 @@ router.post("/:id/check", async (request, response) => {
 
   const { round_winner } = await Games.getRoundWinner(gameId);
     if (round_winner > 0) {
-      io.to(gameState.game_socket_id).emit('showPopup', { message: `${username} IS THE WINNER!` });
-      await setRoundWinner(-1, gameId);
+      var message;
+      const flag = 0;
+      io.to(gameState.game_socket_id).emit('showPopup', { message, flag, players });
+      gameState = await Games.nextRound(parseInt(gameId));
+      //await setRoundWinner(-1, gameId);
     }
     
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
@@ -301,7 +306,9 @@ router.post("/:id/raise", async (request, response) => {
 
   else {
     const { sid } = await Games.getUserSID(gameId, userId);
-    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
+    const flag = -1;
+    const players = -1;
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', players, flag });
     return;
   }
 
@@ -328,8 +335,10 @@ router.post("/:id/raise", async (request, response) => {
 
   const { round_winner } = await Games.getRoundWinner(gameId);
     if (round_winner > 0) {
+      const flag = 0;
       io.to(gameState.game_socket_id).emit('showPopup', { message: `${username} IS THE WINNER!` });
-      await setRoundWinner(-1, gameId);
+      gameState = await Games.nextRound(parseInt(gameId));
+      //await setRoundWinner(-1, gameId);
   }
 
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
