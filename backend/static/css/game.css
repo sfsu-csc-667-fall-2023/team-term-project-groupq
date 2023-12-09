@@ -101,14 +101,6 @@ button:hover {
   padding: 5px;
 }
 
-#game-phase {
-  color: white;
-  display: flex;
-  margin-left: 10%;
-  margin-top: 5%;
-  font-size: 25px;
-}
-
 #community-cards {
   display: flex;
   justify-content: center;
@@ -128,6 +120,13 @@ button:hover {
   background-color: #e74c3c;
   border: 1px solid #c0392b;
   margin: 0 5px;
+}
+
+h1 {
+  margin: 0;
+  color: white;
+  text-align: center;
+  font-size: 30px;
 }
 
 #players {

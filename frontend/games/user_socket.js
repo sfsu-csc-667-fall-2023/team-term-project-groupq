@@ -75,12 +75,12 @@ const updatePlayerHand = (cardList, chip_count, user_id) => {
   //const p = document.createElement("p");
   //p.textContent = `Player ${seatPosition}, Total Chip: $${chip_count}`;
 
-  const playerInfoSpan = document.createElement("span");
+  const playerInfoSpan = document.createElement("p");
   playerInfoSpan.textContent = `Player ${seatPosition}`;
 
   const lineBreak = document.createElement("br");
 
-  const totalChipSpan = document.createElement("span");
+  const totalChipSpan = document.createElement("p");
   totalChipSpan.textContent = `Total Chip: $${chip_count}`;
 
   playerOneHandContainer.appendChild(playerInfoSpan);
@@ -104,10 +104,22 @@ const updateHiddenHand = (container, cardList, chip_count, user_id) => {
   container.innerHTML = "";
 
   const seatPosition = String(user_id);
-  const p = document.createElement("p");
-  p.textContent = `Player ${seatPosition}, chip_count = ${chip_count}`;
+  //const p = document.createElement("p");
+  //p.textContent = `Player ${seatPosition}, chip_count = ${chip_count}`;
 
-  container.appendChild(p);
+  const playerInfoSpan = document.createElement("p");
+  playerInfoSpan.textContent = `Player ${seatPosition}`;
+
+  const lineBreak = document.createElement("br");
+
+  const totalChipSpan = document.createElement("p");
+  totalChipSpan.textContent = `Total Chip: $${chip_count}`;
+
+  container.appendChild(playerInfoSpan);
+  playerDiv.appendChild(lineBreak);
+  container.appendChild(totalChipSpan);
+
+  //container.appendChild(p);
 
   cardList.forEach((_) => {
     const containerhand = cardTemplate.content.cloneNode(true);
