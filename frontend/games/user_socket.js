@@ -19,7 +19,6 @@ const configure = () => {
         updatePlayerHand(hand, chip_count, username);
       }
       else {
-        console.log(num, otherHandContainers[num]);
         updateHiddenHand(otherHandContainers[num], hand, chip_count, username);
         num++;
       }

@@ -97,43 +97,51 @@ function playerHandStrength(hand) {
   const pairs = hasDuplicates(hand.number);
   const isFlush = hasFlush(hand.suit);
   const isStraight = hasStraight(hand.number);
+  let score = 0;
 
-  //console.log("WHAT IS PAIR HERE", pairs, Object.keys(pairs).length == 1);
-  if (isFlush !== 0 && isStraight !== 0 ) {
-
+  if (isFlush !== 0 && isStraight !== 0 && isStraight == 14) {
+    score = (14*3) + parseInt(isStraight); 
+    console.log("ROYAL STRAIGHT FLUSH", isFlush, isStraight);
   }
-  else if (isFlush !== 0 && isStraight !== 0) {
-    // straight flush
+  else if (isFlush !== 0 && isStraight !== 0) { // straight flush
     console.log("STRAIGHT FLUSH", isFlush, isStraight);
+    score = (14*8) + parseInt(isStraight); 
   }
-  else if (isFlush !== 0 && isStraight === 0) {
-    // flush
+  else if (isFlush !== 0 && isStraight === 0) { // flush
     console.log("FLUSH", isFlush, isStraight);
+    const highestFlush = hand.number.map(Number);
+    const maxValue = Math.max(...highestFlush);
+    score = (14*5) + maxValue; 
   }
-  else if (isFlush === 0 && isStraight !== 0) {
+  else if (isFlush === 0 && isStraight !== 0) { // Straight
     console.log("STRAIGHT", isFlush, isStraight);
+    score = (14*4) + isStraight; 
   }
 
   else if (Object.keys(pairs).length === 0) { // HIGH CARD
     const maxNumber = Math.max(...hand.number);
     const maxIndex = hand.number.indexOf(maxNumber);
-    console.log(maxNumber, hand.suit[maxIndex]);
+    
     toString("High Card", maxNumber, hand.suit[maxIndex]);
+    score = (14*0) + maxNumber;
     // return some scoring and the toString()
   }
 
 
   else if (Object.keys(pairs).length === 1) { // Pairs
-    //console.log("DO YOU GO IN HEREPLSSS");
     for (const key in pairs) {
       if (pairs[key] == 2) { // Pair 
-        toString("Pair ", " ", key);
+        toString("Pair ", " ",key);
+        console.log("WAHT IS THIS", pairs[key], parseInt(key)==14);
+        score = (14*1) + parseInt(key);
       }
       else if (pairs[key] == 3) { // Three of a kind 
         toString("Three of a Kind ", " ", key);
+        score = (14*3) + parseInt(key);
       }
       else if (pairs[key] == 4) { // Four of a kind 
         toString("Four of a Kind ", " ", key);
+        score = (14*7) + parseInt(key);
       } 
     }
   }
@@ -152,36 +160,63 @@ function playerHandStrength(hand) {
       }
       else if (pairs[key] == 4) { // FOUR OF A KIND
         toString("Four of a Kind ", " ", key);
+        score = (14*7) + parseInt(key);
       }
     }
     
     if (cardTwos.length == 2 && cardThrees.length == 0) { // 2 pairs
       const twoPairStrings = cardTwos.join(", ");
       toString("Two pairs ", " ", twoPairStrings);
+      console.log(cardTwos);
+      if (parseInt(cardTwos[0]) < parseInt(cardTwos[1])) {
+        score = (14*2) + parseInt(cardTwos[1]);
+      }
+      else {
+        score = (14*2) + parseInt(cardTwos[0]);
+      }
     }
     else if (cardTwos.length == 3 && cardThrees.length == 0) { // need to filter the best 2 pairs
       const sortedNumbers = cardTwos.map(Number).sort((a, b) => b - a);
       const highestTwoValues = sortedNumbers.slice(0, 2);
       const twoPairStrings = highestTwoValues.join(", ");
       toString("Two pairs ", " ", twoPairStrings);
+      if (parseInt(cardTwos[0]) < parseInt(cardTwos[1])) {
+        if (parseInt(cardTwos[1]) < parseInt(cardTwos[2])) {
+          score = (14*2) + parseInt(cardTwos[2]);
+        }
+        else {
+          score = (14*2) + parseInt(cardTwos[1]);
+        }
+      }
+      else {
+        if (parseInt(cardTwos[0]) < parseInt(cardTwos[2])) {
+          score = (14*2) + parseInt(cardTwos[2]);
+        }
+        else {
+          score = (14*2) + parseInt(cardTwos[0]);
+        }
+      }
     }
 
     else if (cardTwos.length == 1 && cardThrees.length == 1) { // full house
       const fullHouse = cardTwos[0].concat(" and ", cardThrees[0]);
       toString("Full House", " ", fullHouse);
+      score = (14*6) + parseInt(cardThrees[0]);
     }
 
     else if (cardThrees.length == 2) { // find the bigger three of a kind
       if (parseInt(cardThrees[0]) < parseInt(cardThrees[1])) {
         toString("Three of a Kind ", " ", cardThrees[1]);
+        score = (14*3) + parseInt(cardThrees[1]);
       }
       else {
         toString("Three of a Kind ", " ", cardThrees[0]);
+        score = (14*3) + parseInt(cardThrees[0]);
       }
     }
   }
 
-
+  console.log("THIS IS THE FINAL SCORE OF THE HAND", score);
 
 }
 
@@ -268,6 +303,9 @@ const toString = (rank, number, suit) => {
   else if (number == 13) {
     s = "King";
   }
+  else if (number == 14) {
+    s = "Ace";
+  }
   else {
     s = String(number)
   }
@@ -276,7 +314,6 @@ const toString = (rank, number, suit) => {
   return cardString;
 }
 
-// get the data from game_state
 const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase }) => {
   //console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase })
 
@@ -359,14 +396,14 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
         "hearts",
         "hearts",
         "hearts",
-        "diamonds",
+        "hearts",
         "hearts",
         "clubs",
         "diamonds"
     ],
     "number": [
-        9,
-        10,
+        14,
+        14,
         11,
         11,
         9,
@@ -374,11 +411,9 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
         7
     ]};
 
-    console.log("LETS MAKE A TEMPLATE TO TEST", test);
+    console.log("LETS MAKE A TEMPLATE TO TEST", playerCardsArray);
     playerHandStrength(test);
 
 };
 
 export { configure };
-
-
