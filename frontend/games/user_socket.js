@@ -116,7 +116,7 @@ const updateHiddenHand = (container, cardList, chip_count, user_id) => {
   totalChipSpan.textContent = `Total Chip: $${chip_count}`;
 
   container.appendChild(playerInfoSpan);
-  playerDiv.appendChild(lineBreak);
+  container.appendChild(lineBreak);
   container.appendChild(totalChipSpan);
 
   //container.appendChild(p);

@@ -176,11 +176,6 @@ router.post("/:id/check", async (request, response) => {
     return;
   }
 
-  const { chip_count } = await getChipCount(userId, gameId);
-  if (parseInt(chip_count) === 0) {
-    response.redirect(`/games/${gameId}/match_end`);
-  }
-
   gameState = await Games.getState(parseInt(gameId));
   const updateGamePhase = await Games.getGamePhase(gameId);
   const { players, current_player } = gameState;
@@ -198,6 +193,10 @@ router.post("/:id/check", async (request, response) => {
       const message = `THE WINNER IS ${bestUsername} WITH A HAND OF ${bestHand}`;
       io.to(gameState.game_socket_id).emit('showPopup', { message });
       gameState = await Games.nextRound(parseInt(gameId));
+    }
+    const { chip_count } = await getChipCount(userId, gameId);
+    if (parseInt(chip_count) === 0) {
+      response.redirect(`/games/${gameId}/match_end`);
     }
   }
     
@@ -285,13 +284,6 @@ router.post("/:id/raise", async (request, response) => {
     io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
-
-  const noMoreChips = await stillHaveChips(userId, gameId);
-  console.log("NO MORE CHIPS", noMoreChips);
-  console.log(username, noMoreChips.chip_count, parseInt(noMoreChips.chip_count)===0);
-  if (noMoreChips) {
-    response.redirect(`/games/${gameId}/match_end`);
-  }
   
   gameState = await Games.getState(parseInt(gameId));
   const updateGamePhase = await Games.getGamePhase(gameId);
@@ -311,6 +303,12 @@ router.post("/:id/raise", async (request, response) => {
       const message = `THE WINNER IS ${bestUsername} WITH A HAND OF ${bestHand}`;
       io.to(gameState.game_socket_id).emit('showPopup', { message });
       gameState = await Games.nextRound(parseInt(gameId));
+    }
+    const noMoreChips = await stillHaveChips(userId, gameId);
+    console.log("NO MORE CHIPS", noMoreChips);
+    console.log(username, noMoreChips.chip_count, parseInt(noMoreChips.chip_count)===0);
+    if (noMoreChips) {
+      response.redirect(`/games/${gameId}/match_end`);
     }
   }
 
