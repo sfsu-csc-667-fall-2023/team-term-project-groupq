@@ -5,9 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Match End</title>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-    <link rel="stylesheet" href="/css/test.css">
+    <link rel="stylesheet" href="/css/match_end.css">
 </head>
 <body>
-    <p style="font-size: 100px;">Match End</p>
+        <nav>
+          <a href="/lobby">
+            <button class="menu-button">lobby</button>
+          </a>
+          <h1>Match End</h1>
+          <a href="/auth/logout">
+            <button class="logout-button">Logout</button>
+          </a>
+        </nav>
+      
+        <div class="match-end">
+            <h1 class="winner">Winner: Player 1</h1>
+
+              <br>
+              <div id="player2">
+                <span>Player 2</span>
+                <span id="player2-score">Total Chip: 85</span>
+              </div>
+
+              <div id="player3">
+                <span>Player 3</span>
+                <span id="player3-score">Total Chip: 85</span>
+              </div>
+
+              <div id="player4">
+                <span>Player 4</span>
+                <span id="player4-score">Total Chip: 85</span>
+              </div>
+
+              <div id="player5">
+                <span>Player 5</span>
+                <span id="player5-score">Total Chip: 85</span>
+              </div>
+           
+          </div>
+
+        <img src="/jonny.gif" alt="image" class="small-image">
+      
+        <input type="hidden" name="game-socket-id" id="game-socket-id" value="<%= gameSocketId %>" />
+        <input type="hidden" name="user-socket-id" id="user-socket-id" value="<%= userSocketId %>" />
+
 </body>
 </html>
