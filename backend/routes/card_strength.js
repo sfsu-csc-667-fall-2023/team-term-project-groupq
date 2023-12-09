@@ -159,43 +159,43 @@ else if (Object.keys(pairs).length >= 2) { // 2 pairs, full house and four of a 
     }
     
     if (cardTwos.length == 2 && cardThrees.length == 0) { // 2 pairs
-    const twoPairStrings = cardTwos.join(", ");
-    rank = toString("Two pairs ", "", twoPairStrings);
-    console.log(cardTwos);
-    if (parseInt(cardTwos[0]) < parseInt(cardTwos[1])) {
-        score = (14*2) + parseInt(cardTwos[1]);
-    }
-    else {
-        score = (14*2) + parseInt(cardTwos[0]);
-    }
+        const twoPairStrings = cardTwos.join(", ");
+        rank = toString("Two pairs ", "", twoPairStrings);
+        console.log(cardTwos);
+        if (parseInt(cardTwos[0]) < parseInt(cardTwos[1])) {
+            score = (14*2) + parseInt(cardTwos[1]);
+        }
+        else {
+            score = (14*2) + parseInt(cardTwos[0]);
+        }
     }
     else if (cardTwos.length == 3 && cardThrees.length == 0) { // need to filter the best 2 pairs
-    const sortedNumbers = cardTwos.map(Number).sort((a, b) => b - a);
-    const highestTwoValues = sortedNumbers.slice(0, 2);
-    const twoPairStrings = highestTwoValues.join(", ");
-    rank = toString("Two pairs ", " ", twoPairStrings);
-    if (parseInt(cardTwos[0]) < parseInt(cardTwos[1])) {
-        if (parseInt(cardTwos[1]) < parseInt(cardTwos[2])) {
-        score = (14*2) + parseInt(cardTwos[2]);
+        const sortedNumbers = cardTwos.map(Number).sort((a, b) => b - a);
+        const highestTwoValues = sortedNumbers.slice(0, 2);
+        const twoPairStrings = highestTwoValues.join(", ");
+        rank = toString("Two pairs ", " ", twoPairStrings);
+        if (parseInt(cardTwos[0]) < parseInt(cardTwos[1])) {
+            if (parseInt(cardTwos[1]) < parseInt(cardTwos[2])) {
+            score = (14*2) + parseInt(cardTwos[2]);
+            }
+            else {
+            score = (14*2) + parseInt(cardTwos[1]);
+            }
         }
         else {
-        score = (14*2) + parseInt(cardTwos[1]);
+            if (parseInt(cardTwos[0]) < parseInt(cardTwos[2])) {
+            score = (14*2) + parseInt(cardTwos[2]);
+            }
+            else {
+            score = (14*2) + parseInt(cardTwos[0]);
+            }
         }
-    }
-    else {
-        if (parseInt(cardTwos[0]) < parseInt(cardTwos[2])) {
-        score = (14*2) + parseInt(cardTwos[2]);
-        }
-        else {
-        score = (14*2) + parseInt(cardTwos[0]);
-        }
-    }
     }
 
     else if (cardTwos.length >= 1 && cardThrees.length >= 1) { // full house
-    const fullHouse = cardTwos[0].concat(" and ", cardThrees[0]);
-    toString("Full House", "", fullHouse);
-    score = (14*6) + parseInt(cardThrees[0]);
+        const fullHouse = cardTwos[0].concat(" and ", cardThrees[0]);
+        rank = toString("Full House", "", fullHouse);
+        score = (14*6) + parseInt(cardThrees[0]);
     }
 }
 
@@ -203,21 +203,21 @@ return {score, rank};
 }
       
 const hasDuplicates = (numbers) => {
-const frequencyCounter = {};
-for (const element of numbers) {
-    frequencyCounter[element] = (frequencyCounter[element] || 0) + 1;
-}
+    const frequencyCounter = {};
+    for (const element of numbers) {
+        frequencyCounter[element] = (frequencyCounter[element] || 0) + 1;
+    }
 
-const pairs = Object.fromEntries(
+    const pairs = Object.fromEntries(
     Object.entries(frequencyCounter).filter(([key, value]) => value >= 2));
 
-console.log("PAIRS", pairs, Object.keys(pairs).length == 1);
-if (Object.keys(pairs).length === 0) {
-    return 0;
-}
-else {
-    return pairs;
-}
+    console.log(pairs, Object.keys(pairs).length == 1);
+    if (Object.keys(pairs).length === 0) {
+        return 0;
+    }
+    else {
+        return pairs;
+    }
 }
       
 const hasFlush = (suits) => {
@@ -297,4 +297,16 @@ const toString = (rank, number, suit) => {
     return cardString;
 }
 
-module.exports = { getBestCards };
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = { getBestCards, playerHandStrength };

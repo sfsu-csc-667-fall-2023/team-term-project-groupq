@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (request, response) => {
-
+router.get("/", (_request, response) => {
   response.render("match_end");
 });
 

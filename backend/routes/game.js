@@ -6,7 +6,7 @@ const match_end = require("./match_end");
 const { Games, Users } = require("../db");
 const GAME_CONSTANTS = require("../../constants/games");
 const { getStartingPlayersAllowed, stillHaveChips, getChipCount } = require("../db/games");
-const { getBestCards } = require("./card_strength");
+const { getBestCards, playerHandStrength } = require("./card_strength");
 const { set_game_phase, endofRound, folded_reset } = require("./game_helpers");
 
 // This is the page the first person comes in - but waiting for other people to join
@@ -194,11 +194,44 @@ router.post("/:id/check", async (request, response) => {
       io.to(gameState.game_socket_id).emit('showPopup', { message });
       gameState = await Games.nextRound(parseInt(gameId));
     }
-    const { chip_count } = await getChipCount(userId, gameId);
-    if (parseInt(chip_count) === 0) {
-      response.redirect(`/games/${gameId}/match_end`);
-    }
+
+    players.forEach(async ({ user_id: isLoserId, sid }) => {
+      if (isLoserId > 0) {
+        const { chip_count } = await getChipCount(isLoserId, gameId);
+        if (parseInt(chip_count) === 0) {
+          io.to(sid).emit(GAME_CONSTANTS.PLAYER_LOSS);
+        }
+      }
+    });
   }
+
+  const test = 
+{"userId": [
+      1,
+      1
+  ],
+  "suit": [
+      "diamonds",
+      "diamonds",
+      "clubs",
+      "clubs",
+      "diamonds",
+      "spades",
+      "clubs"
+  ],
+  "number": [
+      8,
+      14,
+      12,
+      13,
+      12,
+      14,
+      14
+  ]};
+
+  console.log("LETS MAKE A TEMPLATE TO TEST", test);
+  const {bestScore, bestHand } = playerHandStrength(test);
+  console.log("CHECK IT", bestHand, bestScore);
     
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,
@@ -372,9 +405,9 @@ router.get("/:id", async (request, response) => {
   response.render("game", { gameId, gameSocketId, userSocketId }); // these are sent as hidden field in the game.ejs file
 });
 
-router.get("/:id/match_end", (request, response) => {
-  const { id } = request.params;
-  response.render("match_end", { id });
-});
+// router.get("/:id/match_end", (request, response) => {
+//   const { id } = request.params;
+//   response.render("match_end", { id });
+// });
 
 module.exports = router;

@@ -63,15 +63,19 @@ const configure = () => {
     },
   );
 
+  socket.on(GAME_CONSTANTS.PLAYER_LOSS, (_) => {
+    location.assign("/match_end");
+  });
+
   console.log("This is socketID = ", userSocketId);
   console.log("User socket configured");
   return Promise.resolve(socket);
 };
 
-const updatePlayerHand = (cardList, chip_count, user_id) => {
+const updatePlayerHand = (cardList, chip_count, username) => {
   playerOneHandContainer.innerHTML = "";
 
-  const seatPosition = String(user_id);
+  const seatPosition = String(username);
   //const p = document.createElement("p");
   //p.textContent = `Player ${seatPosition}, Total Chip: $${chip_count}`;
 
@@ -100,10 +104,10 @@ const updatePlayerHand = (cardList, chip_count, user_id) => {
   });
 };
 
-const updateHiddenHand = (container, cardList, chip_count, user_id) => {
+const updateHiddenHand = (container, cardList, chip_count, username) => {
   container.innerHTML = "";
 
-  const seatPosition = String(user_id);
+  const seatPosition = String(username);
   //const p = document.createElement("p");
   //p.textContent = `Player ${seatPosition}, chip_count = ${chip_count}`;
 

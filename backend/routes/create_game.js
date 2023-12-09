@@ -16,7 +16,6 @@ router.post("/", async (request, response) => {
 
   const { max_players, start_chip } = request.body;
 
-  console.log("I AM HERE", max_players, start_chip);
   const { id: gameId } = await Games.create(
     crypto.randomBytes(20).toString("hex"),
   );

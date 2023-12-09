@@ -88,6 +88,7 @@ const stateUpdated = ({
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, riverCards, pot_count);
   }
+
 };
 
 export { configure };
