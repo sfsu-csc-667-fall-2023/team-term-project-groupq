@@ -3,7 +3,7 @@ body {
   padding: 0;
   color: #333;
 
-  background-image: url("/backgroud.png"); /* Replace 'background-image.jpg' with the actual file path */
+  background-image: url("/backgroud_lobby.jpg"); /* Replace 'background-image.jpg' with the actual file path */
   background-size: cover;
   background-position: center;
 
@@ -35,7 +35,7 @@ button {
   width: 500px;
   height: 270px;
   padding: 10px;
-  margin: auto; 
+  margin: auto;
   margin-top: 20px;
 }
 
@@ -47,7 +47,7 @@ button {
   width: 500px;
   height: 370px;
   padding: 10px;
-  margin: auto; 
+  margin: auto;
   margin-top: 20px;
 }
 .account-container2 {
@@ -58,7 +58,7 @@ button {
   width: 500px;
   height: 390px;
   padding: 10px;
-  margin: auto; 
+  margin: auto;
   margin-top: 20px;
 }
 

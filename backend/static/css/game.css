@@ -46,7 +46,7 @@ button:hover {
   border-radius: 4px;
   cursor: pointer;
   display: flex;
-  margin-left: 400%; /*!!!*/
+  margin-left: 450%; /*!!!*/
   bottom: 93.5%;
 }
 
@@ -80,18 +80,6 @@ button:hover {
   width: 50px;
   color: black;
   background-color: #74db34;
-}
-
-#deck {
-  width: 90px;
-  height: 120px;
-  /*background-color: #3498db;
-  border: 1px solid #2980b9; */
-  margin-left: 30%;
-  margin-top: 15%;
-  bottom: 80%;
-  background-size: cover;
-  background-image: url("/back_of_the_card.png");
 }
 
 #community-cards {
