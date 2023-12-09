@@ -8,10 +8,6 @@ const userSocket = await userSocketConfig()
 
 ready(gameSocket, userSocket);
 
-
-// The code below prevents the user from entering the new URL games/id/(check, raise or fold)
-
-
 const handleUserAction = (event) => {
   event.preventDefault();
 
@@ -20,7 +16,6 @@ const handleUserAction = (event) => {
   fetch(action.value, { method: method.value });
   return false;
 };
-
 
 const handleRaise = (event) => {
   event.preventDefault();
@@ -35,7 +30,6 @@ const handleRaise = (event) => {
     },
     body: JSON.stringify({ raiseInput }),
   })
-
   return false;
 };
 

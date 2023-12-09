@@ -14,7 +14,6 @@ exports.up = (pgm) => {
       type: "card_suits",
     },
     number: {
-      //prof uses value on lec
       type: "int",
     },
   });

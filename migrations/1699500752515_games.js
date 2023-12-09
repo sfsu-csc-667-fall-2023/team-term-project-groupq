@@ -27,53 +27,12 @@ exports.up = (pgm) => {
     starting_chips: {
       type: "int",
     },
-    // flop1: {
-    //   type: "int",
-    //   references: "cards",
-    // },
-    // flop2: {
-    //   type: "int",
-    //   references: "cards",
-    // },
-    // flop3: {
-    //   type: "int",
-    //   references: "cards",
-    // },
-    // turn: {
-    //   type: "int",
-    //   references: "cards",
-    // },
-    // river: {
-    //   type: "int",
-    //   references: "cards",
-    // },
-    // small_blind: {
-    //   type: "int",
-    // },
-    // big_blind: {
-    //   type: "int",
-    // },
     pot_count: {
       type: "int",
     },
     round_winner: {
       type: "int",
     },
-    // created_at: {
-    //   type: "timestamp",
-    //   notNull: true,
-    //   default: pgm.func("current_timestamp"),
-    // },
-    // updated_at: {
-    //   type: "timestamp",
-    //   notNull: true,
-    //   default: pgm.func("current_timestamp"),
-    // },
-    // started_at: {
-    //   type: "timestamp",
-    //   notNull: true,
-    //   default: pgm.func("current_timestamp"),
-    // },
   });
 };
 

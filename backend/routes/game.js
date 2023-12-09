@@ -56,10 +56,8 @@ router.post("/:id/test", async (request, response) => {
   response.status(200).send();
 });
 
-// For example, if URL is /123/join (id = 123 here), then after the destructuring assignment, gameId = 123
 router.get("/:id/join", async (request, response) => {
-  // Get the gameID from the URL
-  // Get the userID and username from the stored session in the websocket
+
   const { id: gameId } = request.params;
   const { id: userId, username } = request.session.user;
   const io = request.app.get("io");
@@ -79,18 +77,13 @@ router.post("/:id/ready", async (request, response) => {
   const { id: gameId } = request.params;
   const { id: userId, username } = request.session.user;
   const { sid: userSocketId } = await Users.getUserSocket(userId);
-
-  const io = request.app.get("io");
-
   const { is_initialized } = await Games.isInitialized(gameId);
   const { ready_count, player_count } = await Games.readyPlayer(userId, gameId);
   const { players_allowed } = await getStartingPlayersAllowed(gameId);
+  const io = request.app.get("io");
 
   let method;
   let gameState;
-
-  console.log(ready_count, parseInt(players_allowed), ready_count===parseInt(players_allowed));
-
   if (ready_count !== parseInt(players_allowed) || is_initialized) {
     method = "getState";
     gameState = await Games.getState(parseInt(gameId));
@@ -141,25 +134,21 @@ router.post("/:id/check", async (request, response) => {
   const { sid } = await Games.getUserSID(gameId, userId);
   const io = request.app.get("io");
   
-  // check if player is in game
   const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
+  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
   const { ready_count } = await Games.readyPlayer(userId, gameId);
   const { is_initialized } = await Games.isInitialized(gameId);
   console.log({ isPlayerInGame, gameId, userId });
 
-  if (!isPlayerInGame) {
+  if (!isPlayerInGame) { // check if player is in game
     response.status(200).send();
     return;
   }
-  else if (!is_initialized) {
+  else if (!is_initialized) { // check if game has been initialized
     response.status(200).send();
     return;
   }
 
-  // check if this is current player
-  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
-
-  // THIS MOVES THE DEALER BUTTON -> MAKE IT A METHOD SOMEHWERE
   if (isCurrentPlayer) {
     const turnOrders = await Games.getTurnOrder(gameId);
     await Games.setPerformedAction(userId, gameId, true);
@@ -183,13 +172,12 @@ router.post("/:id/check", async (request, response) => {
     }
   }
   else {
-    const flag = -1;
-    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER', flag });
+    io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
 
   const { chip_count } = await getChipCount(userId, gameId);
-  if (parseInt(chip_count)===0) {
+  if (parseInt(chip_count) === 0) {
     response.redirect(`/games/${gameId}/match_end`);
   }
 
@@ -204,7 +192,7 @@ router.post("/:id/check", async (request, response) => {
   const isEndofRound = await set_game_phase(gameId);
   if (isEndofRound) {
     const { bestUsername, bestHand, bestUserId } = getBestCards(players);
-
+    console.log("WHAT IS BEST USERID", bestUserId);
     await endofRound(bestUserId, gameId);
     const { round_winner } = await Games.getRoundWinner(gameId);
     if (round_winner > 0) {
@@ -248,7 +236,7 @@ router.post("/:id/raise", async (request, response) => {
   const { sid } = await Games.getUserSID(gameId, userId);
   const { is_initialized } = await Games.isInitialized(gameId);
   const io = request.app.get("io");
-
+  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
   const { raiseInput } = request.body;
   const { chip_count } = await Games.getChipCount(userId, gameId);
     if (parseInt(chip_count) < parseInt(raiseInput)) {
@@ -258,24 +246,20 @@ router.post("/:id/raise", async (request, response) => {
 
   const isPlayerInGame = await Games.isPlayerInGame(gameId, userId);
   const { ready_count } = await Games.readyPlayer(userId, gameId);
-  console.log({ isPlayerInGame, gameId, userId });
 
   if (!isPlayerInGame) {
     response.status(200).send();
     return;
   }
 
-  const isCurrentPlayer = await Games.isCurrentPlayer(gameId, userId);
-
   if (isCurrentPlayer) {
     const turnOrders = await Games.getTurnOrder(gameId);
     await Games.setPerformedAction(userId, gameId, true);
 
     for (const { user_id, current_player } of turnOrders) {
-      console.log("USER_ID IS = ", user_id);
       if (current_player == 0) {
+        await Games.setPlayerTurnOrder(1, user_id, gameId);
 
-        await Games.setPlayerTurnOrder(1, user_id, gameId); //changing current_player in game_users - NO EFFECT ON users_id or chip_count
         const { chip_count } = await Games.getChipCount(user_id, gameId);
         await Games.setChipCount(user_id, gameId, chip_count - raiseInput);
 
@@ -320,6 +304,7 @@ router.post("/:id/raise", async (request, response) => {
 
   if (isEndofRound) {
     const { bestUsername, bestHand, bestUserId } = getBestCards(players);
+    console.log("WHAT IS BEST USERID", bestUserId);
     await endofRound(bestUserId, gameId);
     const { round_winner } = await Games.getRoundWinner(gameId);
     

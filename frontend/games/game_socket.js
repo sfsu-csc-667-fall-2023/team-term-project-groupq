@@ -48,14 +48,11 @@ const gamePhaseUpdate = (gamePhase) => {
 };
 
 const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase }) => {
-  //console.log(GAME_CONSTANTS.STATE_UPDATED, { game_id, flopCards, turnCards, riverCards, players, current_player, numOfCards, pot_count, updateGamePhase })
 
   const filler = [{ suit: "filler", number: "filler" }];
-
   gamePhaseUpdate(updateGamePhase.game_phase);
 
-  if (updateGamePhase.game_phase === "preflop") {
-    // pre-flop (all cards are hidden)
+  if (updateGamePhase.game_phase === "preflop") {// pre-flop (all cards are hidden) 
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
@@ -63,22 +60,19 @@ const stateUpdated = ({ game_id, flopCards, turnCards, riverCards, players, curr
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
-  } else if (updateGamePhase.game_phase === "flop") {
-    // flop 3 cards visible
+  } else if (updateGamePhase.game_phase === "flop") {// flop 3 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
-  } else if (updateGamePhase.game_phase === "turn") {
-    // turn 4 cards visible
+  } else if (updateGamePhase.game_phase === "turn") {// turn 4 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, filler, pot_count);
-  } else if (updateGamePhase.game_phase === "river") {
-    // river 5 cards visible
+  } else if (updateGamePhase.game_phase === "river") {// river 5 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
     dealerUpdate(dealerHand, flopCards, pot_count);

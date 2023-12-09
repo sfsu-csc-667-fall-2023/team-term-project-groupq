@@ -1,9 +1,7 @@
 import { io } from "socket.io-client";
 
 const chatWindow = document.querySelector("#chat-window");
-
 const chatSocket = io();
-
 const roomId = document.querySelector("#room-id").value;
 
 chatSocket.on(`chat:message:${roomId}`, ({ from, timestamp, message }) => {

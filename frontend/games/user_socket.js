@@ -8,8 +8,7 @@ let socket;
 const configure = () => {
   socket = io({ query: { id: userSocketId } });
 
-  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers }) => {
-    //console.log(GAME_CONSTANTS.HAND_UPDATED, { user_id, current_person_playing, hand, ready_count, current_player, simplifiedPlayers })
+  socket.on(GAME_CONSTANTS.HAND_UPDATED, ({ user_id, hand, ready_count, simplifiedPlayers }) => {
 
     const filteredPlayers = simplifiedPlayers.filter(player => player.user_id >= 0);
 
@@ -23,13 +22,12 @@ const configure = () => {
         num++;
       }
     });
-
     
     num = 0;
-    if (ready_count >= 2) { // MIGHT NEED TO CHANGE THIS
+    if (ready_count >= 2) {
       filteredPlayers.forEach(({ user_id: filteredUserId, current_player: filteredCurrentPlayer}, index) => {
 
-        if (filteredUserId == user_id && filteredCurrentPlayer == 0) { // we are looking at me, AND i am current player
+        if (filteredUserId == user_id && filteredCurrentPlayer == 0) {
           const circle1 = document.createElement("div");
           circle1.classList.add(`dot`);
           playerOneHandContainer.appendChild(circle1);
@@ -46,8 +44,7 @@ const configure = () => {
             otherHandContainers[num].appendChild(circle2);
             num++
           }
-        }
-        
+        }      
       });
     }
   })
@@ -98,6 +95,5 @@ const updateHiddenHand = (container, cardList, chip_count, user_id) => {
     container.appendChild(div);
   });
 };
-
 
 export { configure };
