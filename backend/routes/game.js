@@ -192,7 +192,6 @@ router.post("/:id/check", async (request, response) => {
   const isEndofRound = await set_game_phase(gameId);
   if (isEndofRound) {
     const { bestUsername, bestHand, bestUserId } = getBestCards(players);
-    console.log("WHAT IS BEST USERID", bestUserId);
     await endofRound(bestUserId, gameId);
     const { round_winner } = await Games.getRoundWinner(gameId);
     if (round_winner > 0) {
@@ -288,6 +287,7 @@ router.post("/:id/raise", async (request, response) => {
   }
 
   const noMoreChips = await stillHaveChips(userId, gameId);
+  console.log("NO MORE CHIPS", noMoreChips);
   console.log(username, noMoreChips.chip_count, parseInt(noMoreChips.chip_count)===0);
   if (noMoreChips) {
     response.redirect(`/games/${gameId}/match_end`);
@@ -304,7 +304,6 @@ router.post("/:id/raise", async (request, response) => {
 
   if (isEndofRound) {
     const { bestUsername, bestHand, bestUserId } = getBestCards(players);
-    console.log("WHAT IS BEST USERID", bestUserId);
     await endofRound(bestUserId, gameId);
     const { round_winner } = await Games.getRoundWinner(gameId);
     

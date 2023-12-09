@@ -37,7 +37,6 @@ const set_game_phase = async (gameId) => {
     const { game_phase } = await Games.getGamePhase(gameId);
     const allActions = await Games.getAllAction(gameId);
     
-    console.log("WHAT IS BEST USERID IN GAME HELPERS>??", userId);
     await Games.setRoundWinner(userId, gameId);
   
     const { pot_count } = await Games.getPotCount(gameId);
