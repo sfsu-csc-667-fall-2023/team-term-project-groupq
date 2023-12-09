@@ -83,9 +83,9 @@ const updatePlayerHand = (cardList, chip_count, user_id) => {
   const totalChipSpan = document.createElement("span");
   totalChipSpan.textContent = `Total Chip: $${chip_count}`;
 
-  playerDiv.appendChild(playerInfoSpan);
-  playerDiv.appendChild(lineBreak);
-  playerDiv.appendChild(totalChipSpan);
+  playerOneHandContainer.appendChild(playerInfoSpan);
+  playerOneHandContainer.appendChild(lineBreak);
+  playerOneHandContainer.appendChild(totalChipSpan);
 
   //playerOneHandContainer.appendChild(p);
 
