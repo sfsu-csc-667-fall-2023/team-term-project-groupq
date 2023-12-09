@@ -6,7 +6,7 @@ body {
   margin: 0;
   /*background-color: #f4f4f4;*/
 
-  background-image: url("/LobbyBackground.gif"); /* Replace 'background-image.jpg' with the actual file path */
+  background-image: url("/backgroud.png"); /* Replace 'background-image.jpg' with the actual file path */
   background-size: cover;
   background-position: center;
   color: white;

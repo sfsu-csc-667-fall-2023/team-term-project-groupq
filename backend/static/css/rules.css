@@ -60,6 +60,8 @@ button {
   padding: 10px;
   margin: auto; 
   margin-top: 20px;
+  word-spacing: 2px;
+  overflow: auto;
 }
 
 h2 {

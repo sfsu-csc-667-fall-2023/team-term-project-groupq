@@ -5,14 +5,38 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+    background-image: url("/backgroud.png"); /* Replace 'background-image.jpg' with the actual file path */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-family: "Inter";
 }
 
 form {
     margin-bottom: 20px;
     text-align: center;
+    background-color: rgb(23, 70, 121);
+    color: white;
+    padding: 10px 15px; 
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    font-family: "Inter";
 }
 
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
 button {
-    padding: 10px 20px;
-    font-size: 16px;
+    background-color: rgb(23, 70, 121);
+    color: white;
+    border:2px, black; 
+    padding: 10px 15px;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; 
 }
