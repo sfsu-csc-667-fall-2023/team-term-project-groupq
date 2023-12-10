@@ -117,9 +117,8 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 10%;
-  margin-top: -8%;
-  bottom: 15%;
+  margin-left: 30%;
+  margin-top: 15%;
 }
 
 .community-card1,

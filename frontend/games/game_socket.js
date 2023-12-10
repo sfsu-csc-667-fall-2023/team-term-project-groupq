@@ -40,7 +40,7 @@ const potCountUpdate = (handContainer, pot_count) => {
 
 const gamePhaseUpdate = (gamePhase) => {
   const p = document.getElementById("game-phase");
-  p.textContent = `CURRENT GAME PHASE: ${gamePhase}`; //CURRENT GAME PHASE: PRE-FLOP
+  p.textContent = `Current Game Phase: ${gamePhase}`; //CURRENT GAME PHASE: PRE-FLOP
 };
 
 const stateUpdated = ({
@@ -88,7 +88,6 @@ const stateUpdated = ({
     dealerUpdate(dealerHand, turnCards, pot_count);
     dealerUpdate(dealerHand, riverCards, pot_count);
   }
-
 };
 
 export { configure };
