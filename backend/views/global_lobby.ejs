@@ -37,7 +37,7 @@
                     <ul>
                         <% returningGames.forEach(game => { %>
                             <li>
-                                <a href="/games/<%= game.game_id %>/join">Return to Game: <%= game.game_id %></a>
+                                <a href="/games/<%= game.game_id %>/join" style="color: white;">Return to Game: <%= game.game_id %></a>
                             </li>
                             <% }) %>
                     </ul>
@@ -46,9 +46,9 @@
                 <h2 class="returning-games">Available Games</h2>
                 <section id="game-list">
                     <ul>
-                        <% availableGames.forEach(game => { %>
-                            <li>
-                                <a href="/games/<%= game.id %>/join">Join Game: <%= game.id %></a>
+                        <% playerGamescount.forEach(game => { %>
+                            <li >
+                                <a href="/games/<%= game.id %>/join" style="color: white;">Join Game: <%= game.id %> ............................................ Open: <%= game.user_count %>/<%= game.players_allowed %></a>
                             </li>
                             <% }) %>
                     </ul>

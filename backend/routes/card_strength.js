@@ -1,5 +1,3 @@
-
-
 const getBestCards = (players) => {
     const playerCardsArray = extractCardInformation(players);
     for (let i=0; i<playerCardsArray.length; i++) {
@@ -97,6 +95,7 @@ const isFlush = hasFlush(hand.suit);
 const isStraight = hasStraight(hand.number);
 let score = 0;
 let rank;
+console.log("Parameters: isFlush = ", isFlush, " isStraight = ",isStraight);
 
 if (isFlush !== 0 && isStraight !== 0 && isStraight == 14) {
     score = (14*3) + parseInt(isStraight); 
@@ -114,7 +113,7 @@ else if (isFlush !== 0 && isStraight === 0) { // flush
 }
 else if (isFlush === 0 && isStraight !== 0) { // Straight
     score = (14*4) + isStraight;
-    rank = toString("Flush", "", isStraight);
+    rank = toString("Straight", "", isStraight);
 }
 
 else if (Object.keys(pairs).length === 0) { // HIGH CARD
@@ -124,7 +123,7 @@ else if (Object.keys(pairs).length === 0) { // HIGH CARD
     rank = toString("High Card", maxNumber, hand.suit[maxIndex]);    
 }
 
-else if (Object.keys(pairs).length === 1) { // Pairs
+else if (Object.keys(pairs).length === 1) { // Pairs;
     for (const key in pairs) {
         if (pairs[key] == 2) { // Pair 
             rank = toString("Pair ", "",key);
@@ -142,7 +141,6 @@ else if (Object.keys(pairs).length === 1) { // Pairs
 }
 
 else if (Object.keys(pairs).length >= 2) { // 2 pairs, full house and four of a kind
-
     const cardTwos = [];
     const cardThrees = [];
     for (const key in pairs) {
@@ -198,7 +196,6 @@ else if (Object.keys(pairs).length >= 2) { // 2 pairs, full house and four of a 
         score = (14*6) + parseInt(cardThrees[0]);
     }
 }
-
 return {score, rank};
 }
       
@@ -240,20 +237,21 @@ const hasStraight = (numbers) => {
     const isSequence = (sequence) => {
         let counter = 0;
         for (let i=1; i<noDuplicatesSortedNumbers.length; i++) {
-        if ((sequence[i]-sequence[i-1]) != 1) {
-            if (i <= (noDuplicatesSortedNumbers.length - 5)) {
-            continue;
+            if ((sequence[i]-sequence[i-1]) != 1) {
+                counter = 0;
+                if (i <= (noDuplicatesSortedNumbers.length - 5)) {
+                    continue;
+                }
+                else {
+                    return 0;
+                }
             }
             else {
-            return 0;
+                counter++;        
+                if (counter >= 4) {
+                return sequence[i];
+                }
             }
-        }
-        else {
-            counter++;        
-            if (counter >= 4) {
-            return sequence[i];
-            }
-        }
         }
     }
     return isSequence(noDuplicatesSortedNumbers);
@@ -296,17 +294,6 @@ const toString = (rank, number, suit) => {
     const cardString = `${rank}, ${s} of ${suit}`;
     return cardString;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = { getBestCards, playerHandStrength };

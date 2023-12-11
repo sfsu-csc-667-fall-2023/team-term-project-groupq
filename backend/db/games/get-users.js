@@ -29,6 +29,13 @@ const GET_ACTIVE_PLAYERS = `
   SELECT (sess->'user'->>'username') as username FROM session;
 `
 
+const GET_GAME_PLAYER_COUNT =
+`
+SELECT games.id, games.players_allowed,game_count.user_count 
+FROM games, (SELECT game_id, count(user_id) AS user_count FROM game_users GROUP BY game_id ORDER BY game_id) AS game_count 
+WHERE games.id=game_count.game_id ORDER BY games.id;
+`
+
 const USER_ALREADY_IN_GAME = `SELECT count(user_id) FROM game_users WHERE game_id=$1 AND user_id=$2`
 
 const getUsers = (gameId) => db.many(GET_USERS, [gameId]);
@@ -36,4 +43,8 @@ const getUserSID = (gameId, userId) => db.one(GET_USER_SID, [gameId, userId]);
 const getActivePlayers = () => db.any(GET_ACTIVE_PLAYERS);
 const isAlreadyInGame = (gameId, userId) => db.any(USER_ALREADY_IN_GAME, [gameId, userId]);
 
-module.exports = { getUsers, getUserSID, getActivePlayers, isAlreadyInGame };
+const getPlayerGameCount = () => db.any(GET_GAME_PLAYER_COUNT);
+
+module.exports = { getUsers, getUserSID, getActivePlayers, isAlreadyInGame, getPlayerGameCount };
+
+

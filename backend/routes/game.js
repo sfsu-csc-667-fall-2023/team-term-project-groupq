@@ -211,27 +211,27 @@ router.post("/:id/check", async (request, response) => {
       1
   ],
   "suit": [
-      "diamonds",
+      "hearts",
       "diamonds",
       "clubs",
       "clubs",
+      "hearts",
       "diamonds",
-      "spades",
       "clubs"
   ],
   "number": [
-      8,
-      14,
-      12,
       13,
-      12,
-      14,
-      14
+      6,
+      5,
+      11,
+      9,
+      8,
+      10
   ]};
 
   console.log("LETS MAKE A TEMPLATE TO TEST", test);
-  const {bestScore, bestHand } = playerHandStrength(test);
-  console.log("CHECK IT", bestHand, bestScore);
+  const {score, rank} = playerHandStrength(test);
+  console.log("CHECK IT", score, rank);
     
   io.to(gameState.game_socket_id).emit(GAME_CONSTANTS.STATE_UPDATED, {
     gameId,

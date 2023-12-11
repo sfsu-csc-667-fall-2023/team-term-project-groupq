@@ -9,7 +9,7 @@ chatSocket.on(`chat:message:${roomId}`, ({ from, timestamp, message }) => {
   console.log(div);
 
   const p = div.querySelector("p");
-  p.innerText = from + ": " + message;
+  p.innerText = "[All] "+from + ": " + message;
 
   chatWindow.scrollTop = chatWindow.scrollHeight;
   chatWindow.appendChild(div);

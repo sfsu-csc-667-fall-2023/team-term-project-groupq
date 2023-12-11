@@ -3,7 +3,8 @@ body {
   padding: 0;
   color: #333;
 
-  background-image: url("/backgroud_lobby.jpg"); /* Replace 'background-image.jpg' with the actual file path */
+  background-image: url("../background_lobby.jpg"); /* Replace 'background-image.jpg' with the actual file path */
+  background-repeat: 0 0;
   background-size: cover;
   background-position: center;
 
