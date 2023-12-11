@@ -114,11 +114,13 @@ button:hover {
 }
 
 #community-cards {
+  margin-left: 10%;
+  margin-top: 15%;
+  bottom: 15%;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 30%;
-  margin-top: 15%;
 }
 
 .community-card1,
