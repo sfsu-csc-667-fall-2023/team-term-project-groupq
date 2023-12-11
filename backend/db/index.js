@@ -5,5 +5,3 @@ module.exports = {
   Users,
   Games
 };
-
-// this file contains all of the exports for the database actions

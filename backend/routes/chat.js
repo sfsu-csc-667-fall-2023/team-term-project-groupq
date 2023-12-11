@@ -13,7 +13,6 @@ const handler = (request, response) => {
         timestamp: Date.now(),
         message,
     })
-
     response.status(200).send();
 }
 
