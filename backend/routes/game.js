@@ -11,16 +11,6 @@ router.get("/create", async (request, response) => {
   const { id: userId } = request.session.user;
   const io = request.app.get("io");
 
-  // generates an encrypted_game_id and outputs that as gameId
-  // const { id: gameId } = await Games.create(
-  //   crypto.randomBytes(20).toString("hex"),
-  // );
-
-  // Add the creator of the game to the game_users table
-  // await Games.addUser(userId, gameId);
-
-  // io.emit(GAME_CONSTANTS.CREATED, { id: gameId, createdBy: userId });
-
   response.redirect(`/games/${gameId}`);
 });
 
@@ -168,8 +158,6 @@ router.post("/:id/check", async (request, response) => {
     return;
   }
 
-  // gameState = await Games.getState(parseInt(gameId));
-  // const { players, current_player } = gameState;
   const { players, current_player, game_socket_id } = await Games.getState(parseInt(gameId));
   const updateGamePhase = await Games.getGamePhase(gameId);
   const { pot_count } = await Games.getPotCount(gameId);
@@ -286,9 +274,6 @@ router.post("/:id/raise", async (request, response) => {
     io.to(sid).emit('showPopup', { message: 'NOT CURRENT PLAYER' });
     return;
   }
-  
-  // gameState = await Games.getState(parseInt(gameId));
-  // const { players, current_player } = gameState;
   
   const { players, current_player, game_socket_id } = await Games.getState(parseInt(gameId));
   const updateGamePhase = await Games.getGamePhase(gameId);

@@ -21,8 +21,8 @@ router.post("/sign_up", async (request, response) => {
     return;
   }
 
-  // const salt = await bcrypt.genSalt(SALT_ROUNDS);
-  // const hash = await bcrypt.hash(password, salt);
+  const salt = await bcrypt.genSalt(SALT_ROUNDS);
+  const hash = await bcrypt.hash(password, salt);
 
   const user = await Users.create(username, password);
   console.log({ user_after_create: user })

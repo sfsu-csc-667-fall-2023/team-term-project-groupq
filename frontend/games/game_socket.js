@@ -17,12 +17,11 @@ const configure = () => {
   return Promise.resolve(socket);
 };
 
-const dealerUpdate = (handContainer, cardList, pot_count) => {
+const dealerUpdate = (handContainer, cardList) => {
   cardList.forEach(({ suit, number }) => {
     const container = cardTemplate.content.cloneNode(true);
     const div = container.querySelector(".card");
 
-    // This adds the input suit-{} number-{} as a class NAME -> EXTRACT FOR CSS
     div.classList.add(`suit-${suit}`);
     div.classList.add(`number-${number}`);
 
@@ -40,20 +39,17 @@ const potCountUpdate = (handContainer, pot_count) => {
 
 const gamePhaseUpdate = (gamePhase) => {
   const p = document.getElementById("game-phase");
-  p.textContent = `Current Game Phase: ${gamePhase}`; //CURRENT GAME PHASE: PRE-FLOP
+  p.textContent = `Current Game Phase: ${gamePhase}`;
 };
 
 const stateUpdated = ({
-  game_id,
   flopCards,
   turnCards,
   riverCards,
-  players,
-  current_player,
-  numOfCards,
   pot_count,
   updateGamePhase,
 }) => {
+  
   const filler = [{ suit: "filler", number: "filler" }];
   gamePhaseUpdate(updateGamePhase.game_phase);
 
@@ -61,32 +57,32 @@ const stateUpdated = ({
     // pre-flop (all cards are hidden)
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, filler);
+    dealerUpdate(dealerHand, filler);
+    dealerUpdate(dealerHand, filler);
+    dealerUpdate(dealerHand, filler);
+    dealerUpdate(dealerHand, filler);
   } else if (updateGamePhase.game_phase === "flop") {
     // flop 3 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, flopCards, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, flopCards);
+    dealerUpdate(dealerHand, filler);
+    dealerUpdate(dealerHand, filler);
   } else if (updateGamePhase.game_phase === "turn") {
     // turn 4 cards visible
     dealerHand.innerHTML = "";
     potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, flopCards, pot_count);
-    dealerUpdate(dealerHand, turnCards, pot_count);
-    dealerUpdate(dealerHand, filler, pot_count);
+    dealerUpdate(dealerHand, flopCards);
+    dealerUpdate(dealerHand, turnCards);
+    dealerUpdate(dealerHand, filler);
   } else if (updateGamePhase.game_phase === "river") {
     // river 5 cards visible
     dealerHand.innerHTML = "";
-    potCountUpdate(dealerHand, pot_count);
-    dealerUpdate(dealerHand, flopCards, pot_count);
-    dealerUpdate(dealerHand, turnCards, pot_count);
-    dealerUpdate(dealerHand, riverCards, pot_count);
+    potCountUpdate(dealerHand), pot_count;
+    dealerUpdate(dealerHand, flopCards);
+    dealerUpdate(dealerHand, turnCards);
+    dealerUpdate(dealerHand, riverCards);
   }
 };
 
